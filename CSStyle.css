@@ -41,7 +41,7 @@ body {
 	display: block;
 	box-sizing: inherit;
 }
-.navpane {
+.navpane, .floating-navpane {
 	z-index: 1;
 	width: 250px;
 	height: 100%;
@@ -65,7 +65,7 @@ body {
 #navpaneid a:hover {
  background-color: #bbbbbb;
 }
-.navpanescroll {
+.navpanescroll { /*The one that's fixed from the top when we scroll*/
 	z-index: 1;
 	width: 250px;
 	height: 100%;
@@ -185,7 +185,7 @@ body {
 	box-shadow: 3px 3px 8px 3px rgba(200,200,200,0.7);
 }
 /*The floating nav pane*/
-.floatmenu:hover .navpane {
+.floating-navpane:hover .navpane {
 	position: fixed;
 	left: 0px;
 	box-shadow: 5px 5px 8px gray;
@@ -201,6 +201,7 @@ body {
 	overflow-y: scroll;
 	z-index: 5;
 }
+
 
 
 

@@ -70,7 +70,7 @@ function onScrolling() {
 		//scroll bar(15px)
 		document.getElementsByClassName("hornavbarscrolled")[0].style.width = 
 		mainDiv.offsetWidth-15 + "px";
-		//change the class of the navbar to a c lasswhere the whole pane is 
+		//change the class of the navbar to a classwhere the whole pane is 
 		//invisible
 		sideNav.className="navpanescroll";
 	} 
@@ -83,7 +83,9 @@ function onScrolling() {
 //Add the scroll event listener to the main window object
 window.addEventListener("scroll", onScrolling, true); 
 //Time to hide and reveal the navpane
-/*function revealNavPane() {//"sideNav object
+function revealNavPane() {//"sideNav object
+//Before revealing it from hiding, check if the page is in a scrolled state so 
+//We can return it to the floatig-navpane or navpanescroll class accordingly
 	sideNav.className="floating-navpane";
 	document.getElementsByClassName("floating-navpane")[0].style.top = 
 		headDiv.heightOffset + "px"; //THIS IS BOUND TO CHANGE TO A MORE DYNAMIC FUNCTION
@@ -95,7 +97,6 @@ function hideNavPane() {
 
 revealer.addEventListener("mouseover", revealNavPane);
 revealer.addEventListener("mouseout", hideNavPane);
-*/
 
 
 
@@ -103,7 +104,7 @@ revealer.addEventListener("mouseout", hideNavPane);
 
 
 
-
+//Next pick-up is from line 88
 
 
 

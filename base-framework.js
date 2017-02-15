@@ -4,6 +4,7 @@ var headDiv = document.getElementsByClassName("headdiv")[0];
 var horNavBar = document.getElementsByClassName("hornavbar")[0];
 var mainDiv = document.getElementsByClassName("maindiv")[0];
 var revealer = document.getElementById("reveal-navpane");
+var floatingPane = document.getElementsByClassName("floating-navpane")[0];
 var mainContentPane = document.getElementsByClassName("maincontentpane")[0];
 //Get width of the window excluding the scroll bar width
 var mainDivWidth = window.innerWidth-15; 
@@ -91,8 +92,8 @@ function revealNavPane() {//"sideNav object
 		headDiv.heightOffset + "px"; //THIS IS BOUND TO CHANGE TO A MORE DYNAMIC FUNCTION
 }
 function hideNavPane() {
-	document.getElementsByClassName("floating-navpane")[0].className = 
-		"navpane";
+	
+	document.getElementById("navpaneid").className = "navpane";
 }
 
 revealer.addEventListener("mouseover", revealNavPane);
@@ -105,7 +106,7 @@ revealer.addEventListener("mouseout", hideNavPane);
 
 
 //Next pick-up is from line 88
-
+//Task 2017/02/15: The reveal navpane thing shouldn't scroll away with the page
 
 
 

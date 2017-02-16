@@ -1,11 +1,13 @@
 //First, here below, I get the objects I might need to use
-var sideNav = document.getElementsByClassName("navpane")[0];
+var sideNav = document.getElementById("navpaneid");
 var headDiv = document.getElementsByClassName("headdiv")[0];
-var horNavBar = document.getElementsByClassName("hornavbar")[0];
+var horNavBar = document.getElementById("hornavbarid");
 var mainDiv = document.getElementsByClassName("maindiv")[0];
 var revealer = document.getElementById("reveal-navpane");
 var floatingPane = document.getElementsByClassName("floating-navpane")[0];
 var mainContentPane = document.getElementsByClassName("maincontentpane")[0];
+var hnbarid = document.getElementById("hornavbarid");
+var sidepane = document.getElementsByClassName("sidepane")[0];
 //Get width of the window excluding the scroll bar width
 var mainDivWidth = window.innerWidth-15; 
 //Get the width of the navigation pane on the left
@@ -25,7 +27,7 @@ window.addEventListener("resize", mainContentPaneWidth);
 mainContentPaneWidth();
 //This is the function responsible for all resizing calculations. It basically 
 //repeats what's been done above, but for when the window is resized
-function mainContentPaneWidth() { //What to do when the window is resized
+function mainContentPaneWidth() { //What to do when the window is***************************resize
 	//Change the width of the main div
 	var navPaneW = sideNav.offsetWidth;
 	var mainDivWidth = window.innerWidth-15; //get the window size
@@ -38,20 +40,25 @@ function mainContentPaneWidth() { //What to do when the window is resized
 	//Maximize the main content container	
 	if(mainDivWidth<1000) {
 		
-		document.getElementById("navpaneid").style.display="none";
+		sideNav.className="nphidden"; //np=navepane
 		
 		mainContentPane.style.margin="0px";
 		mainContentPane.style.width="100%";
 		document.getElementsByClassName("contentdiv")[0].style.width="100%";
-		document.getElementsByClassName("sidepane")[0].style.display="none";
+		sidepane.style.display="none";
 	}
 	else if(mainDivWidth>=1000) { //put everything back when the width>1000
-	
-		document.getElementById("navpaneid").style.display="block";
-		
+		console.log (sideNav.className + "  " + horNavBar.className);
+		if((sideNav.className=="nphidden" | sideNav.className=="navpanescroll") && horNavBar.className=="hornavbarscrolled") {
+			sideNav.className="navpanescroll";
+			console.log("Now it's working");
+		} else {
+			console.log("Now it's not!");
+			sideNav.className="navpane";
+		}
 		mainContentPane.style.margin="0px 0px 0px " + navPaneW +"px";
 		document.getElementsByClassName("contentdiv")[0].style.width="80%";
-		document.getElementsByClassName("sidepane")[0].style.display="block";
+		sidepane.style.display="block";
 	}
 }
 
@@ -61,9 +68,10 @@ function mainContentPaneWidth() { //What to do when the window is resized
 var diff = headDiv.offsetHeight-horNavBar.offsetHeight;
 //In the event the user scrolls down, the horizontal navigation bar (hornavbar)
 //should be fixed at the top of the screen
-function onScrolling() {
+function onScrolling() {//*******************************************************************scroll
 	//change the vertical position of the side navigation pane
-	if(mainDiv.scrollTop>diff)
+	console.log("Scrolling");
+	if(mainDiv.scrollTop>diff) //If scrolled up
 	{
 	//Change to a class where the horizontal navbar is fixed on the top
 		horNavBar.className="hornavbarscrolled";
@@ -73,27 +81,32 @@ function onScrolling() {
 		mainDiv.offsetWidth-15 + "px";
 		//change the class of the navbar to a classwhere the whole pane is 
 		//invisible
-		sideNav.className="navpanescroll";
+		
+		if(sideNav.className == "navpane"){
+			sideNav.className="navpanescroll";
+		} 
 	} 
 	//Undo everything in the if statement when the user scrolls back
 	else {
 		horNavBar.className="hornavbar";
-		sideNav.className="navpane";
+		if(sideNav.className == "navpanescroll"){
+			sideNav.className="navpane";
+		} 
 	}
 }
 //Add the scroll event listener to the main window object
 window.addEventListener("scroll", onScrolling, true); 
 //Time to hide and reveal the navpane
-function revealNavPane() {//"sideNav object
+function revealNavPane() {//"sideNav object****************************************************mouseover
 //Before revealing it from hiding, check if the page is in a scrolled state so 
 //We can return it to the floatig-navpane or navpanescroll class accordingly
-	sideNav.className="floating-navpane";
+	 sideNav.className="floating-navpane";
 	document.getElementsByClassName("floating-navpane")[0].style.top = 
 		headDiv.heightOffset + "px"; //THIS IS BOUND TO CHANGE TO A MORE DYNAMIC FUNCTION
 }
-function hideNavPane() {
+function hideNavPane() {//*********************************************************************mouseout
 	
-	document.getElementById("navpaneid").className = "navpane";
+	document.getElementById("navpaneid").className = "nphidden";
 }
 
 revealer.addEventListener("mouseover", revealNavPane);

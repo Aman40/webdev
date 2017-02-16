@@ -41,7 +41,7 @@ body {
 	display: block;
 	box-sizing: inherit;
 }
-.navpane, .floating-navpane {
+.navpane, .floating-navpane:hover {
 	z-index: 1;
 	width: 250px;
 	height: 100%;
@@ -201,7 +201,14 @@ body {
 	overflow-y: scroll;
 	z-index: 5;
 }
-
+.floating-navpane {
+	position: fixed;
+	left: 0px;
+	display: block;
+}
+.nphidden{
+	display: none;
+}
 
 
 

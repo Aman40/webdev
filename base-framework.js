@@ -48,12 +48,9 @@ function mainContentPaneWidth() { //What to do when the window is***************
 		sidepane.style.display="none";
 	}
 	else if(mainDivWidth>=1000) { //put everything back when the width>1000
-		console.log (sideNav.className + "  " + horNavBar.className);
 		if((sideNav.className=="nphidden" | sideNav.className=="navpanescroll") && horNavBar.className=="hornavbarscrolled") {
 			sideNav.className="navpanescroll";
-			console.log("Now it's working");
 		} else {
-			console.log("Now it's not!");
 			sideNav.className="navpane";
 		}
 		mainContentPane.style.margin="0px 0px 0px " + navPaneW +"px";
@@ -70,7 +67,6 @@ var diff = headDiv.offsetHeight-horNavBar.offsetHeight;
 //should be fixed at the top of the screen
 function onScrolling() {//*******************************************************************scroll
 	//change the vertical position of the side navigation pane
-	console.log("Scrolling");
 	if(mainDiv.scrollTop>diff) //If scrolled up
 	{
 	//Change to a class where the horizontal navbar is fixed on the top
@@ -97,20 +93,21 @@ function onScrolling() {//******************************************************
 //Add the scroll event listener to the main window object
 window.addEventListener("scroll", onScrolling, true); 
 //Time to hide and reveal the navpane
-function revealNavPane() {//"sideNav object****************************************************mouseover
+function hiderevealNavPane() {//"sideNav object****************************************************mouseover
 //Before revealing it from hiding, check if the page is in a scrolled state so 
 //We can return it to the floatig-navpane or navpanescroll class accordingly
-	 sideNav.className="floating-navpane";
-	document.getElementsByClassName("floating-navpane")[0].style.top = 
-		headDiv.heightOffset + "px"; //THIS IS BOUND TO CHANGE TO A MORE DYNAMIC FUNCTION
-}
-function hideNavPane() {//*********************************************************************mouseout
-	
-	document.getElementById("navpaneid").className = "nphidden";
+	if(sideNav.className == "nphidden") {
+	 	sideNav.className="floating-navpane";
+	 	document.getElementsByClassName("floating-navpane")[0].style.top = 
+		headDiv.offsetHeight + "px"; //THIS IS BOUND TO CHANGE TO A MORE DYNAMIC FUNCTION
+ 	}
+	else if(sideNav.className == "floating-navpane") {
+		sideNav.className = "nphidden";
+	}
 }
 
-revealer.addEventListener("mouseover", revealNavPane);
-revealer.addEventListener("mouseout", hideNavPane);
+revealer.addEventListener("click", hiderevealNavPane);
+
 
 
 

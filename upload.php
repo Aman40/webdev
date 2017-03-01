@@ -1,16 +1,19 @@
 <?php
 $directory = "/uploads";
 $basename = pathinfo($_FILES['upfile']['name'], PATHINFO_BASENAME);
+echo "The basename from pathinfo() is: ".$basename."<br>";
 $basename = basename($basename);
+echo "The basename from basename() is: ".$basename."<br>"; //Check if double extensions are stripped off
 $extension = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
 $uploadOK = 1;
 //check it's the right extension
 if($extension!="jpg" && $extension!="doc" && $extension!="docx" && $extension!="gif"
-	 && $extension!="png") {
+	 && $extension!="png" && $extension!="txt") {
 	$uploadOK = 0;
 	if($extension=="sh") {
 		echo "Fuck off! Nobody's falling for that!<br>";
 	}
+	echo "Sorry, but \".".$extension." type files aren't allowed.<br>";
 }
 //check it's the right size
 if ($_FILES['upfile']['size'] >= 7000000) {
@@ -26,7 +29,7 @@ if(file_exists($directory."/".$basename)) {
 //upload
 if($uploadOK == 1) {
 	move_uploaded_file($_FILES['upfile']['tmp_name'], $directory."/".$basename);
-	echo "Your file has been uploaded successfuly<br>".PHP_EOL;
+	echo "Your file has been uploaded successfuly<br>";
 } else {
 	echo "There was an error uploading your file<br>";
 }

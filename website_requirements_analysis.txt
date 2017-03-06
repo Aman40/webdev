@@ -1,0 +1,142 @@
+WEB PAGES
++--Home
+|
+|--Sign in (page)
+|
++--Profiles (Sellers)
+|		|
+|		|--Sign up page (This will populate the Users table)
+|		|--Profile page template (Automatically fills with client's details including inventory)
+|		|		|
+|		|		|--As seen by owner (With Edit Option)
+|		|		+--As seen by buyer
+|		|		
+|		+--Profile Images Directory (dir)
+|		
+|
++--Agriculture (dir+index) [A]
+|		|
+|		+--Crops(dir+index) [C]
+|		|		|
+|		|		+--Food Crops (dir+index) [F]
+|		|		|		|
+|		|		|		+--Starchy Food Crops [ACFS]
+|		|		|		|		|
+|		|		|		|		|--Bananas/Matooke 
+|		|		|		|		|--Cassava 
+|		|		|		|		|--Rice 
+|		|		|		|		|--Sweet Potatoes 
+|		|		|		|		+--Irish Potatoes 
+|		|		|		|		
+|		|		|		+--Fruits (dir+index)[ACFF]
+|		|		|		|		|
+|		|		|		|		|--Yellow Bananas 
+|		|		|		|		|--passion Fruits 
+|		|		|		|		|--Avocadoes	
+|		|		|		|		|--Tomatoes 
+|		|		|		|		|--Egg plant 
+|		|		|		|		|--Plantain/Gonja 
+|		|		|		|		|--Green pepper 
+|		|		|		|		+--Mangoes 
+|		|		|		|		
+|		|		|		+--Vegetables (dir+index)  [ACFV]
+|		|		|		|		|
+|		|		|		|		|--Cabbage 
+|		|		|		|		|--Dodo/Amaranthus
+|		|		|		|		|--Nakati 
+|		|		|		|		|--Sukuma Wiki 
+|		|		|		|		+--Lettuce 
+|		|		|		|		
+|		|		|		+--Legumes (dir+index) [ACFL]
+|		|		|				|
+|		|		|				|--Beans 
+|		|		|				|--Ground nuts 
+|		|		|				|--Peas 
+|		|		|				|--Lentils 
+|		|		|				+--Soy beans 
+|		|		|		
+|		|		+--Cash Crops (index page) [AC]
+|		|				|
+|		|		 		|--Tea 
+|		|		 		|--Coffee 
+|		|		 		+--Cotton 
+|		|
+|		+--Animals (dir+index) [AA]
+|		|		|
+|		|		|--Cows
+|		|		|--Goats 
+|		|		+--Sheep
+|		|		
+|		+--Poultry (index+dir) [AP]
+|		|		|
+|		|		|--Chicken
+|		|		|--Ducks
+|		|		+--Turkeys
+|		|		
+|		+--Fish(dir+index) [AF]
+|				|
+|				|--Tilapia
+|				|--Cat Fish
+|				|--Mud Fish 
+|				+--Nile Perch 
+|						
+|
+|--About Us (page)
+|
++--Contact Us (page)
+
+************************************CLIENT INFO***********************************
+
+--UserID VARCHAR(PHP uniqid(U)) PRIMARY KEY
+--Password [How to store?] PASSWORD();
+--Date joined DATE
+--First Name CHAR(20)
+--Middle Name CHAR(20)
+--Last Name	CHAR(20)
+--Sex CHAR(M, F OR C for Company)
+--Dob			DATE
+--Company name VARCHAR (100)
+--Email addresses VARCHAR (50)
+--Address VARCHAR (140)
+--District (Head offices) CHAR(50)
+--Website VARCHAR(30)
+--Phone number INT(11) NOT NULL
+--Individual? Company? //Use this to MYSQL CHECK() the relative values.
+
+
+**************************************DATABASE ITEMS****************************************
+--ItemID VARCHAR(PHP uniqid(U)) PRIMARY KEY
+--Name (select from category) VARCHAR (50)
+--Category (For example, ACFV means the item is in Agriculture->Crops->Food Crops->Vegetables. Refer to hierarchy above for assignment guide)
+--Description VARCHAR(140)
+--ImageURL VARCHAR(50)
+
+
+*************************************TABLE REPOSITORY***********************************************
+--UserID FOREIGN KEY REFERENCES ClientInfo.UserID
+--ItemID FOREIGN KEY REFERENCES Product.ItemID
+--Quantity INT NOT NULL
+--Units CHAR(10)
+--UnitPrice INT (Shillings will be assumed, unless otherwise specified)
+--State (Fresh/Dried/Other[Describe]) CHAR(50)
+--Date added DATE()
+--Available until	DATE 
+--Deliverable areas (if deliverable) VARCHAR (256)
+
+
+NEW IDEAS
+--A rating system for sellers from buyers with whom at least one transaction has occurred
+
+
+#Pages to populate the tables. A page for each table
+#The page for the Items table is only accessible to administrators
+#
+
+
+
+
+
+
+
+
+

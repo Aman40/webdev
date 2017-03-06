@@ -1,3 +1,5 @@
+WEBSITE
+	Add ribbon showing categories of available items just like rakuten
 PHP OPERATORS
 	not equal to: <>
 	concatenation assignment: .=
@@ -13,9 +15,11 @@ APACHE2 TRIVIA
 	a2enmod/a2dimod: enable/disable apache2 modules
 
 PHP FORM VALIDATION
+	SANITIZATION
 	htmlspecialchars(): important php function to avert XSS to some extent
 	trim(): php function tokillunnessaryspaces.
 	stripslashes(): gets rid of \'s.
+	VALIDATION
 	preg_match(pattern, string): checks for pattern in string;
 	filter_var(): ?? and validating email addresses:
 
@@ -54,7 +58,7 @@ FILTERS
 	filter_var(): filter a variable
 	
 ERROR HANDLING
-	error_functio(error_level, error_message, error_file, error_line, error_context);
+	error_function(error_level, error_message, error_file, error_line, error_context);
 	set_error_handler(error_function): Self explanatory
 	trigger_error(): override to trigger user error manually. Returns E_USER_ERROR
 	error_log(): You can send errors to a php log file or as an email. This could 
@@ -84,6 +88,10 @@ MySQL DATABASE
 	(P) num_rows
 	(M) fetch_assoc()
 	
+TODO
+-Create profile page to view and edit user profile
+-Add option to update repository
+-Create admin page to update items data
 	
 	
 	

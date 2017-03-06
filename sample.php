@@ -9,13 +9,14 @@ session_start();
 ?>
 <html>
 	<head>
+	<meta name="vewport" content="width=device-width, initial-scale=" >
 	<link rel="stylesheet" type="text/css" href="CSStyle.css">
 	</head>
 	<body>
 		<div class="maindiv"> 
 		<div class="headdiv">
-			<h1 style="margin: 0px; text-align:center">
-			Lorem Ipsum
+			<h1>
+				FMH
 			</h1>	
 			
 			<div class="hornavbar" id="hornavbarid"> <!-- The Horizontal Navigation bar--> 
@@ -80,6 +81,40 @@ session_start();
 				<!--The main content container, whose sibling is the main side pane of 
 				class sidepane. All the rest of the content goes in here, inside bordered
 				and shadowed card-like div containers-->
+				
+				
+				
+<!--***************************************INSERT CONTENT BELOW THIS*************************-->
+
+
+				<div class="options" id="optionsid">
+					<?php
+						$server = "localhost";
+						$username = "aman";
+						$password = "password";
+						$db = "aman";
+						
+						$conn = new mysqli($server, $username, $password, $db);
+						if($conn->connect_error) {
+							die("The connection to the database couldn't be established<br>");
+						} else {
+							echo "<script> console.log('Connection established successfully');</script>";
+						}
+						$sql = "SELECT FirstName, LastName from Users;";
+						$AvailNames = $conn->query($sql);
+						if($AvailNames->num_rows>0) {
+							while($row=$AvailNames->fetch_assoc()) {
+								//retrieve data from the row
+								echo "<div class='item'>";
+								echo $row['FirstName']." ".$row['LastName']."<br>";
+								echo "</div>";
+							}
+						} else {
+							echo "The repository is empty";
+						}
+						
+					?>
+				</div>
 					<div class="content">
 						<p style="text-align: center">
 						<h3>MAIN CONTENT PANE</h3><br>
@@ -203,6 +238,8 @@ session_start();
 						</p>
 					</div>
 				</div>
+				
+<!--************************************INSERT CONTENT ABOVE THIS*******************************-->
 				
 				<div class="sidepane"> <!--The main side pane container, perhaps for ads and all that shit-->
 				

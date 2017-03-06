@@ -275,7 +275,7 @@ session_start();
 				}
 				
 				function _sex($sex_value) {
-					if($_POST['sex']==$sex_value) {
+					if(isset($_POST['sex']) && $_POST['sex']==$sex_value) {
 			 			echo "checked";
 			 		}
 				}

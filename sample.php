@@ -6,6 +6,10 @@ $cookie_name = "user";
 $cookie_value = "value";
 setcookie($cookie_name,$cookie_value,time()+3600);
 session_start();
+$session_exists = false;
+if(isset($_SESSION['UserID'])) {
+	$session_exists = true;
+}
 ?>
 <html>
 	<head>
@@ -18,7 +22,11 @@ session_start();
 			<h1>
 				FMH
 			</h1>	
-			
+			<?php
+					if($session_exists) {
+						echo '<span>Hello, '.$_SESSION["FirstName"].'. <a href="logoff.php">Log Out</a></span>';
+					}
+				?>	
 			<div class="hornavbar" id="hornavbarid"> <!-- The Horizontal Navigation bar--> 
 				<div id="reveal-navpane">
 					<hr>
@@ -30,7 +38,16 @@ session_start();
 				<a href="#link">Buy</a>
 				<a href="#">Sell</a>
 				<a href="#">Take a tour</a>
-				<a href="#" style="float:right">Sign Up</a>
+				<?php if(!$session_exists) 
+				{
+				echo '
+				<a href="Profiles/signin.php">Sign In</a>
+				<a href="Profiles/signup.php" style="float:right">Sign Up</a>
+				';
+				} else {
+					
+				}
+				?>
 			</div>			
 		</div> 
 		
@@ -87,34 +104,7 @@ session_start();
 <!--***************************************INSERT CONTENT BELOW THIS*************************-->
 
 
-				<div class="options" id="optionsid">
-					<?php
-						$server = "localhost";
-						$username = "aman";
-						$password = "password";
-						$db = "aman";
-						
-						$conn = new mysqli($server, $username, $password, $db);
-						if($conn->connect_error) {
-							die("The connection to the database couldn't be established<br>");
-						} else {
-							echo "<script> console.log('Connection established successfully');</script>";
-						}
-						$sql = "SELECT FirstName, LastName from Users;";
-						$AvailNames = $conn->query($sql);
-						if($AvailNames->num_rows>0) {
-							while($row=$AvailNames->fetch_assoc()) {
-								//retrieve data from the row
-								echo "<div class='item'>";
-								echo $row['FirstName']." ".$row['LastName']."<br>";
-								echo "</div>";
-							}
-						} else {
-							echo "The repository is empty";
-						}
-						
-					?>
-				</div>
+				
 					<div class="content">
 						<p style="text-align: center">
 						<h3>MAIN CONTENT PANE</h3><br>

@@ -1,40 +1,9 @@
 <!doctype html>
 <?php
+session_start();
 include "customErrorHandler.php";
 set_error_handler("customErrorHandler");
-$cookie_name = "user";
-$cookie_value = "value";
-setcookie($cookie_name,$cookie_value,time()+3600);
-session_start();
-?>
-<html id="html">
-	<head>
-	<link rel="stylesheet" type="text/css" href="Profcss.css">
-	</head>
-	<body id="body">
-		<div class="maindiv"> 
-		<div class="headdiv">
-			<h1>
-				FMH
-			</h1>	
-			
-			<div class="hornavbar" id="hornavbarid"> <!-- The Horizontal Navigation bar--> 
-				<div id="reveal-navpane">
-					<hr>
-					<hr>
-					<hr>
-				</div>
-				<a href="#link">Home</a>
-				<a href="#link">About Us</a>
-				<a href="#link">Buy</a>
-				<a href="#">Sell</a>
-				<a href="#">Take a tour</a>
-				<a href="#" style="float:right">Sign Up</a>
-			</div>			
-		</div> 
-		<div class="formdiv">
-		<script>console.log("Fine until here!")</script>
-			<?php
+/***********************LOGIN PROCESS STARTS HERE***************************/
 					$server = "localhost";
 					$username = "aman";
 					$password = "password";
@@ -44,22 +13,16 @@ session_start();
 					$upassword = "";
 					if($_SERVER['REQUEST_METHOD']=='POST') {
 							//Get data from the form
-							echo "<script>console.log('Pre extraction');</script>";
 							if(isset($_POST['upassword'])) $upassword = filter($_POST['upassword']);
 							if(isset($_POST['phoneno'])) $phoneno = filter($_POST['phoneno']);
-							echo "<script>console.log('Past extractiono');</script>";
 							
 							$conn = new mysqli($server, $username, $password, $database);
 							
-							echo "<script>console.log('Connection object created');</script>";
-							
 							if(!$conn->connect_error) {//Connection successful
-								echo "<script>console.log('Connection successful');</script>";
 							} else { //couldn't connect to the database. Do something
 								die ("The connection to the database couldn't be established");
 							}
 							$query = "SELECT * FROM Users where PhoneNo  = ".$phoneno.";";
-							echo "<script>console.log('Query prepared');</script>";
 							$result = $conn->query($query);//Returns null (not an object) when there's nothing
 							
 							if($result!=null) { //If "username" matches, compare passwords and set session data.
@@ -67,6 +30,7 @@ session_start();
 								$db_password = $row['UserPassword']; 
 								
 								if(password_verify($upassword, $db_password)) { //Password correct. Set session data
+										session_start();
 										$_SESSION['UserID'] = $row['UserID'];
 										$_SESSION['Sex'] = $row['Sex'];
 										$_SESSION['DoB'] = $row['DoB'];
@@ -76,7 +40,7 @@ session_start();
 										$_SESSION['District'] = $row['District'];
 										$_SESSION['Email'] = $row['Email'];
 										//Then redirect to the home page
-										echo "Hello ".$_SESSION['FirstName']."!";
+										header("location: ../sample.php");
 									} else { //Passwords don't match
 										
 										$upassword_error = "Wrong password";
@@ -96,7 +60,42 @@ session_start();
 						$variable = trim($variable);
 						return $variable;
 					}
-			?> 
+/*******************************************************************************/
+if(isset($_SESSION['UserID'])) {
+	//redirect the user
+	header("location: ../sample.php");
+}
+$cookie_name = "user";
+$cookie_value = "value";
+setcookie($cookie_name,$cookie_value,time()+3600);
+?>
+<html id="html">
+	<head>
+	<link rel="stylesheet" type="text/css" href="Profcss.css">
+	</head>
+	<body id="body">
+		<div class="maindiv"> 
+		<div class="headdiv">
+			<h1>
+				FMH
+			</h1>	
+			
+			<div class="hornavbar" id="hornavbarid"> <!-- The Horizontal Navigation bar--> 
+				<div id="reveal-navpane">
+					<hr>
+					<hr>
+					<hr>
+				</div>
+				<a href="../sample.php">Home</a>
+				<a href="#link">About Us</a>
+				<a href="#link">Buy</a>
+				<a href="#">Sell</a>
+				<a href="#">Take a tour</a>
+				<a href="signup.php" style="float:right">Sign Up</a>
+			</div>			
+		</div> 
+		<div class="formdiv">
+			
 			<form target="_self" action="signin.php" method="post">
 				Phone Number: <br>
 				<input type="text" name="phoneno"><br>

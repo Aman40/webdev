@@ -87,15 +87,6 @@ MySQL DATABASE
 	RESULT METHODS(M) AND PROPERTIES(P)
 	(P) num_rows
 	(M) fetch_assoc()
-	
-TODO
--Create profile page to view and edit user profile
--Add option to update repository
--Create admin page to update items data
--Upon sign up, start a session with the UserID and necessary info.
--User this^ id as one of the parameters for executing SQL queries
--For now, I'll have it manually stored somewhere. Or start a session manually? Or with code. 
-	
 
 
 HOW LOGGING IN WORKS
@@ -107,6 +98,20 @@ HOW LOGGING IN WORKS
 -Pass the userID as a session variable and for each page they try to access, first check for the
 	$_SESSION['userID']. If it's set, then we have a session and can use the userID stored in the 
 	$_SESSION superglobal.
+
+	
+TODO
+-Create profile page to view and edit user profile
+-Add option to update repository
+-Create admin page to update items data
+-Upon sign up, start a session with the UserID and necessary info.
+-User this^ id as one of the parameters for executing SQL queries
+-After a user signs in, don't let them back to the sign in or sign up pages. Redirect them to the main pages if there's a session set( if (isset($_SESSION['UserID'])))
+	
+
+
+
+
 
 
 	

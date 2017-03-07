@@ -126,11 +126,43 @@ WEB PAGES
 
 NEW IDEAS
 --A rating system for sellers from buyers with whom at least one transaction has occurred
+--Add response time of sellers
+--There should be sorting of items by (price, Quantity, Popularity of seller)
+
+REQUIRED
+--A separate tables for each farmer for each item. It should have the following
+	|--ItemID
+	|--Quantity
+	|--ID
 
 
 #Pages to populate the tables. A page for each table
 #The page for the Items table is only accessible to administrators
 #
+
+WHAT DOES THE CLIENT WANNA SEE WHEN THEY LOG IN
+--Search by 
+	-category
+	-Location
+	-Item name
+	-Seller's name
+	
+--Items in the rows should be animated to scroll right-left automatically
+
+	LOGGED IN
+--Add a tab for the profile
+--A tab for the repository
+--List of items in repository
+--Number of orders against each item
+--The ORDER DETAILS should include
+		|--Quantity
+		|--Delivery address
+		|--Phone number/email of whoever places the order
+
+PLACING AN ORDER
+--There'll be a "PLACE ORDER" button that brings up a dialogue box that requests
+	the details of the order (phone no., Quantity, adress)
+
 
 
 

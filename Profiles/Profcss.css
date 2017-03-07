@@ -19,7 +19,7 @@ body {
 }
 .maindiv {
 	position: relative;
-	min-height: 100%;
+	min-height: 1024px;
 	padding: 0px;
 	margin: 0px;
 	border: none;

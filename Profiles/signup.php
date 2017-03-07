@@ -1,41 +1,15 @@
 <!doctype html>
 <?php
+session_start();
 include "customErrorHandler.php";
 set_error_handler("customErrorHandler");
-$cookie_name = "user";
-$cookie_value = "value";
-setcookie($cookie_name,$cookie_value,time()+3600);
-session_start();
-?>
-<html id="html">
-	<head>
-	<link rel="stylesheet" type="text/css" href="Profcss.css">
-	</head>
-	<body id="body">
-		<div class="maindiv"> 
-		<div class="headdiv">
-			<h1>
-				FMH
-			</h1>	
-			
-			<div class="hornavbar" id="hornavbarid"> <!-- The Horizontal Navigation bar--> 
-				<div id="reveal-navpane">
-					<hr>
-					<hr>
-					<hr>
-				</div>
-				<a href="#link">Home</a>
-				<a href="#link">About Us</a>
-				<a href="#link">Buy</a>
-				<a href="#">Sell</a>
-				<a href="#">Take a tour</a>
-				<a href="#" style="float:right">Sign Up</a>
-			</div>			
-		</div> 
-		<div class="formdiv">
-			<?php
+if(isset($_SESSION['UserID'])) {
+	//redirect the user after setting a session for them
+	header("location: ../sample.php");
+}
+/*****************************FORM PROCESSING STARTS HERE*******************************/
 
-					$pushOK = true; //Defines whether it's OK to push the data to the database
+$pushOK = true; //Defines whether it's OK to push the data to the database
 					$fname = "";
 					$mname = "";
 					$lname = "";
@@ -205,7 +179,6 @@ session_start();
 						$conn = new mysqli($servername, $username, $password, $database); //db password
 						
 						if(!$conn->connect_error) { //We connected successfully
-						echo "<script>console.log('Connection_success')</script>";
 							$sql = "INSERT INTO Users (UserID,
 																					UserPassword,
 																					FirstName,
@@ -222,7 +195,6 @@ session_start();
 																					About
 							) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 							$stat = $conn->prepare($sql);
-							echo "<script>console.log('Preparation success')</script>";
 							$stat->bind_param("sssssssssssssb", 
 													$userid,
 													$upassword,
@@ -239,13 +211,19 @@ session_start();
 													$website,
 													$phoneno,
 													$about);
-													echo "<script>console.log('Error: ".$stat->error."')</script>";
 							$success = $stat->execute();
-													echo "<script>console.log('Excecution success')</script>";
 							//Check for success
 							if($success) {
-								echo "<script>console.log('Success')</script>";
-								//Redirect user to a different page.
+								//Redirect user to a different page after setting the session data
+									$_SESSION['UserID'] = $userid;
+										$_SESSION['Sex'] = $sex;
+										$_SESSION['DoB'] = $dob;
+										$_SESSION['FirstName'] = $fname;
+										$_SESSION['LastName'] = $lname;
+										$_SESSION['CoName'] = $coname;
+										$_SESSION['District'] = $district;
+										$_SESSION['Email'] = $email;
+								header("location: ../sample.php");
 							} else {
 								echo $stat->error;
 							}
@@ -266,8 +244,7 @@ session_start();
 					$entry = stripslashes($entry);
 					return $entry; //Sanitized input
 				}
-			?>
-			<?php
+
 				function _value($nametag) {
 					if(isset($_POST[$nametag]) && $_POST[$nametag] != null) {
 						echo $_POST[$nametag];
@@ -279,7 +256,40 @@ session_start();
 			 			echo "checked";
 			 		}
 				}
-			?>
+
+$cookie_name = "user";
+$cookie_value = "value";
+setcookie($cookie_name,$cookie_value,time()+3600);
+?>
+<html id="html">
+	<head>
+	<link rel="stylesheet" type="text/css" href="Profcss.css">
+	</head>
+	<body id="body">
+		<div class="maindiv"> 
+		<div class="headdiv">
+			<h1>
+				FMH
+			</h1>	
+			
+			<div class="hornavbar" id="hornavbarid"> <!-- The Horizontal Navigation bar--> 
+				<div id="reveal-navpane">
+					<hr>
+					<hr>
+					<hr>
+				</div>
+				<a href="../sample.php">Home</a>
+				<a href="#link">About Us</a>
+				<a href="#link">Buy</a>
+				<a href="#">Sell</a>
+				<a href="#">Take a tour</a>
+				<a href="signin.php" style="float:right">Sign In</a>
+			</div>			
+		</div> 
+		<div class="formdiv">
+		
+<!--*****************************FORM BEGINS HERE******************************************-->
+
 			<form class="form" autocomplete="off" method="post" target="_self">
 			
 			 First Name: <br>

@@ -106,12 +106,28 @@ TODO
 -Create admin page to update items data
 -Upon sign up, start a session with the UserID and necessary info.
 -User this^ id as one of the parameters for executing SQL queries
+<<<<<<< HEAD
 -After a user signs in, don't let them back to the sign in or sign up pages. Redirect them to the main pages if there's a session set( if (isset($_SESSION['UserID'])))
 	
 
 
 
 
+=======
+-For now, I'll have it manually stored somewhere. Or start a session manually? Or with code. 
+	
+
+
+HOW LOGGING IN WORKS
+-The user enters a username and password
+-A script searches for and extracts the users data from the database, if the username
+	is correct.
+-The script compares the user's password to the password returned from the database
+-If the two match, session_start() is evoked
+-Pass the userID as a session variable and for each page they try to access, first check for the
+	$_SESSION['userID']. If it's set, then we have a session and can use the userID stored in the 
+	$_SESSION superglobal.
+>>>>>>> be3144fa06bb980232cb0da0ef6b9f6df498d67a
 
 
 	

@@ -13,15 +13,32 @@ session_start();
 		<div id="main-wrapper">
 			<div id="row-1">
 				
-				<div class="col-3" id="r1c1">
-					<h1>
-						F<span style="letter-spacing: -23px">MH</span>
-					</h1>
-				</div><!--r1c1-->
 				
-				<div class="col-9" id="r1c2">
+				
+				<div class="col-12" id="r1c2">
 					<div id="r1c2r1">
+						<div class="col-3" id="r1c1">
+							<h1>
+								F<span style="letter-spacing: -23px">MH</span>
+							</h1>
+						</div><!--r1c1-->
+						
 						<div id="min-prof">
+						
+							<div id="prof-pic">
+							</div><!--prof-pic-->
+							<div id="notifications"> <!--comments, orders -->
+								<a href="#" id="orders">
+									<div id="order-count">
+										5
+									</div><!--order-count-->
+								</a><!--orders-->
+								<a href="#" id="comments">
+									<div id="comment-count">
+										7
+									</div><!--comment-count-->
+								</a><!--comments-->
+							</div><!--notifications-->
 							
 						</div><!--min-prof-->
 					</div><!--r1c2r1-->
@@ -32,7 +49,11 @@ session_start();
 							<a href="#">About Us</a>
 							<a href="#">Sign In</a>
 							<a href="#">Sign up</a>
-						</div>
+							<form>
+							  <input type="text" name="search" placeholder="Search..">
+							</form>
+						</div><!--hor-menu-->
+					
 					</div><!--r1c2r2-->
 				</div><!--r1c2-->
 				

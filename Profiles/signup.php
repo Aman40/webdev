@@ -329,7 +329,7 @@ setcookie($cookie_name,$cookie_value,time()+3600);
 			 <input type="tel" class="wide" name="phoneno" value="<?php _value('phoneno'); ?>" placeholder="E.g 0784596469" required><?php echo $phoneno_error ?><br><br>
 			 
 			 Website: <br>
-			 <input type="" class="wide" name="website" value="<?php _value('website'); ?>" placeholder="e.g www.example.com"><br><br>
+			 <input type="text" class="wide" name="website" value="<?php _value('website'); ?>" placeholder="e.g www.example.com"><br><br>
 			 
 			 About Yourself: <br>
 			 <textarea name="about" value="<?php echo $_POST['about']; ?>" placeholder="Say something about yourself"></textarea><br><br>

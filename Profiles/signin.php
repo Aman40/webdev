@@ -60,7 +60,7 @@ set_error_handler("customErrorHandler");
 						$variable = trim($variable);
 						return $variable;
 					}
-/*******************************************************************************/
+
 if(isset($_SESSION['UserID'])) {
 	//redirect the user
 	header("location: ../sample.php");

@@ -161,7 +161,7 @@ class="close" title="Close Modal">&times;</span>
     </div>
 
     <div class="container">
-    <input type="hidden" name="formname" value="login">
+    <input type="hidden" name="formname" value="login"/>
     	
       <label><b>Phone number</b></label><?php echo $phoneno_error.'<br>' ?>
       <input type="text" placeholder="Enter Username" name="phoneno" required>
@@ -186,51 +186,52 @@ class="close" title="Close Modal">&times;</span>
   <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">×</span>
   <form class="modal-content animate" action="fmh.php" method="post">
     <div class="container">
-    	<input type="hidden" name="formname" value="signup">
+    	<input type="hidden" name="formname" value="signup"/>
     	
-    	<lable><b>First Name</b></lable><?php echo $fname_error ?>
-		<input type="text" placeholder="First Name" name="fname" required>
+    	<lable><b>First Name</b></lable><span class="error"> *<?php echo $fname_error ?></span>
+		<input type="text" class="required" placeholder="First Name" name="fname" value="<?php if(isset($_POST['fname']) && $_POST['fname'] != null) echo $_POST['fname']; ?>" required>
 		
-		<lable><b>Middle Name</b></lable>
-		<input type="text" placeholder="Middle Name" name="mname" required>
+		<lable><b>Middle Name</b></lable><span>
+		<input type="text" placeholder="Middle Name" name="mname" value="<?php if(isset($_POST['mname']) && $_POST['mname'] != null) echo $_POST['mname']; ?>">
 		
-		<lable><b>Last Name</b></lable>
-		<input type="text" placeholder="Last Name" name="lname" required>
+		<lable><b>Last Name</b></lable><span class="error"> *<?php echo $lname_error ?></span>
+		<input type="text" class="required" placeholder="Last Name" name="lname" value="<?php if(isset($_POST['lname']) && $_POST['lname'] != null) echo $_POST['lname']; ?>" required>
 		
 		<lable><b>Company Name</b></lable>
-		<input type="text" placeholder="First Name" name="coname" required>
+		<input type="text" placeholder="First Name" name="coname" value="<?php if(isset($_POST['coname']) && $_POST['coname'] != null) echo $_POST['coname']; ?>">
 		
-		<lable><b>Sex</b></lable><br>
-		<input type="radio" name="sex" value="M" required >M<br>
-		<input type="radio" name="sex" value="F" required >F<br>
-		<input type="radio" name="sex" value="C" required >Company<br><br>
+		<lable><b>Sex</b></lable><span class="error"> *<?php echo $sex_error ?></span><br>
+		<input type="radio" class="required" name="sex" value="M" required >M<br>
+		<input type="radio" class="required" name="sex" value="F" required >F<br>
+		<input type="radio" class="required" name="sex" value="C" required >Company<br><br>
 		
-		<lable><b>Date of Birth</b></lable><br>
-		<input type="date" class="wide" name="dob" required><br>
+		<lable><b>Date of Birth</b></lable><span class="error"> *<?php echo $dob_error ?></span><br>
+		<input type="date" class="required" class="wide" name="dob" required><br><br>
 		
-		<label><b>District of Operation</b></label>
-		<input type="text" placeholder="District" name="district" required>
+		<label><b>District of Operation</b></label><span class="error"> *<?php echo $district_error ?></span>
+		<input type="text" class="required" placeholder="District" name="district" value="<?php if(isset($_POST['district']) && $_POST['district'] != null) echo $_POST['district']; ?>" required>
 		
-		<label><b>Email</b></label>
-		<input type="text" placeholder="Enter Email" name="email" required>
+		<label><b>Email</b></label><span class="warning"><?php echo $email_error ?></span>
+		<input type="text" placeholder="Enter Email" name="email" value="<?php if(isset($_POST['email']) && $_POST['email'] != null) echo $_POST['email']; ?>">
 		
 		<label><b>Address</b></label>
-		<input type="text" placeholder="E.g Plot 35 Speke street, Kampala" name="address" required>
+		<input type="text" placeholder="E.g Plot 35 Speke street, Kampala" name="address" value="<?php if(isset($_POST['address']) && $_POST['address'] != null) echo $_POST['address']; ?>">
 		
-		<label><b>Phone Number</b></label>
-		<input type="text" placeholder="E.g 0784596469" name="phoneno" required>
+		<label><b>Phone Number</b></label><span class="error"> *<?php echo $phoneno_error ?></span>
+		<input type="text" class="required" placeholder="E.g 0784596469" name="phoneno" value="<?php if(isset($_POST['phoneno']) && $_POST['phoneno'] != null) echo $_POST['phoneno']; ?>" required>
 		
 		<label><b>Website</b></label>
-		<input type="text" placeholder="e.g www.domain.com" name="website" required>
+		<input type="text" placeholder="e.g www.domain.com" name="website" value="<?php if(isset($_POST['website']) && $_POST['website'] != null) echo $_POST['website']; ?>">
 		
 		<label><b>About Yourself</b></label><br>
-		<textarea style="width: 100%" placeholder="About yourself..." name="about" required></textarea><br>
+		<textarea style="width: 100%" placeholder="About yourself..." name="about" value="<?php if(isset($_POST['about']) && $_POST['about'] != null) echo $_POST['about']; ?>"></textarea><br>
 
-		<label><b>Password</b></label>
-		<input type="password" placeholder="Enter Password" name="psw" required>
+		<label><b>Password</b></label><span class="error"> * <?php echo $upassword_error ?></span>
+		<input type="password" class="required" placeholder="Enter Password" name="upassword" required>
 
-		<label><b>Repeat Password</b></label>
-		<input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+		<label><b>Repeat Password</b></label><span class="error"> * </span><br>
+		<input type="password" class="required" placeholder="Repeat Password" name="upassword2" required>
+		<span class="warning">* = required</span><br>
 		<input type="checkbox" checked="checked"> Remember me
 		<p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
 

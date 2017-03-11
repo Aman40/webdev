@@ -1,4 +1,4 @@
-CREATE TABLE Users 
+CREATE TABLE IF NOT EXISTS Users 
 (
 UserID CHAR(14), 
 UserPassword VARCHAR(255) NOT NULL,/*Use a php hash function to hash the text password*/ 
@@ -14,7 +14,10 @@ Address VARCHAR(140), /*Address VARCHAR (140)*/
 District VARCHAR(20) NOT NULL,/*District (Head offices) CHAR(50)*/
 Website VARCHAR(30),/*Website VARCHAR(30)*/
 PhoneNo CHAR(11) NOT NULL, /*Phone number INT(11) NOT NULL*/
-About blob,
+About TEXT,
+NewOrders INT(3),
+ProfilePic VARCHAR(50), /*uri to profile pic*/
+ResponseTime TIME,
 UNIQUE (PhoneNo),
 PRIMARY KEY (UserID)
 );
@@ -28,19 +31,36 @@ ImageURI VARCHAR(50),/*ImageURL VARCHAR(50)*/
 PRIMARY KEY (ItemID)
 );
 
-CREATE TABLE Repository
+CREATE TABLE IF NOT EXISTS Repository
 (
 UserID CHAR(14),
 ItemID CHAR(14),
 Quantity DECIMAL(10,2) NOT NULL,
 Units VARCHAR(10) NOT NULL,
-UnitPrice INT(10) NOT NULL, /*(Shillings will be assumed, unless otherwise specified)*/
+UnitPrice DECIMAL(12,2) NOT NULL, /*(Shillings will be assumed, unless otherwise specified)*/
 State VARCHAR(50), /*(Fresh/Dried/Other[Describe])*/
 DateAdded TIMESTAMP NOT NULL, /*Date added DATE()*/
-Deliv VARCHAR(140), /*Deliverable areas (if deliverable) VARCHAR (256)*/
-PRIMARY KEY (UserID, ItemID),
+Deliverable ENUM('Y','N'), /*Deliverable areas (if deliverable) VARCHAR (256)*/
+DeliverableAreas VARCHAR(255),
+PRIMARY KEY (UserID), /*That means one user can have similar items*/
 FOREIGN KEY (UserID) REFERENCES Users(UserID),
 FOREIGN KEY (ItemID) REFERENCES Items(ItemID)
 );
-
+CREATE TABLE IF NOT EXISTS Orders 
+(
+OrderID CHAR(14), /*Generated at the time "place order" is placed*/
+UserID CHAR(14),
+ItemID CHAR(14),
+Quantity INT(9) NOT NULL,
+Price DECIMAL(12,2) NOT NULL,
+Units VARCHAR(10) NOT NULL,
+ClientID CHAR(11) NOT NULL, /*The client's phone number*/
+Location CHAR(30) NOT NULL, /*The client's location*/
+ClientRemarks VARCHAR(255), /*the client's comments*/
+ClientEmail VARCHAR(50),
+OrderTime TIMESTAMP NOT NULL,
+PRIMARY KEY (OrderID),
+FOREIGN KEY (UserID) REFERENCES Users(UserID),
+FOREIGN KEY (ItemID) REFERENCES Items(ItemID)
+)
 /*Any other constraints will be applied on the forms*/

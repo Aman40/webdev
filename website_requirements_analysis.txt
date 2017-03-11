@@ -128,12 +128,19 @@ NEW IDEAS
 --A rating system for sellers from buyers with whom at least one transaction has occurred
 --Add response time of sellers
 --There should be sorting of items by (price, Quantity, Popularity of seller)
+--New boolean column in Users table to specify whether info is private 
 
 REQUIRED
---A separate tables for each farmer for each item. It should have the following
-	|--ItemID
-	|--Quantity
-	|--ID
+--A separate tables for each farmer for each item. It should have the following (Comments)
+	|--ItemID. Identifies the particular table.
+	|--Quantity available. Link to prompt update.
+	|--ID (Unique item ID according to hierarchy.
+	|--Comments on the item
+	|--Number of orders for the item
+	|--(If there's enough stock to satisfy the orders)
+
+--A separate table for each farmer (Notifications)
+		|--Number of notifications
 
 
 #Pages to populate the tables. A page for each table
@@ -162,6 +169,39 @@ WHAT DOES THE CLIENT WANNA SEE WHEN THEY LOG IN
 PLACING AN ORDER
 --There'll be a "PLACE ORDER" button that brings up a dialogue box that requests
 	the details of the order (phone no., Quantity, adress)
+
+
+
+SCENARIOS (EVENTS)
+	|
+	|--Registered Client
+	|		|
+	|		|--Update profile item (php/sql script)
+	|		|--Check inventory
+	|		|		|
+	|		|		|--Update inventory item description/quantity
+	|		|		+--Add/remove inventory item
+	|		|
+	|		+--Check notifications
+	|		
+	+--New User
+			|
+			|--Search for an item (php ???)
+			|--Check the seller's profile (profile without private info)
+			|--Check the item's details
+			+--Place an order
+					|--Specify the quantity
+					|--Specigy the phone number
+					|--Specify address
+					|--Leave a comment
+					+--Get order ID as a result
+
+
+
+
+
+
+
 
 
 

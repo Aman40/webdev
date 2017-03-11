@@ -54,8 +54,16 @@ include "include.php";
 							<a href="#">Stall</a>
 							<a href="#">Home</a>
 							<a href="#">About Us</a>
-							<a href="javascript:void(0)" onclick="document.getElementById('id01').style.display='block'">Sign In</a>
-							<a href="javascript:void(0)" onclick="document.getElementById('id02').style.display='block'">Sign up</a>
+							<?php //If the user logs in (session_exists=true) hide the following
+							if(!$session_exists) {
+							echo "
+							<a href=\"javascript:void(0)\" onclick=
+							\"document.getElementById('id01').style.display='block'\">Sign In</a>
+							<a href=\"javascript:void(0)\" onclick=
+							\"document.getElementById('id02').style.display='block'\">Sign up</a>
+								";
+							}
+							?>
 							<form class="search">
 							  <input type="text" name="search" placeholder="Search..">
 							  <input type="submit" value="Search">

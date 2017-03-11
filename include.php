@@ -64,7 +64,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 						$_SESSION['Sex'] = $row['Sex'];
 						$_SESSION['DoB'] = $row['DoB'];
 						$_SESSION['FirstName'] = $row['FirstName'];
+						$_SESSION['MiddleName'] = $row['MiddleName'];
 						$_SESSION['LastName'] = $row['LastName'];
+						$_SESSION['Sex'] = $row['Sex'];
+						$_SESSION['Address'] = $row['Address'];
+						$_SESSION['Website'] = $row['Website'];
+						$_SESSION['PhoneNo'] = $row['PhoneNo'];
+						$_SESSION['About'] = $row['About'];
 						$_SESSION['CoName'] = $row['CoName'];
 						$_SESSION['District'] = $row['District'];
 						$_SESSION['Email'] = $row['Email'];

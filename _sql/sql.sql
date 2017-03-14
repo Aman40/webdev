@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS Users
 (
 UserID CHAR(14), 
 UserPassword VARCHAR(255) NOT NULL,/*Use a php hash function to hash the text password*/ 
-JoinDate TIMESTAMP NOT NULL,
+JoinDate DATETIME NOT NULL,
 FirstName VARCHAR(20),
 MiddleName VARCHAR(20), /*Middle Name CHAR(20)*/
 LastName VARCHAR(20), /*Last Name	CHAR(20)*/
@@ -16,8 +16,9 @@ Website VARCHAR(30),/*Website VARCHAR(30)*/
 PhoneNo CHAR(11) NOT NULL, /*Phone number INT(11) NOT NULL*/
 About TEXT,
 NewOrders INT(3),
-ProfilePic VARCHAR(50), /*uri to profile pic*/
+ProfilePic VARCHAR(255), /*uri to profile pic*/
 ResponseTime TIME,
+PrivacyBitmap VARCHAR(12),
 UNIQUE (PhoneNo),
 PRIMARY KEY (UserID)
 );

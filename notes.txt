@@ -45,7 +45,7 @@ FILE UPLOAD REQUIREMENTS:
 		When "options" is specified, pathinfo() returns a string.
 	$_FILE: $_FILE['userfile']['name'], $_FILE['userfile']['type'], $_FILE['userfile']['size']
 		$_FILE['userfile']['temp_name'], $_FILE['userfile']['error_code']
-	userfile: file upload name
+	userfile: file upload "name"
 
 SESSIONS
 	session_start(): Start a session

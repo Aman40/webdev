@@ -23,7 +23,13 @@ include "../include.php";
 						
 							<div id="prof-pic">
 								<div id="prof-pic-img">
-									<img src="../icons/profile-pic-male.jpg">
+								<?php
+								if($session_exists) {
+									echo '<img src="Pictures/'.$_SESSION["UserID"].'">';
+								} else {
+									echo '<img src="../icons/profile-pic-male.jpg">';
+								}
+								?>
 								</div><!--prof-picimg-->
 								<div id="prof-pic-name">
 									<?php
@@ -70,7 +76,19 @@ include "../include.php";
 					<div class="col-12" id="prof-r2c1row">
 						<div class="col-12" id="prof-page-side">
 							<div class="col-12" id="row1">
-								<img class="col-12" src="../icons/profile-pic-male.jpg" alt="profile picture">
+							
+								<?php
+								if($session_exists) {
+									echo '<img class="col-12" src="Pictures/'.$_SESSION["UserID"].'">';
+								} else {
+									echo '<img class="col-12" src="../icons/profile-pic-male.jpg" alt="profile picture">';
+								}
+								?>
+								
+								<form action="upload-picture.php" enctype="multipart/form-data" method="post">
+									<input type="file" name="profpic">
+									<input type="submit" name="submit">
+								</form>
 							</div>
 							<div class="col-12" id="row2">
 								<h3>Brief description</h3>
@@ -99,58 +117,51 @@ include "../include.php";
 										"
 											<table>
 												<tr>
-													<td>First Name:
+													<td><b>First Name:</b>
 													<td>".isset_or_edit('FirstName')."
 												</tr>
 												<tr>
-													<td>Middle Name:
+													<td><b>Middle Name:</b>
 													<td>".isset_or_edit('MiddleName')."
 												</tr>
 												<tr>
-													<td>Last Name:
+													<td><b>Last Name:</b>
 													<td>".isset_or_edit('LastName')."
 												</tr>
 												<tr>
-													<td>Sex:
-													<td>".isset_or_edit('Sex').
-													"<div class='edit-field'>
-													<form action='include.php' method='post'>
-														<input type='text'>
-														<input type='submit' value='Done'>
-													</form>
-												</div>
-													
+													<td><b>Sex:</b>
+													<td>".isset_or_edit('Sex')."
 												</tr>
 												<tr>
-													<td>Birth Date:
+													<td><b>Birth Date:</b>
 													<td>".isset_or_edit('DoB')."
 												</tr>
 												<tr>
-													<td>Company name:
+													<td><b>Company name:</b>
 													<td>".isset_or_edit('CoName')."
 												</tr>
 												<tr>
-													<td>Email Address:
+													<td><b>Email Address:</b>
 													<td>".isset_or_edit('Email')."
 												</tr>
 												<tr>
-													<td>Physical Address:
+													<td><b>Physical Address:</b>
 													<td>".isset_or_edit('Address')."
 												</tr>
 												<tr>
-													<td>District:
+													<td><b>District:</b>
 													<td>".isset_or_edit('District')."
 												</tr>
 												<tr>
-													<td>Website:
+													<td><b>Website:</b>
 													<td>".isset_or_edit('Website')."
 												</tr>
 												<tr>
-													<td>Phone No.:
+													<td><b>Phone No.:</b>
 													<td>".isset_or_edit('PhoneNo')."
 												</tr>
 												<tr>
-													<td>About:
+													<td><b>About:</b>
 													<td>".isset_or_edit('About')."
 												</tr>
 											</table>

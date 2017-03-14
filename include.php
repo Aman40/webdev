@@ -180,8 +180,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$password = "password";
 			$database = "test";
 		
-			$userid = $_SESSION['UserID']; //Generate using 
-		
 			$conn = new mysqli($servername, $username, $password, $database); //db password
 		
 			if(!$conn->connect_error) { //We connected successfully
@@ -208,7 +206,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 				} else {
 					echo "<script>console.log('Statement preparation succeeded. Preparing to bind');</script>";
 				}
-				$stat->bind_param("sssssssssssbs", 
+				$stat->bind_param("sssssssssssss", 
 									/*	$joindate,*/ // Will be updated automatically in mysql
 										$fname,
 										$mname,
@@ -481,6 +479,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 				echo "<script>console.log('Connected successfully');</script>";
 				$sql = "INSERT INTO Users (UserID,
 																		UserPassword,
+																		JoinDate,
 																		FirstName,
 																		MiddleName,
 																		LastName,
@@ -493,12 +492,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 																		Website,
 																		PhoneNo,
 																		About
-				) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				$stat = $conn->prepare($sql);
-				$stat->bind_param("sssssssssssssb", 
+				
+				if($stat === false ) {
+					echo "<script>console.log('Statement preparation failed');</script>";
+				} else {
+					echo "<script>console.log('Statement preparation succeeded. Preparing to bind');</script>";
+					}
+				
+				$stat->bind_param("sssssssssssssss", 
 										$userid,
 										$upassword,
-									/*	$joindate,*/ // Will be updated automatically in mysql
+										$joindate,
 										$fname,
 										$mname,
 										$lname,
@@ -511,6 +517,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 										$website,
 										$phoneno,
 										$about);
+				//get the join date as the current date time
+				$joindate = date("Y-m-d H:i:s");
 				$success = $stat->execute();
 				//Check for success
 				if($success) {
@@ -529,6 +537,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 									$_SESSION['FirstName'] = $row['FirstName'];
 									$_SESSION['MiddleName'] = $row['MiddleName'];
 									$_SESSION['LastName'] = $row['LastName'];
+									$_SESSION['JoinDate'] = $row['JoinDate'];
 									$_SESSION['Sex'] = $row['Sex'];
 									$_SESSION['Address'] = $row['Address'];
 									$_SESSION['Website'] = $row['Website'];

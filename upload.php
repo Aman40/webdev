@@ -1,9 +1,7 @@
 <?php
 $directory = "/uploads";
 $basename = pathinfo($_FILES['upfile']['name'], PATHINFO_BASENAME);
-echo "The basename from pathinfo() is: ".$basename."<br>";
 $basename = basename($basename);
-echo "The basename from basename() is: ".$basename."<br>"; //Check if double extensions are stripped off
 $extension = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
 $uploadOK = 1;
 //check it's the right extension

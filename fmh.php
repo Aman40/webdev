@@ -23,7 +23,13 @@ include "include.php";
 						
 							<div id="prof-pic">
 								<div id="prof-pic-img">
-									<img src="icons/profile-pic-male.jpg">
+									<?php
+										if($session_exists) {
+											echo '<img src="Profiles/Pictures/'.$_SESSION["UserID"].'">';
+										} else {
+											echo '<img src="../icons/profile-pic-male.jpg">';
+										}
+									?>
 								</div><!--prof-picimg-->
 								<div id="prof-pic-name">
 									<?php

@@ -591,9 +591,35 @@ span.psw {
 	padding: 0px 10px;
   min-height: 360px;
 }
-
-
-
+.edit-field {
+	display: none;
+	background-color: lightgreen;
+}
+.edit-field form {
+	display: inline-block;
+}
+.edit-field form input {
+	display: inline-block;
+}
+.edit-field form input[type=text] {
+	padding: 5px 5px;
+}
+.edit-field form input[type=submit] {
+    width: 45px;
+    height: 28px;
+}
+#edit-prof-data {
+  padding: 5px 15px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background-color: green;
+	border-radius: 2px;
+}
+#edit-prof-data a {
+	text-decoration: none;
+	color: black;
+}
 
 
 

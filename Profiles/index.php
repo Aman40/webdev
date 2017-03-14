@@ -100,54 +100,74 @@ include "../include.php";
 											<table>
 												<tr>
 													<td>First Name:
-													<td>".$_SESSION['FirstName']."
+													<td>".isset_or_edit('FirstName')."
 												</tr>
 												<tr>
 													<td>Middle Name:
-													<td>".$_SESSION['MiddleName']."
+													<td>".isset_or_edit('MiddleName')."
 												</tr>
 												<tr>
 													<td>Last Name:
-													<td>".$_SESSION['LastName']."
+													<td>".isset_or_edit('LastName')."
 												</tr>
 												<tr>
 													<td>Sex:
-													<td>".$_SESSION['Sex']."
+													<td>".isset_or_edit('Sex').
+													"<div class='edit-field'>
+													<form action='include.php' method='post'>
+														<input type='text'>
+														<input type='submit' value='Done'>
+													</form>
+												</div>
+													
 												</tr>
 												<tr>
 													<td>Birth Date:
-													<td>".$_SESSION['DoB']."
+													<td>".isset_or_edit('DoB')."
 												</tr>
 												<tr>
 													<td>Company name:
-													<td>".$_SESSION['CoName']."
+													<td>".isset_or_edit('CoName')."
 												</tr>
 												<tr>
 													<td>Email Address:
-													<td>".$_SESSION['Email']."
+													<td>".isset_or_edit('Email')."
 												</tr>
 												<tr>
 													<td>Physical Address:
-													<td>".$_SESSION['Address']."
+													<td>".isset_or_edit('Address')."
 												</tr>
 												<tr>
 													<td>District:
-													<td>".$_SESSION['District']."
+													<td>".isset_or_edit('District')."
 												</tr>
 												<tr>
 													<td>Website:
-													<td>".$_SESSION['Website']."
+													<td>".isset_or_edit('Website')."
 												</tr>
 												<tr>
 													<td>Phone No.:
-													<td>".$_SESSION['PhoneNo']."
+													<td>".isset_or_edit('PhoneNo')."
 												</tr>
 												<tr>
 													<td>About:
-													<td>".$_SESSION['About']."
+													<td>".isset_or_edit('About')."
 												</tr>
 											</table>
 										";
+										echo "
+										<span id='edit-prof-data'>
+											<a href='javascript:void(0)' onclick='document.getElementById(\"id02\").style.display=\"block\"'>
+											Edit
+											</a>
+										</span>";
+									}
+									function isset_or_edit ($variable) {
+										if(isset($_SESSION[$variable]) && $_SESSION[$variable]!= null) {
+											return $_SESSION[$variable];
+										} else {
+											return '';
+										}
 									}
 								?>
 							</div>
@@ -163,7 +183,88 @@ include "../include.php";
 		</div><!--Main wrapper-->
 
 <!--************************************THE LOGIN FORM******************************-->
+<?php
+function fill_in_blanks ($postvariable, $sessionvariable) {
+	if(isset($_POST[$postvariable]) && $_POST[$postvariable] !=null) {
+		echo $_POST[$postvariable];
+	} else if(isset($_SESSION[$sessionvariable]) && $_SESSION[$sessionvariable] !=null) {
+		echo $_SESSION[$sessionvariable];
+	} else {
+		echo "";
+	}
+}
+function _selected($var) {
+	if(isset($_SESSION['Sex']) && $var == $_SESSION['Sex']) {
+		echo "checked";
+	}  else if (isset($_POST['Sex']) && $var==$_POST['Sex']) {
+		echo "checked";
+	}
+}
+?>
+<div id="id02" class="modal">
+  <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">×</span>
+  <form class="modal-content animate" action="index.php" method="post">
+    <div class="container">
+    	<input type="hidden" name="formname" value="profedit"/>
+    	
+    	<lable><b>First Name</b></lable><span class="error"> *<?php echo $fname_error ?></span>
+		<input type="text" class="required" placeholder="First Name" name="fname" value="<?php fill_in_blanks('fname','FirstName'); ?>" required>
+		
+		<lable><b>Middle Name</b></lable><span>
+		<input type="text" placeholder="Middle Name" name="mname" value="<?php fill_in_blanks('mname','MiddleName'); ?>">
+		
+		<lable><b>Last Name</b></lable><span class="error"> *<?php echo " ".$lname_error ?></span>
+		<input type="text" class="required" placeholder="Last Name" name="lname" value="<?php fill_in_blanks('lname','LastName'); ?>" required>
+		
+		<lable><b>Company Name</b></lable><span class="error"> *<?php echo " ".$coname_error ?></span>
+		<input type="text" placeholder="First Name" name="coname" value="<?php fill_in_blanks('coname','CoName'); ?>">
+		
+		<lable><b>Sex</b></lable><span class="error"> *<?php echo " ".$sex_error; ?></span><br>
+		<input type="radio" class="required" name="sex" value="M" required <?php _selected('M'); ?> >M<br>
+		<input type="radio" class="required" name="sex" value="F" required <?php _selected('F'); ?> >F<br>
+		<input type="radio" class="required" name="sex" value="C" required <?php _selected('C'); ?> >Company<br><br>
+		
+		<lable><b>Date of Birth</b></lable><span class="error"> *<?php echo " ".$dob_error; ?></span><br>
+		<input type="date" class="required" class="wide" name="dob" required value="<?php fill_in_blanks('dob','DoB'); ?>"><br><br>
+		
+		<label><b>District of Operation</b></label><span class="error"> *<?php echo " ".$district_error ?></span>
+		<input type="text" class="required" placeholder="District" name="district" value="<?php fill_in_blanks('district','District'); ?>" required>
+		
+		<label><b>Email</b></label><span class="warning"><?php echo " ".$email_error ?></span>
+		<input type="text" placeholder="Enter Email" name="email" value="<?php fill_in_blanks('email','Email'); ?>">
+		
+		<label><b>Address</b></label>
+		<input type="text" placeholder="E.g Plot 35 Speke street, Kampala" name="address" value="<?php fill_in_blanks('address','Address'); ?>">
+		
+		<label><b>Phone Number</b></label><span class="error"> *<?php echo " ".$phoneno_error ?></span>
+		<input type="text" class="required" placeholder="E.g 0784596469" name="phoneno" value="<?php fill_in_blanks('phoneno','PhoneNo'); ?>" required>
+		
+		<label><b>Website</b></label>
+		<input type="text" placeholder="e.g www.domain.com" name="website" value="<?php fill_in_blanks('website','Website'); ?>">
+		
+		<label><b>About Yourself</b></label><br>
+		<textarea style="width: 100%" placeholder="About yourself..." name="about" value="<?php fill_in_blanks('about','About'); ?>"></textarea><br>
 
+		<input type="checkbox" checked="checked"> Remember me
+		<p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+
+      <div class="clearfix">
+        <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
+        <button type="submit" class="signupbtn">Update</button>
+      </div>
+    </div>
+  </form>
+</div>
+<script>
+	// Get the modal
+	var modalup = document.getElementById('id02');
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+		if (event.target == modalup) {
+		    modalup.style.display = "none";
+		}
+	}
+</script>
 <!--*************************************************************************-->
 
 <!--****************************THE SIGNUP FORM******************************-->

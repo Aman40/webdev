@@ -196,16 +196,16 @@ class="close" title="Close Modal">&times;</span>
     <div class="container">
     	<input type="hidden" name="formname" value="signup"/>
     	
-    	<lable><b>First Name</b></lable><span class="error"> *<?php echo $fname_error ?></span>
+    	<lable><b>First Name</b></lable><span class="error"> *<?php echo " ".$fname_error ?></span>
 		<input type="text" class="required" placeholder="First Name" name="fname" value="<?php if(isset($_POST['fname']) && $_POST['fname'] != null) echo $_POST['fname']; ?>" required>
 		
 		<lable><b>Middle Name</b></lable><span>
 		<input type="text" placeholder="Middle Name" name="mname" value="<?php if(isset($_POST['mname']) && $_POST['mname'] != null) echo $_POST['mname']; ?>">
 		
-		<lable><b>Last Name</b></lable><span class="error"> *<?php echo $lname_error ?></span>
+		<lable><b>Last Name</b></lable><span class="error"> *<?php echo " ".$lname_error ?></span>
 		<input type="text" class="required" placeholder="Last Name" name="lname" value="<?php if(isset($_POST['lname']) && $_POST['lname'] != null) echo $_POST['lname']; ?>" required>
 		
-		<lable><b>Company Name</b></lable>
+		<lable><b>Company Name</b></lable><span class="error"> <?php echo " ".$coname_error ?></span>
 		<input type="text" placeholder="First Name" name="coname" value="<?php if(isset($_POST['coname']) && $_POST['coname'] != null) echo $_POST['coname']; ?>">
 		
 		<lable><b>Sex</b></lable><span class="error"> *<?php echo $sex_error ?></span><br>
@@ -214,18 +214,18 @@ class="close" title="Close Modal">&times;</span>
 		<input type="radio" class="required" name="sex" value="C" required >Company<br><br>
 		
 		<lable><b>Date of Birth</b></lable><span class="error"> *<?php echo $dob_error ?></span><br>
-		<input type="date" class="required" class="wide" name="dob" required><br><br>
+		<input type="date" class="required" class="wide" name="dob" required value="<?php if(isset($_POST['dob']) && $_POST['dob'] != null) echo $_POST['dob']; ?>"><br><br>
 		
-		<label><b>District of Operation</b></label><span class="error"> *<?php echo $district_error ?></span>
+		<label><b>District of Operation</b></label><span class="error"> *<?php echo " ".$district_error ?></span>
 		<input type="text" class="required" placeholder="District" name="district" value="<?php if(isset($_POST['district']) && $_POST['district'] != null) echo $_POST['district']; ?>" required>
 		
-		<label><b>Email</b></label><span class="warning"><?php echo $email_error ?></span>
+		<label><b>Email</b></label><span class="warning"><?php echo " ".$email_error ?></span>
 		<input type="text" placeholder="Enter Email" name="email" value="<?php if(isset($_POST['email']) && $_POST['email'] != null) echo $_POST['email']; ?>">
 		
 		<label><b>Address</b></label>
 		<input type="text" placeholder="E.g Plot 35 Speke street, Kampala" name="address" value="<?php if(isset($_POST['address']) && $_POST['address'] != null) echo $_POST['address']; ?>">
 		
-		<label><b>Phone Number</b></label><span class="error"> *<?php echo $phoneno_error ?></span>
+		<label><b>Phone Number</b></label><span class="error"> *<?php echo " ".$phoneno_error ?></span>
 		<input type="text" class="required" placeholder="E.g 0784596469" name="phoneno" value="<?php if(isset($_POST['phoneno']) && $_POST['phoneno'] != null) echo $_POST['phoneno']; ?>" required>
 		
 		<label><b>Website</b></label>
@@ -234,7 +234,7 @@ class="close" title="Close Modal">&times;</span>
 		<label><b>About Yourself</b></label><br>
 		<textarea style="width: 100%" placeholder="About yourself..." name="about" value="<?php if(isset($_POST['about']) && $_POST['about'] != null) echo $_POST['about']; ?>"></textarea><br>
 
-		<label><b>Password</b></label><span class="error"> * <?php echo $upassword_error ?></span>
+		<label><b>Password</b></label><span class="error"> * <?php echo " ".$upassword_error ?></span>
 		<input type="password" class="required" placeholder="Enter Password" name="upassword" required>
 
 		<label><b>Repeat Password</b></label><span class="error"> * </span><br>
@@ -254,7 +254,7 @@ class="close" title="Close Modal">&times;</span>
 	<script>
 	// Get the modal
 	var modalin = document.getElementById('id01');
-	var modalup = document.getElementById('id01');
+	var modalup = document.getElementById('id02');
 	// When the user clicks anywhere outside of the modal, close it
 	window.onclick = function(event) {
 		if (event.target == modalin) {

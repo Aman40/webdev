@@ -620,6 +620,98 @@ span.psw {
 	text-decoration: none;
 	color: white;
 }
+#inventory-container {
+	display: none;
+}
+#prof-orders {
+	display: none;
+}
+#inventory-update {
+	min-height: 600px;
+	background-color: blue;
+}
+#inventory-browse {
+	min-height: 600px;
+	background-color: #85c385;
+}
+#inventory-display {
+	min-height: 600px;
+	background-color: #8585c3;
+}
+#inventory-browse, #inventory-display {
+	padding: 5px;
+}
+#inventory-search .search{
+	position: initial;
+}
+.lvl-1, .lvl-2, .lvl-3, .lvl-4 {
+	padding: 8px 0px;
+}
+
+.lvl-1 {
+	background-color: #888;
+	padding-left: 15px;
+}
+.lvl-1:hover{
+	background-color: #676;
+}
+.lvl-2 {
+	background-color: #aaa;
+	padding-left: 25px;
+}
+.lvl-2:hover {
+	background-color: #898;
+}
+.lvl-3 {
+	background-color: #ccc;
+	padding-left: 35px;
+}
+.lvl-3:hover {
+	background-color: #aba;
+}
+.lvl-4 {
+	padding-left: 45px;
+	background-color: #eee;
+}
+.lvl-4:hover {
+	background-color: #cdc;
+}
+#categories {
+	cursor: pointer;
+	cursor: hand;
+}
+.inventory-hidden {
+	display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

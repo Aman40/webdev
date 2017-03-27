@@ -27,14 +27,15 @@ include "include.php";
 										if($session_exists) {
 											echo '<img src="Profiles/Pictures/'.$_SESSION["UserID"].'">';
 										} else {
-											echo '<img src="../icons/profile-pic-male.jpg">';
+											echo '<img src="icons/profile-pic-male.jpg">';
 										}
 									?>
 								</div><!--prof-picimg-->
 								<div id="prof-pic-name">
 									<?php
 										if($session_exists) {
-											echo '<span>Hello, '.$_SESSION["FirstName"].'. <a 														href="logoff.php">Log Out</a></span>';
+											echo '<span>Hello, '.$_SESSION["FirstName"].'. <a 
+											href="logoff.php">Log Out</a></span>';
 										}
 									?>
 								</div>
@@ -57,8 +58,8 @@ include "include.php";
 					</div><!--r1c2r1-->
 					<div id="r1c2r2"><!--Insert an unorered list here for the menu-->
 						<div id="hor-menu">
-							<a href="#">Stall</a>
-							<a href="#">Home</a>
+							<a href="#">Feed</a>
+							<a href="Profiles/index.php">Home</a>
 							<a href="#">About Us</a>
 							<?php //If the user logs in (session_exists=true) hide the following
 							if(!$session_exists) {
@@ -110,11 +111,6 @@ include "include.php";
 				</div><!--r2c1-->
 				<div class="col-9" id="r2c2">
 					<div class="r2c2row col-12">
-						<div class="r2c2row-head col-12">
-							<h3>
-								Category
-							</h3>
-						</div><!--r2c2row-head col-12-->
 						<div class="r2c2row-content col-12">
 						
 							<div class="item-slide">

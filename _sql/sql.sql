@@ -26,6 +26,7 @@ CREATE TABLE Items
 (
 ItemID CHAR(14), /*ItemID VARCHAR(PHP uniqid(I)) PRIMARY KEY*/
 ItemName VARCHAR(20) NOT NULL,/*Name (select from category) VARCHAR (50)*/
+Aliases VARCHAR(255),
 Category VARCHAR(5) NOT NULL,
 Description VARCHAR(140),/*Description VARCHAR(140)*/
 ImageURI VARCHAR(50),/*ImageURL VARCHAR(50)*/

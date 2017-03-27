@@ -34,7 +34,8 @@ include "../include.php";
 								<div id="prof-pic-name">
 									<?php
 										if($session_exists) {
-											echo '<span>Hello, '.$_SESSION["FirstName"].'. <a 														href="logoff.php">Log Out</a></span>';
+											echo '<span>Hello, '.$_SESSION["FirstName"].'. <a 
+											href="../logoff.php">Log Out</a></span>';
 										}
 									?>
 								</div>
@@ -57,7 +58,7 @@ include "../include.php";
 					</div><!--r1c2r1-->
 					<div id="r1c2r2"><!--Insert an unorered list here for the menu-->
 						<div id="hor-menu">
-							<a href="#">Stall</a>
+							<a href="../fmh.php">Feed</a>
 							<a href="#">Home</a>
 							<a href="#">About Us</a>
 							<form class="search">
@@ -103,12 +104,12 @@ include "../include.php";
 					<div class="col-12 r2c2row">
 						<div class="col-12" id="prof-page-main">
 							<div class="col-12" id="tab-row">
-								<a href="javascript:void(0)" id="tab-1">Profile</a>
-								<a href="javascript:void(0)" id="tab-2">Inventory</a>
-								<a href="javascript:void(0)" id="tab-3">Something</a>
+								<a href="javascript:reveal1hide23('prof-container', 'inventory-container', 'prof-orders')" id="tab-1">Profile</a>
+								<a href="javascript:reveal1hide23('inventory-container', 'prof-container', 'prof-orders')" id="tab-2">Inventory</a>
+								<a href="javascript:reveal1hide23('prof-orders', 'inventory-container', 'prof-container')" id="tab-3">Something</a>
 								<a href="javascript:void(0)" id="tab-4">Pictures</a>
 							</div><!--tab-row-->
-							<div class="col-12 prof-content-row">
+							<div class="col-12 prof-content-row" id="prof-container">
 								<?php
 									if(!$session_exists) {
 										echo "<i>You have nothing to show!</i>";
@@ -181,7 +182,235 @@ include "../include.php";
 										}
 									}
 								?>
+							</div><!-- prof-container-->
+							<div class="col-12 prof-content-row" id="inventory-container">
+								<p>
+									This is the inventory container. Thank you!
+								</p>
+								<?php
+									echo "
+										<span id='edit-prof-data'>
+											<a href='javascript:void(0)'>
+											Add Items
+											</a>
+										</span>";
+								?>
+								<div class="col-12" id="inventory-update">
+									<div class="col-4" id="inventory-browse"><!--invisible until user clicks add-->
+										<div class="col-12" id="inventory-search">
+											<form class="search">
+												<input type="text" name="search" placeholder="Search..">
+												<input type="submit" value="Search">
+											</form>
+										</div><!--Search by search-->
+										<div class="col-12" id="categories"> <!--search by category-->
+											<div class="col-12" id="inventory-crops">
+												<div class="col-12 lvl-1">
+													Crops	
+												</div>
+												<div class="col-12" id="inventory-food">
+													<div class="col-12 lvl-2">
+														Food crops
+													</div>
+													<div class="col-12" id="starchy">
+														<div class="col-12 lvl-3">
+															Starchy foods
+														</div>
+														<div class="col-12 inventory-hidden">
+															<div class="col-12 lvl-4">
+																Bananas/Matooke
+															</div>
+															<div class="col-12 lvl-4">
+																Cassava
+															</div>
+															<div class="col-12 lvl-4">
+																Rice
+															</div>
+															<div class="col-12 lvl-4">
+																Sweet Potatoes
+															</div>
+															<div class="col-12 lvl-4">
+																Irish Potatoes
+															</div>
+														</div>
+													</div><!--starchy-->
+													<div class="col-12" id="fruits">
+														<div class="col-12 lvl-3">
+															Fruits
+														</div>
+														<div class="col-12 inventory-hidden">
+															<div class="col-12 lvl-4">
+																Yellow Bananas
+															</div>
+															<div class="col-12 lvl-4">
+																Passion Fruits
+															</div>
+															<div class="col-12 lvl-4">
+																Tomatoes
+															</div>
+															<div class="col-12 lvl-4">
+																Avocadoes
+															</div>
+															<div class="col-12 lvl-4">
+																Egg Plant
+															</div>
+															<div class="col-12 lvl-4">
+																Plantain/Gonja
+															</div>
+															<div class="col-12 lvl-4">
+																Paprika
+															</div>
+															<div class="col-12 lvl-4">
+																Mangoes
+															</div>
+														</div>
+													</div><!--fruits-->
+													<div class="col-12" id="veggies">
+														<div class="col-12 lvl-3">
+															Vegetables
+														</div>
+														<div class="col-12 inventory-hidden">
+															<div class="col-12 lvl-4">
+																Cabbage
+															</div>
+															<div class="col-12 lvl-4">
+																Dodo/Amaranthus
+															</div>
+															<div class="col-12 lvl-4">
+																Nakati
+															</div>
+															<div class="col-12 lvl-4">
+																Sukuma Wiki
+															</div>
+															<div class="col-12 lvl-4">
+																Lettuce
+															</div>
+														</div>
+													</div><!--veggies-->
+													<div class="col-12" id="legumes">
+														<div class="col-12 lvl-3">
+															Legumes
+														</div>
+														<div class="col-12 inventory-hidden">
+														<div class="col-12 lvl-4">
+															Beans
+														</div>
+														<div class="col-12 lvl-4">
+															Ground Nuts/Pea Nuts
+														</div>
+														<div class="col-12 lvl-4">
+															Peas
+														</div>
+														<div class="col-12 lvl-4">
+															Lentils
+														</div>
+														<div class="col-12 lvl-4">
+															Soy Beans
+														</div>
+														</div><!--hidden-->
+													</div><!--inventory-food-->
+												</div><!--inventory-food-->
+													
+												<div class="col-12" id="inventory-cash">
+													<div class="lvl-2">
+														Cash Crops
+													</div>
+													<div class="col-12 inventory-hidden">
+														<div class="lvl-3">
+															Coffee
+														</div>
+														<div class="lvl-3">
+															Cotton
+														</div>
+														<div class="lvl-3">
+															Tea
+														</div>
+													</div>
+												</div><!--inventory-cash-->
+												
+											</div><!--inventory-crops-->
+											
+											<div class="col-12" id="inventory-animals">
+												<div class="col-12 lvl-1">
+													Animals
+												</div>
+												<div class="col-12 inventory-hidden">
+													<div class="col-12 lvl-2">
+														Cows
+													</div>
+													<div class="col-12 lvl-2">
+														Goats
+													</div>
+													<div class="col-12 lvl-2">
+														Sheep
+													</div>
+												</div>
+											</div><!--inventory-animals-->
+											
+											<div class="col-12" id="inventory-poultry">
+												<div class="col-12 lvl-1">
+													Poultry
+												</div>
+												<div class="col-12 inventory-hidden">
+													<div class="col-12 lvl-2">
+														Chicken
+													</div>
+													<div class="col-12 lvl-2">
+														Ducks
+													</div>
+													<div class="col-12 lvl-2">
+														Turkeys
+													</div>
+												</div>
+											</div><!--inventory-animals-->
+											
+											<div class="col-12" id="inventory-fish">
+												<div class="col-12 lvl-1">
+													Fish
+												</div>
+												<div class="col-12 inventory-hidden">
+													<div class="col-12 lvl-2">
+														Tilapia
+													</div>
+													<div class="col-12 lvl-2">
+														Cat Fish
+													</div>
+													<div class="col-12 lvl-2">
+														Mud Fish
+													</div>
+													<div class="col-12 lvl-2">
+														Nile Perch
+													</div>
+												</div>
+											</div><!--inventory-animals-->
+											
+										</div><!--search by category-->
+									</div><!--inventory-browse-->
+									
+									<div class="col-8" id="inventory-display"><!--invisible until user clicks add-->
+									</div>
+								</div><!--inventory-display-->
 							</div>
+							<script>//This will be for adding content to the inventory
+								function addItems() {
+									var inventoryContainer = document.getElementById('inventory-container');
+									
+								}
+							</script>
+							<div class="col-12 prof-content-row" id="prof-orders">
+								<p>
+									This is orders container. Still under development.
+								</p>
+							</div>
+							<div>
+							</div>
+							<script>
+							function reveal1hide23(div1, div2, div3) {
+								document.getElementById(div1).style.display="block";
+								document.getElementById(div2).style.display="none";
+								document.getElementById(div3).style.display="none";
+							}
+							</script>
 						</div><!--prof-page-main-->
 						
 					</div><!--col-12 r2c2row-->

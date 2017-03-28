@@ -550,7 +550,7 @@ span.psw {
 #prof-page-side {
 	border-top: solid 10px #64a082;
 	min-height: 400px;
-	background-color: #fbd7ad;
+	background-color: #eeeeee;
 	border-radius: 2px;
 }
 #prof-page-side #row1 {
@@ -587,7 +587,7 @@ span.psw {
 	background-color: #375848;
 }
 .prof-content-row {
-	background-color: lightblue;
+	background-color: #eeeeee;
 	padding: 0px 10px;
   min-height: 360px;
 }
@@ -628,15 +628,16 @@ span.psw {
 }
 #inventory-update {
 	min-height: 600px;
-	background-color: blue;
+	background-color: #eeeeee;
 }
 #inventory-browse {
 	min-height: 600px;
-	background-color: #85c385;
+	background-color: #eeeeee;
 }
 #inventory-display {
+  border-left: solid 1px #bbb;
 	min-height: 600px;
-	background-color: #8585c3;
+	background-color: #eeeeee;
 }
 #inventory-browse, #inventory-display {
 	padding: 5px;
@@ -647,34 +648,20 @@ span.psw {
 .lvl-1, .lvl-2, .lvl-3, .lvl-4 {
 	padding: 8px 0px;
 }
-
+.lvl-1:hover, .lvl-2:hover, .lvl-3:hover, .lvl-4:hover {
+	color: orange;
+}
 .lvl-1 {
-	background-color: #888;
 	padding-left: 15px;
 }
-.lvl-1:hover{
-	background-color: #676;
-}
 .lvl-2 {
-	background-color: #aaa;
 	padding-left: 25px;
 }
-.lvl-2:hover {
-	background-color: #898;
-}
 .lvl-3 {
-	background-color: #ccc;
 	padding-left: 35px;
-}
-.lvl-3:hover {
-	background-color: #aba;
 }
 .lvl-4 {
 	padding-left: 45px;
-	background-color: #eee;
-}
-.lvl-4:hover {
-	background-color: #cdc;
 }
 #categories {
 	cursor: pointer;

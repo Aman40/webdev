@@ -5,6 +5,7 @@ include "../include.php";
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link type="text/css" rel="stylesheet" href="index.css">
 	</head>
 	<body>
@@ -170,6 +171,7 @@ include "../include.php";
 										echo "
 										<span id='edit-prof-data'>
 											<a href='javascript:void(0)' onclick='document.getElementById(\"id02\").style.display=\"block\"'>
+											<i class='fa fa-edit'></i>
 											Edit
 											</a>
 										</span>";
@@ -191,6 +193,7 @@ include "../include.php";
 									echo "
 										<span id='edit-prof-data'>
 											<a href='javascript:void(0)'>
+											<i class='fa fa-plus-square-o'></i>
 											Add Items
 											</a>
 										</span>";
@@ -205,133 +208,169 @@ include "../include.php";
 										</div><!--Search by search-->
 										<div class="col-12" id="categories"> <!--search by category-->
 											<div class="col-12" id="inventory-crops">
-												<div class="col-12 lvl-1">
+												<div class="col-12 lvl-1" onclick="javascript:hide_show('inventory-crops')">
+													<i class="fa fa-caret-right"></i>
 													Crops	
 												</div>
-												<div class="col-12" id="inventory-food">
-													<div class="col-12 lvl-2">
-														Food crops
-													</div>
-													<div class="col-12" id="starchy">
-														<div class="col-12 lvl-3">
-															Starchy foods
-														</div>
-														<div class="col-12 inventory-hidden">
-															<div class="col-12 lvl-4">
-																Bananas/Matooke
-															</div>
-															<div class="col-12 lvl-4">
-																Cassava
-															</div>
-															<div class="col-12 lvl-4">
-																Rice
-															</div>
-															<div class="col-12 lvl-4">
-																Sweet Potatoes
-															</div>
-															<div class="col-12 lvl-4">
-																Irish Potatoes
-															</div>
-														</div>
-													</div><!--starchy-->
-													<div class="col-12" id="fruits">
-														<div class="col-12 lvl-3">
-															Fruits
-														</div>
-														<div class="col-12 inventory-hidden">
-															<div class="col-12 lvl-4">
-																Yellow Bananas
-															</div>
-															<div class="col-12 lvl-4">
-																Passion Fruits
-															</div>
-															<div class="col-12 lvl-4">
-																Tomatoes
-															</div>
-															<div class="col-12 lvl-4">
-																Avocadoes
-															</div>
-															<div class="col-12 lvl-4">
-																Egg Plant
-															</div>
-															<div class="col-12 lvl-4">
-																Plantain/Gonja
-															</div>
-															<div class="col-12 lvl-4">
-																Paprika
-															</div>
-															<div class="col-12 lvl-4">
-																Mangoes
-															</div>
-														</div>
-													</div><!--fruits-->
-													<div class="col-12" id="veggies">
-														<div class="col-12 lvl-3">
-															Vegetables
-														</div>
-														<div class="col-12 inventory-hidden">
-															<div class="col-12 lvl-4">
-																Cabbage
-															</div>
-															<div class="col-12 lvl-4">
-																Dodo/Amaranthus
-															</div>
-															<div class="col-12 lvl-4">
-																Nakati
-															</div>
-															<div class="col-12 lvl-4">
-																Sukuma Wiki
-															</div>
-															<div class="col-12 lvl-4">
-																Lettuce
-															</div>
-														</div>
-													</div><!--veggies-->
-													<div class="col-12" id="legumes">
-														<div class="col-12 lvl-3">
-															Legumes
-														</div>
-														<div class="col-12 inventory-hidden">
-														<div class="col-12 lvl-4">
-															Beans
-														</div>
-														<div class="col-12 lvl-4">
-															Ground Nuts/Pea Nuts
-														</div>
-														<div class="col-12 lvl-4">
-															Peas
-														</div>
-														<div class="col-12 lvl-4">
-															Lentils
-														</div>
-														<div class="col-12 lvl-4">
-															Soy Beans
-														</div>
-														</div><!--hidden-->
-													</div><!--inventory-food-->
-												</div><!--inventory-food-->
-													
-												<div class="col-12" id="inventory-cash">
-													<div class="lvl-2">
-														Cash Crops
-													</div>
-													<div class="col-12 inventory-hidden">
-														<div class="lvl-3">
-															Coffee
-														</div>
-														<div class="lvl-3">
-															Cotton
-														</div>
-														<div class="lvl-3">
-															Tea
-														</div>
-													</div>
-												</div><!--inventory-cash-->
 												
+												<div class="col-12 inventory-hidden">
+												
+													<div class="col-12" id="inventory-food">
+														<div class="col-12 lvl-2" onclick="javascript:hide_show('inventory-food')">
+															<i class="fa fa-caret-right	"></i>
+															Food crops
+														</div>
+														<div class="col-12 inventory-hidden"><!--Group starts here-->
+															<div class="col-12" id="starchy">
+															
+<script>
+function hide_show(elmtId)
+{
+	var element = document.getElementById(elmtId);
+	var arrow = element.getElementsByTagName("i")[0];
+	element = element.getElementsByClassName('inventory-hidden')[0];
+	//if it's hidden show it. If it's visible, hide it.
+	if(element.style.display=="none" || element.style.display=="") {
+		element.style.display="block";
+		arrow.className="fa fa-caret-down";
+	} else {
+		element.style.display="none";
+		arrow.className="fa fa-caret-right";
+	}
+}
+</script>
+
+																<div class="col-12 lvl-3" onclick="javascript:hide_show('starchy')">
+																	<i class="fa fa-caret-right	"></i>
+																	Starchy foods
+																</div>
+																<div class="col-12 inventory-hidden">
+																	<div class="col-12 lvl-4">
+																		Bananas/Matooke
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Cassava
+																	</div>
+																	<div class="col-12 lvl-4">
+																	
+																		Rice
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Sweet Potatoes
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Irish Potatoes
+																	</div>
+																</div>
+															</div><!--starchy-->
+															<div class="col-12" id="fruits">
+																<div class="col-12 lvl-3" onclick="javascript:hide_show('fruits')">
+																	<i class="fa fa-caret-right	"></i>
+																	Fruits
+																</div>
+																<div class="col-12 inventory-hidden">
+																	<div class="col-12 lvl-4">
+																		Yellow Bananas
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Passion Fruits
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Tomatoes
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Avocadoes
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Egg Plant
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Plantain/Gonja
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Paprika
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Mangoes
+																	</div>
+																</div>
+															</div><!--fruits-->
+															<div class="col-12" id="veggies">
+																<div class="col-12 lvl-3" onclick="javascript:hide_show('veggies')">
+																	<i class="fa fa-caret-right	"></i>
+																	Vegetables
+																</div>
+																<div class="col-12 inventory-hidden">
+																	<div class="col-12 lvl-4">
+																		Cabbage
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Dodo/Amaranthus
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Nakati
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Sukuma Wiki
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Lettuce
+																	</div>
+																</div>
+															</div><!--veggies-->
+															<div class="col-12" id="legumes">
+																<div class="col-12 lvl-3" onclick="javascript:hide_show('legumes')">
+																	<i class="fa fa-caret-right	"></i>
+																	Legumes
+																</div>
+																	<div class="col-12 inventory-hidden">
+																	<div class="col-12 lvl-4">
+																		Beans
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Ground Nuts/Pea Nuts
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Peas
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Lentils
+																	</div>
+																	<div class="col-12 lvl-4">
+																		Soy Beans
+																	</div>
+																	</div><!--hidden-->
+															</div><!--legumes-->
+													
+														</div><!--Group ends here-->
+													
+													</div><!--inventory-food-->
+													
+													<div class="col-12" id="inventory-cash">
+														<div class="lvl-2" onclick="javascript:hide_show('inventory-cash')">
+															<i class="fa fa-caret-right	"></i>
+															Cash Crops
+														</div>
+														<div class="col-12 inventory-hidden">
+															<div class="lvl-3">
+																Coffee
+															</div>
+															<div class="lvl-3">
+																Cotton
+															</div>
+															<div class="lvl-3">
+																Tea
+															</div>
+														</div>
+													</div><!--inventory-cash-->
+												
+												</div>
+											
 											</div><!--inventory-crops-->
 											
 											<div class="col-12" id="inventory-animals">
-												<div class="col-12 lvl-1">
+												<div class="col-12 lvl-1" onclick="javascript:hide_show('inventory-animals')">
+													<i class="fa fa-caret-right	"></i>
 													Animals
 												</div>
 												<div class="col-12 inventory-hidden">
@@ -348,7 +387,8 @@ include "../include.php";
 											</div><!--inventory-animals-->
 											
 											<div class="col-12" id="inventory-poultry">
-												<div class="col-12 lvl-1">
+												<div class="col-12 lvl-1" onclick="javascript:hide_show('inventory-poultry')">
+													<i class="fa fa-caret-right	"></i>
 													Poultry
 												</div>
 												<div class="col-12 inventory-hidden">
@@ -365,7 +405,8 @@ include "../include.php";
 											</div><!--inventory-animals-->
 											
 											<div class="col-12" id="inventory-fish">
-												<div class="col-12 lvl-1">
+												<div class="col-12 lvl-1" onclick="javascript:hide_show('inventory-fish')">
+													<i class="fa fa-caret-right	"></i>
 													Fish
 												</div>
 												<div class="col-12 inventory-hidden">

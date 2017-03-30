@@ -5,7 +5,7 @@ $servername = "localhost"; //This is bound  change when I upload to the real web
 $username = "aman";
 $password = "password";
 $database = "test";
-$reply="<Items>";
+$reply="<?xml version=\"1.0\" encoding=\"UTF-8\"?><Items>";
 $result="";
 $conn = new mysqli($servername, $username, $password, $database);
 if(!$conn->connect_error) {  //Connection successful. Do stuff
@@ -20,10 +20,10 @@ if(!$conn->connect_error) {  //Connection successful. Do stuff
 		while($row = $result->fetch_assoc()) {
 			$ItemID = $row['ItemID'];
 			$ItemName = $row['ItemName'];
-			$Aliases = $row['Aliases'];
+			$Aliases = setdefault($row['Aliases'], "empty");
 			$Category = $row['Category'];
-			$Description = $row['Description'];
-			$ImageURI = $row['ImageURI'];
+			$Description = setdefault($row['Description'], "No description");
+			$ImageURI = setdefault($row['ImageURI'], "../icons/placeholder.png");
 			//Convert to XML
 			$reply=$reply."<Item><ItemID>".$ItemID."</ItemID><ItemName>".$ItemName."</ItemName><Aliases>".$Aliases."</Aliases><Category>".$Category."</Category><Description>".$Description."</Description><ImageURI>".$ImageURI."</ImageURI></Item>";//Build the XML
 		}
@@ -42,5 +42,12 @@ $entry = htmlspecialchars($entry); //Against any XSS and SQL injections
 $entry = trim($entry); //Against SQL injections
 $entry = stripslashes($entry);
 return $entry; //Sanitized input
+}
+function setdefault($value, $default) {
+	if($value==null) {
+		return $default;
+	} else {
+		return $value;
+	}
 }
 ?>

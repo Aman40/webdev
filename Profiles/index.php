@@ -202,16 +202,70 @@ include "../include.php";
 									<div class="col-4" id="inventory-browse"><!--invisible until user clicks add-->
 										<div class="col-12" id="inventory-search">
 											<form class="search">
-												<input type="text" name="search2" placeholder="Search.." id="srchdemo">
+												<input type="text" name="search2" placeholder="Search.." id="srchdemo" onkeydown="javascript:_checkenterkey(event)">
 												<input type="button" onclick="javascript:_searchdb(document.getElementById('srchdemo').value)" value="Search">
 											</form>
 <script>
+function _checkenterkey(event) {
+	if(event.key=='Enter') { //If it's the enter key, call the _searchdb function
+		_searchdb(document.getElementById('srchdemo').value);
+	}
+}
+
 function _searchdb(str) {
 	var xhttp = new XMLHttpRequest();
+	xhttp.responseType = "document";
 	xhttp.onreadystatechange = function() {
 		if(this.readyState==4 && this.status==200) {
-			document.getElementById("xhttpdemo").innerHTML=this.responseText;
-			console.log(this.responseText);
+			if(this.responseXML!=null) {
+				var xmlDoc = this.responseXML;
+				var itemNodeList = xmlDoc.getElementsByTagName("Items")[0].getElementsByTagName("Item");
+				console.log("There is response xml");
+				//Clear search 
+				document.getElementById("xhttpdemo").innerHTML="";
+				
+				if(itemNodeList.length!=0) {
+						var html="";
+						var i=0;
+						console.log(itemNodeList.length);
+						for(i=0;i<itemNodeList.length;i++) {
+						console.log(i);
+						html="<div class='item-slide'>";
+						html+="<div class='item-slide-image'>";
+								html+="<img src='"+itemNodeList[i].getElementsByTagName('ImageURI')[0].childNodes[0].nodeValue+"'>";
+							html+="</div><!--item-slide-header-->"
+					
+							html+="<div class='item-slide-content'>"
+								html+="<table>"
+						
+									html+="<tbody><tr>"
+										html+="<td>Property"
+										html+="</td><td><i>Value</i>"
+									html+="</td></tr>"
+									html+="<tr>"
+										html+="<td>Property"
+										html+="</td><td><i>Value</i>"
+									html+="</td></tr>"
+									html+="<tr>"
+										html+="<td>Property"
+										html+="</td><td><i>Value</i>"
+									html+="</td></tr>"
+									html+="<tr>"
+										html+="<td>Property"
+										html+="</td><td><i>Value</i>"
+									html+="</td></tr>"
+
+								html+="</tbody></table>"
+							html+="</div><!--item-slide-header-->"
+						html+="</div>";
+						document.getElementById("xhttpdemo").innerHTML+=html;
+						}
+				} else {
+					console.log("0 results were found");
+				}
+			} else {
+				console.log("The is no response XML");
+			}
 		}
 	}
 	xhttp.open("GET", "xhttp.php?q="+str, true);
@@ -261,17 +315,16 @@ function hide_show(elmtId)
 																	<div class="col-12 lvl-4" onclick="_searchdb('Bananas')">
 																		Bananas/Matooke
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Cassava')">
 																		Cassava
 																	</div>
-																	<div class="col-12 lvl-4">
-																	
+																	<div class="col-12 lvl-4" onclick="_searchdb('Rice')">
 																		Rice
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Sweet Potatoes')">
 																		Sweet Potatoes
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Irish Potatoes')">
 																		Irish Potatoes
 																	</div>
 																</div>
@@ -282,28 +335,28 @@ function hide_show(elmtId)
 																	Fruits
 																</div>
 																<div class="col-12 inventory-hidden">
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Yellow Bananas')">
 																		Yellow Bananas
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Passion Fruits')">
 																		Passion Fruits
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Tomatoes')">
 																		Tomatoes
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Avocadoes')">
 																		Avocadoes
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Egg Plant')">
 																		Egg Plant
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Plantain')">
 																		Plantain/Gonja
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Paprika')">
 																		Paprika
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Mangoes')">
 																		Mangoes
 																	</div>
 																</div>
@@ -314,19 +367,19 @@ function hide_show(elmtId)
 																	Vegetables
 																</div>
 																<div class="col-12 inventory-hidden">
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Cabbage')">
 																		Cabbage
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Amaranthus')">
 																		Dodo/Amaranthus
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Nakati')">
 																		Nakati
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Sukuma Wiki')">
 																		Sukuma Wiki
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Lettuce')">
 																		Lettuce
 																	</div>
 																</div>
@@ -337,19 +390,19 @@ function hide_show(elmtId)
 																	Legumes
 																</div>
 																	<div class="col-12 inventory-hidden">
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Beans')">
 																		Beans
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Ground Nuts')">
 																		Ground Nuts/Pea Nuts
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Peas')">
 																		Peas
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Lentils')">
 																		Lentils
 																	</div>
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Soy Beans')">
 																		Soy Beans
 																	</div>
 																	</div><!--hidden-->
@@ -365,13 +418,13 @@ function hide_show(elmtId)
 															Cash Crops
 														</div>
 														<div class="col-12 inventory-hidden">
-															<div class="lvl-3">
+															<div class="lvl-3" onclick="_searchdb('Coffee')">
 																Coffee
 															</div>
-															<div class="lvl-3">
+															<div class="lvl-3" onclick="_searchdb('Cotton')">
 																Cotton
 															</div>
-															<div class="lvl-3">
+															<div class="lvl-3" onclick="_searchdb('Tea')">
 																Tea
 															</div>
 														</div>
@@ -387,13 +440,13 @@ function hide_show(elmtId)
 													Animals
 												</div>
 												<div class="col-12 inventory-hidden">
-													<div class="col-12 lvl-2">
+													<div class="col-12 lvl-2" onclick="_searchdb('Cows')">
 														Cows
 													</div>
-													<div class="col-12 lvl-2">
+													<div class="col-12 lvl-2" onclick="_searchdb('Goats')">
 														Goats
 													</div>
-													<div class="col-12 lvl-2">
+													<div class="col-12 lvl-2" onclick="_searchdb('Sheep')">
 														Sheep
 													</div>
 												</div>
@@ -405,13 +458,13 @@ function hide_show(elmtId)
 													Poultry
 												</div>
 												<div class="col-12 inventory-hidden">
-													<div class="col-12 lvl-2">
+													<div class="col-12 lvl-2" onclick="_searchdb('Chicken')">
 														Chicken
 													</div>
-													<div class="col-12 lvl-2">
+													<div class="col-12 lvl-2" onclick="_searchdb('Ducks')">
 														Ducks
 													</div>
-													<div class="col-12 lvl-2">
+													<div class="col-12 lvl-2" onclick="_searchdb('Turkeys')">
 														Turkeys
 													</div>
 												</div>
@@ -423,16 +476,16 @@ function hide_show(elmtId)
 													Fish
 												</div>
 												<div class="col-12 inventory-hidden">
-													<div class="col-12 lvl-2">
+													<div class="col-12 lvl-2" onclick="_searchdb('Tilapia')">
 														Tilapia
 													</div>
-													<div class="col-12 lvl-2">
+													<div class="col-12 lvl-2" onclick="_searchdb('Cat Fish')">
 														Cat Fish
 													</div>
-													<div class="col-12 lvl-2">
+													<div class="col-12 lvl-2" onclick="_searchdb('Mud Fish')">
 														Mud Fish
 													</div>
-													<div class="col-12 lvl-2">
+													<div class="col-12 lvl-2" onclick="_searchdb('Nile Perch')">
 														Nile Perch
 													</div>
 												</div>
@@ -444,6 +497,8 @@ function hide_show(elmtId)
 									<div class="col-8" id="inventory-display">
 										<p id="xhttpdemo">
 										</p>
+										<!--Display results here-->
+										
 									</div><!--inventory-display-->
 								</div><!--Inventory update-->
 							</div><!--Inventory container-->

@@ -202,9 +202,22 @@ include "../include.php";
 									<div class="col-4" id="inventory-browse"><!--invisible until user clicks add-->
 										<div class="col-12" id="inventory-search">
 											<form class="search">
-												<input type="text" name="search" placeholder="Search..">
-												<input type="submit" value="Search">
+												<input type="text" name="search2" placeholder="Search.." id="srchdemo">
+												<input type="button" onclick="javascript:_searchdb(document.getElementById('srchdemo').value)" value="Search">
 											</form>
+<script>
+function _searchdb(str) {
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if(this.readyState==4 && this.status==200) {
+			document.getElementById("xhttpdemo").innerHTML=this.responseText;
+			console.log(this.responseText);
+		}
+	}
+	xhttp.open("GET", "xhttp.php?q="+str, true);
+	xhttp.send();
+}
+</script>
 										</div><!--Search by search-->
 										<div class="col-12" id="categories"> <!--search by category-->
 											<div class="col-12" id="inventory-crops">
@@ -245,7 +258,7 @@ function hide_show(elmtId)
 																	Starchy foods
 																</div>
 																<div class="col-12 inventory-hidden">
-																	<div class="col-12 lvl-4">
+																	<div class="col-12 lvl-4" onclick="_searchdb('Bananas')">
 																		Bananas/Matooke
 																	</div>
 																	<div class="col-12 lvl-4">
@@ -428,10 +441,12 @@ function hide_show(elmtId)
 										</div><!--search by category-->
 									</div><!--inventory-browse-->
 									
-									<div class="col-8" id="inventory-display"><!--invisible until user clicks add-->
-									</div>
-								</div><!--inventory-display-->
-							</div>
+									<div class="col-8" id="inventory-display">
+										<p id="xhttpdemo">
+										</p>
+									</div><!--inventory-display-->
+								</div><!--Inventory update-->
+							</div><!--Inventory container-->
 							<script>//This will be for adding content to the inventory
 								function addItems() {
 									var inventoryContainer = document.getElementById('inventory-container');

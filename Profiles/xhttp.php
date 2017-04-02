@@ -11,12 +11,8 @@ $conn = new mysqli($servername, $username, $password, $database);
 if(!$conn->connect_error) {  //Connection successful. Do stuff
 	$sql = "select ItemID, ItemName, Aliases, Category, Description, ImageURI from Items where ItemName like '%".$var."%' or Aliases like '%".$var."%'";
 	$result = $conn->query($sql);
-	if($result==false) {
-		die("No results for ".$var."");
-	} else {
-		echo "I got ".$result->num_rows." results";
-	}
-	if($result->num_rows > 0) { //Check success
+	if($result!=false && $result->num_rows > 0) { //Check success
+	echo "<status>0</status>"; //Results found
 		while($row = $result->fetch_assoc()) {
 			$ItemID = $row['ItemID'];
 			$ItemName = $row['ItemName'];
@@ -31,11 +27,11 @@ if(!$conn->connect_error) {  //Connection successful. Do stuff
 		$reply=$reply."</Items>";
 		echo $reply;
 	} else {
-		echo "No results found";
+		echo "<status>1</status>"; //No results found
 	} 
 	$conn->close(); //Close the connection 
 } else {
-	echo "There's a problem with the connection to the database";
+	echo "<status>2<status>"; //There's a problem with the connection to the database
 }
 function filter($entry) {
 $entry = htmlspecialchars($entry); //Against any XSS and SQL injections

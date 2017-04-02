@@ -208,6 +208,7 @@ include "../include.php";
 <script>
 function _checkenterkey(event) {
 	if(event.key=='Enter') { //If it's the enter key, call the _searchdb function
+		event.preventDefault();
 		_searchdb(document.getElementById('srchdemo').value);
 	}
 }
@@ -218,58 +219,52 @@ function _searchdb(str) {
 	xhttp.onreadystatechange = function() {
 		if(this.readyState==4 && this.status==200) {
 			if(this.responseXML!=null) {
-				var xmlDoc = this.responseXML;
-				var itemNodeList = xmlDoc.getElementsByTagName("Items")[0].getElementsByTagName("Item");
-				console.log("There is response xml");
-				//Clear search 
-				document.getElementById("xhttpdemo").innerHTML="";
+					var xmlDoc = this.responseXML;
+					var returnStatus = xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
+					if(returnStatus==0) {
+					var itemNodeList = xmlDoc.getElementsByTagName("Items")[0].getElementsByTagName("Item");
+					//Clear search 
+					document.getElementById("xhttpdemo").innerHTML="";
 				
-				if(itemNodeList.length!=0) {
-						var html="";
-						var i=0;
-						console.log(itemNodeList.length);
-						for(i=0;i<itemNodeList.length;i++) {
-						console.log(i);
-						html="<div class='item-slide'>";
-						html+="<div class='item-slide-image'>";
-								html+="<img src='"+itemNodeList[i].getElementsByTagName('ImageURI')[0].childNodes[0].nodeValue+"'>";
-							html+="</div><!--item-slide-header-->"
+					if(itemNodeList.length>0) {
+							var html="";
+							var i=0;
+							for(i=0;i<itemNodeList.length;i++) {
+							console.log(i);
+							html="<div class='item-slide'>";
+							html+="<div class='item-slide-image'>";
+									html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";
+								html+="</div><!--item-slide-header-->"
 					
-							html+="<div class='item-slide-content'>"
-								html+="<table>"
-						
-									html+="<tbody><tr>"
-										html+="<td>Property"
-										html+="</td><td><i>Value</i>"
-									html+="</td></tr>"
-									html+="<tr>"
-										html+="<td>Property"
-										html+="</td><td><i>Value</i>"
-									html+="</td></tr>"
-									html+="<tr>"
-										html+="<td>Property"
-										html+="</td><td><i>Value</i>"
-									html+="</td></tr>"
-									html+="<tr>"
-										html+="<td>Property"
-										html+="</td><td><i>Value</i>"
-									html+="</td></tr>"
-
-								html+="</tbody></table>"
-							html+="</div><!--item-slide-header-->"
-						html+="</div>";
-						document.getElementById("xhttpdemo").innerHTML+=html;
-						}
-				} else {
-					console.log("0 results were found");
+								html+="<div class='item-slide-content'>"
+									html+="<b>Name: </b>"+getValue(itemNodeList, i, 'ItemName');
+									html+="<br>";
+									html+="<b>Aliases:</b> "+getValue(itemNodeList, i, 'Aliases');
+									html+="<br>";
+									html+="<b>Brief Description: </b>"+getValue(itemNodeList, i, 'Description');
+								html+="</div><!--item-slide-header-->"
+							html+="</div>";
+							document.getElementById("xhttpdemo").innerHTML+=html;
+							}
+					} else {
+						console.log("0 results were found");
+					}
+				} else if(returnStatus==1) { //returnStatus1: No results found
+					document.getElementById("xhttpdemo").innerHTML="No matching results were found";
+				} else if(returnStatus==2) {
+					console.log("There was a problem connecting to the database");
 				}
-			} else {
+			} else { //For some weird reason, no XML, null returned.
 				console.log("The is no response XML");
 			}
 		}
 	}
 	xhttp.open("GET", "xhttp.php?q="+str, true);
 	xhttp.send();
+}
+function getValue(itemNodeList, index, tagName) {
+	var value = itemNodeList[index].getElementsByTagName(tagName)[0].childNodes[0].nodeValue
+	return value;
 }
 </script>
 										</div><!--Search by search-->

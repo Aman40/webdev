@@ -226,9 +226,9 @@ body {
 }
 .item-slide {
 	width: 240px;
-  height: 356px;
+  min-height: 356px;
   float: left;
-  margin: 2px 5px;
+  margin: 10px 5px;
   background-color: #eeeeee;
   padding: 0px;
 }
@@ -248,7 +248,7 @@ body {
 .item-slide-content {
   padding: 0px 5px;
 	margin: 2px;
-	height: 110px;
+	height: 60px;
 	font-size: 0.9em;
 }
 .item-slide-content td {
@@ -629,6 +629,7 @@ span.psw {
 	display: none;
 }
 #inventory-update {
+	display: block;
 	min-height: 600px;
 	background-color: #eeeeee;
 }
@@ -672,14 +673,43 @@ span.psw {
 .inventory-hidden {
 	display: none;
 }
-
-
-
-
-
-
-
-
+#addtorepository {
+  padding: 5px 15px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #017368;
+  border-radius: 2px;
+  cursor: pointer;
+	cursor: hand;
+	color: white;
+}
+#addToRep {
+	position: relative;
+}
+#addToRep button {
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 20px;
+	margin: 5px 0;
+	border: none;
+	cursor: pointer;
+	width: 100%;
+}
+#eAI-1 img {
+	width: 100%
+}
+#eAI-11 {
+	width: 100%;
+}
+#eAI-12 {
+	width: 100%;
+  padding: 10px;
+}
+#eAI-13 {
+	width: 100%;
+  padding: 10px;
+}
 
 
 

@@ -186,18 +186,12 @@ include "../include.php";
 								?>
 							</div><!-- prof-container-->
 							<div class="col-12 prof-content-row" id="inventory-container">
-								<p>
-									This is the inventory container. Thank you!
-								</p>
-								<?php
-									echo "
 										<span id='edit-prof-data'>
 											<a href='javascript:void(0)'>
 											<i class='fa fa-plus-square-o'></i>
 											Add Items
 											</a>
-										</span>";
-								?>
+										</span>
 								<div class="col-12" id="inventory-update">
 									<div class="col-4" id="inventory-browse"><!--invisible until user clicks add-->
 										<div class="col-12" id="inventory-search">
@@ -213,6 +207,7 @@ function _checkenterkey(event) {
 	}
 }
 
+var itemNodeList;
 function _searchdb(str) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.responseType = "document";
@@ -222,7 +217,7 @@ function _searchdb(str) {
 					var xmlDoc = this.responseXML;
 					var returnStatus = xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
 					if(returnStatus==0) {
-					var itemNodeList = xmlDoc.getElementsByTagName("Items")[0].getElementsByTagName("Item");
+					itemNodeList = xmlDoc.getElementsByTagName("Items")[0].getElementsByTagName("Item");
 					//Clear search 
 					document.getElementById("xhttpdemo").innerHTML="";
 				
@@ -230,21 +225,31 @@ function _searchdb(str) {
 							var html="";
 							var i=0;
 							for(i=0;i<itemNodeList.length;i++) {
-							console.log(i);
-							html="<div class='item-slide'>";
-							html+="<div class='item-slide-image'>";
-									html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";
+								html="<div class='item-slide'>";
+								html+="<div class='item-slide-image'>";
+								html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";
+								html+="</div><!--item-slide-header-->"				
+								html+="<div class='item-slide-content' id='itemNo"+i+"'>"
+									html+="<table>";
+									html+="<tr>";
+									html+="<th>Name</th>";
+									html+="<td>"+getValue(itemNodeList, i, 'ItemName')+"</td>";
+									html+="</tr>";
+									html+="<tr>";
+									html+="<th>Other Names</th>";
+									html+="<td>"+getValue(itemNodeList, i, 'Aliases')+"</td>";
+									html+="</tr>";
+									html+="<tr>";
+									html+="<th>Description</th>";
+									html+="<td>"+getValue(itemNodeList, i, 'Description')+"</td>";
+									html+="</tr>";
+									html+="</table>";
 								html+="</div><!--item-slide-header-->"
-					
-								html+="<div class='item-slide-content'>"
-									html+="<b>Name: </b>"+getValue(itemNodeList, i, 'ItemName');
-									html+="<br>";
-									html+="<b>Aliases:</b> "+getValue(itemNodeList, i, 'Aliases');
-									html+="<br>";
-									html+="<b>Brief Description: </b>"+getValue(itemNodeList, i, 'Description');
-								html+="</div><!--item-slide-header-->"
-							html+="</div>";
-							document.getElementById("xhttpdemo").innerHTML+=html;
+								html+="<div id='addToRep'>";//ID means 'Add to repository'
+								html+="<button onclick='displaymodal("+i+")'><i class='fa fa-plus-square-o'></i> Add Item</button>";
+								html+="</div>";
+								html+="</div>";
+								document.getElementById("xhttpdemo").innerHTML+=html;
 							}
 					} else {
 						console.log("0 results were found");
@@ -262,10 +267,25 @@ function _searchdb(str) {
 	xhttp.open("GET", "xhttp.php?q="+str, true);
 	xhttp.send();
 }
-function getValue(itemNodeList, index, tagName) {
+function getValue(itemNodeList, index, tagName) { //This function is just to make things shorter ^
 	var value = itemNodeList[index].getElementsByTagName(tagName)[0].childNodes[0].nodeValue
 	return value;
 }
+function displaymodal(i) { //This function sets the data in the modal
+	var html="";
+	html="<div width=100%>";
+	html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";
+	html+="</div>";
+	document.getElementById("eAI-11").innerHTML=html;
+	html="<div width=100%>";
+	html+="<font size=6em position='center'>"+getValue(itemNodeList, i, 'ItemName')+"</font>";
+	html+="<br>Other names:\t"+getValue(itemNodeList, i, 'Aliases');
+	html+="<br>Description:\t"+getValue(itemNodeList, i, 'Description');
+	html+="</div>";
+	document.getElementById("eAI-12").innerHTML=html;
+	document.getElementById("editAddItem").style.display="block";
+}
+
 </script>
 										</div><!--Search by search-->
 										<div class="col-12" id="categories"> <!--search by category-->
@@ -611,6 +631,49 @@ function _selected($var) {
 		}
 	}
 </script>
+<div class="modal" id="editAddItem">
+	<span onclick="document.getElementById('editAddItem').style.display='none'" class="close" title="Close Modal">×</span>
+	<div id="eAI-1" class="modal-content animate">		
+		<div id="eAI-11">
+		</div>
+		<div id="eAI-12">
+		</div>
+		<div id="eAI-13">
+			<form>
+				<label>Stock Quantity</label><br>
+				<input name="quantity" type="number" min=0 max=9999999 step=0.01>
+				<select name="units">
+					<option value="grams">Grams</option>
+					<option value="kgs">Kilograms</option>
+					<option value="pieces">Pieces</option>
+					<option value="units">Units</option>
+					<option value="bunches">Bunches</option>
+					<option value="litres">Litres</option>
+				</select>
+				<br>
+				<label>Unit Price (UGX)</label><br>
+				<input name="price" type="number" min=0 max=9999999 step=1>
+				<br>
+				<label>Item Description</label><br>
+				<input type="text" name="description"><br>
+				<label>Do you deliver?</label><br>
+				<input type="radio" name="deliverable" value="yes">Yes<br>
+				<input type="radio" name="deliverable" value="no">No<br>
+				<label>Deliverable Places</lable><br>
+				<input type="text" name="dplace"><br>
+				<label>State</label>
+				<select name="state">
+					<option value="fresh">Fresh (Unprocessed)</option>
+					<option value="dry">Dried</option>
+					<option value="preprocessed">Pre-processed</option>
+					<option value="prepackaged">Pre-packaged</option>
+					<option value="Salted">Salted</option>
+				</select>
+				<button type="submit">Add to repository</button>
+			</form>
+		</div>
+	</div>
+</div><!--Edit-->
 <!--*************************************************************************-->
 
 <!--****************************THE SIGNUP FORM******************************-->

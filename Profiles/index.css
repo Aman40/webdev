@@ -232,6 +232,9 @@ body {
   background-color: #eeeeee;
   padding: 0px;
 }
+.item-slide:hover {
+	box-shadow: grey 0px 0px 8px;
+}
 .item-slide-image {
 	margin: 0px;
 	height: 240px;

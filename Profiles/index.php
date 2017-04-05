@@ -210,15 +210,16 @@ function _checkenterkey(event) {
 var itemNodeList;
 function _searchdb(str) {
 	var xhttp = new XMLHttpRequest();
-	xhttp.responseType = "document";
-	xhttp.onreadystatechange = function() {
-		if(this.readyState==4 && this.status==200) {
-			if(this.responseXML!=null) {
+	xhttp.responseType = "document";//Only this way, shall we be able to return an XML/HTML document
+	xhttp.onreadystatechange = function() { //If we get a reply from the server
+		if(this.readyState==4 && this.status==200) { //Check the status and readystate
+			if(this.responseXML!=null) { //Do we have any meaningful response other than null?
 					var xmlDoc = this.responseXML;
 					var returnStatus = xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
 					if(returnStatus==0) {
+					//get an itemNodeList object
 					itemNodeList = xmlDoc.getElementsByTagName("Items")[0].getElementsByTagName("Item");
-					//Clear search 
+					//Purge the 'html' variable of previous search data
 					document.getElementById("xhttpdemo").innerHTML="";
 				
 					if(itemNodeList.length>0) {
@@ -231,6 +232,10 @@ function _searchdb(str) {
 								html+="</div><!--item-slide-header-->"				
 								html+="<div class='item-slide-content' id='itemNo"+i+"'>"
 									html+="<table>";
+									html+="<tr style=\"display:none\">";
+									html+="<th>ItemID</th>";
+									html+="<td id=\"slide_item_ID\">"+getValue(itemNodeList, i, 'ItemID')+"</td>";
+									html+="</tr>";
 									html+="<tr>";
 									html+="<th>Name</th>";
 									html+="<td>"+getValue(itemNodeList, i, 'ItemName')+"</td>";
@@ -254,9 +259,9 @@ function _searchdb(str) {
 					} else {
 						console.log("0 results were found");
 					}
-				} else if(returnStatus==1) { //returnStatus1: No results found
+				} else if(returnStatus==1) { //returnStatus (defined in the php). 1=No results found. 
 					document.getElementById("xhttpdemo").innerHTML="No matching results were found";
-				} else if(returnStatus==2) {
+				} else if(returnStatus==2) { //2=couldn't connect to the database
 					console.log("There was a problem connecting to the database");
 				}
 			} else { //For some weird reason, no XML, null returned.
@@ -631,6 +636,7 @@ function _selected($var) {
 		}
 	}
 </script>
+<iframe name="hidden_iframe" style="display:none"></iframe>
 <div class="modal" id="editAddItem">
 	<span onclick="document.getElementById('editAddItem').style.display='none'" class="close" title="Close Modal">×</span>
 	<div id="eAI-1" class="modal-content animate">		
@@ -639,41 +645,84 @@ function _selected($var) {
 		<div id="eAI-12">
 		</div>
 		<div id="eAI-13">
-			<form>
+			<form target="hidden_iframe">
 				<label>Stock Quantity</label><br>
-				<input name="quantity" type="number" min=0 max=9999999 step=0.01>
-				<select name="units">
-					<option value="grams">Grams</option>
+				<input id="quantity" name="quantity" type="number" min=0 max=9999999 step=0.01>
+				<select name="units" id="units">
 					<option value="kgs">Kilograms</option>
+					<option value="grams">Grams</option>
 					<option value="pieces">Pieces</option>
 					<option value="units">Units</option>
 					<option value="bunches">Bunches</option>
+					<option value="bags">Bags</option>
 					<option value="litres">Litres</option>
+					
 				</select>
 				<br>
-				<label>Unit Price (UGX)</label><br>
-				<input name="price" type="number" min=0 max=9999999 step=1>
-				<br>
-				<label>Item Description</label><br>
-				<input type="text" name="description"><br>
-				<label>Do you deliver?</label><br>
-				<input type="radio" name="deliverable" value="yes">Yes<br>
-				<input type="radio" name="deliverable" value="no">No<br>
-				<label>Deliverable Places</lable><br>
-				<input type="text" name="dplace"><br>
-				<label>State</label>
-				<select name="state">
+				<label>State</label><br>
+				<select name="state" id="state">
 					<option value="fresh">Fresh (Unprocessed)</option>
 					<option value="dry">Dried</option>
 					<option value="preprocessed">Pre-processed</option>
 					<option value="prepackaged">Pre-packaged</option>
 					<option value="Salted">Salted</option>
-				</select>
-				<button type="submit">Add to repository</button>
+				</select><br>
+				<label>Unit Price (UGX)</label><br>
+				<input name="price" type="number" min=0 max=9999999 step=1 id="price">
+				<br>
+				<label>Item Description</label><br>
+				<input type="text" name="description" id="description"><br>
+				<label>Do you deliver?</label><br>
+				<input type="radio" name="deliverable" value="yes" onclick='getradio("yes")'>Yes<br>
+				<input type="radio" name="deliverable" value="no" onclick='getradio("no")'>No<br>
+				<label>Deliverable Places</lable><br>
+				<input type="text" name="dplace" id="dplace"><br>
+				<button type="submit" onclick="submit_add_form()">Add to repository</button>
 			</form>
 		</div>
 	</div>
 </div><!--Edit-->
+<script>
+var deliverable="";
+function getradio(option) {
+console.log("getting radio");
+	if(option=="yes") {
+		deliverable="Y";
+	} else if(option=="no") {
+		deliverable="N";
+	}
+}
+function submit_add_form() {
+	var quantity=readval("quantity");
+	var units=readval("units");
+	var state=readval("state");
+	var price=readval("price");
+	var description=readval("description");
+	var dplace=readval("dplace");
+	var itemID = document.getElementById("slide_item_ID").innerHTML;
+
+	xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function () { //When we get a reply from the webserver
+	//Display success/failure status
+		if(this.readyState==4 && this.status==200){
+			console.log(this.responseText);
+			if(this.responseText==true){ //Success. Close the modal
+				document.getElementById("editAddItem").style.display="none";
+				window.alert("Item successfully added");
+			} else { //Failure. alert an error
+				window.alert("There was a problem");
+			}
+		}
+	}
+	xhttp.open("GET", "add_item.php?itemID="+itemID+"&quantity="+quantity+"&units="+units+"&state="+
+	state+"&price="+price+"&description="+description+"&deliverable="+deliverable+
+	"&dplace="+dplace, true);
+	xhttp.send();
+}
+function readval(id) {
+	return	document.getElementById(id).value;
+}
+</script>
 <!--*************************************************************************-->
 
 <!--****************************THE SIGNUP FORM******************************-->

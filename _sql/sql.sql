@@ -35,6 +35,7 @@ PRIMARY KEY (ItemID)
 
 CREATE TABLE IF NOT EXISTS Repository
 (
+RepID CHAR(14),
 UserID CHAR(14),
 ItemID CHAR(14),
 Quantity DECIMAL(10,2) NOT NULL,
@@ -42,9 +43,10 @@ Units VARCHAR(10) NOT NULL,
 UnitPrice DECIMAL(12,2) NOT NULL, /*(Shillings will be assumed, unless otherwise specified)*/
 State VARCHAR(50), /*(Fresh/Dried/Other[Describe])*/
 DateAdded TIMESTAMP NOT NULL, /*Date added DATE()*/
+Description VARCHAR(255),
 Deliverable ENUM('Y','N'), /*Deliverable areas (if deliverable) VARCHAR (256)*/
 DeliverableAreas VARCHAR(255),
-PRIMARY KEY (UserID), /*That means one user can have similar items*/
+PRIMARY KEY (RepID),
 FOREIGN KEY (UserID) REFERENCES Users(UserID),
 FOREIGN KEY (ItemID) REFERENCES Items(ItemID)
 );

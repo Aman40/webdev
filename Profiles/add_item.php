@@ -49,9 +49,12 @@ if(isset($_GET['dplace'])) {
 } else {
 	$problem = true;
 }
+
 //Get user ID from $_SESSION
 $userID = $_SESSION['UserID'];
 $repID = uniqid("R");
+//Get the current date from with php
+$date = date("Y-m-d H:i:s");
 
 $servername = "localhost"; //This is bound  change when I upload to the real website.
 $username = "aman";
@@ -60,8 +63,7 @@ $database = "test";
 if($problem==false) { //If there's no problem with the data extraction
 	$conn = new mysqli($servername, $username, $password, $database);
 	if(!$conn->connect_error) {
-		$sql = "INSERT INTO Repository(RepID, UserID, ItemID, Quantity, Units, UnitPrice, State,
-		Description, Deliverable, DeliverableAreas) VALUES('".$repID."','".$userID."','".$itemID."',".$quantity.",'".$units."',".$price.",'".$state."','".$description."','".$deliverable."','".$dplace."')";
+		$sql = "INSERT INTO Repository(RepID, UserID, ItemID, Quantity, Units, UnitPrice, State, DateAdded, Description, Deliverable, DeliverableAreas) VALUES('".$repID."','".$userID."','".$itemID."',".$quantity.",'".$units."',".$price.",'".$state."','".$date."','".$description."','".$deliverable."','".$dplace."')";
 		$result = $conn->query($sql);
 		if($result) { //Successful
 			echo true;

@@ -42,7 +42,7 @@ Quantity DECIMAL(10,2) NOT NULL,
 Units VARCHAR(10) NOT NULL,
 UnitPrice DECIMAL(12,2) NOT NULL, /*(Shillings will be assumed, unless otherwise specified)*/
 State VARCHAR(50), /*(Fresh/Dried/Other[Describe])*/
-DateAdded TIMESTAMP NOT NULL, /*Date added DATE()*/
+DateAdded DATETIME NOT NULL, /*Date added DATE(). It shouldn't be able to change everytime it's updated*/
 Description VARCHAR(255),
 Deliverable ENUM('Y','N'), /*Deliverable areas (if deliverable) VARCHAR (256)*/
 DeliverableAreas VARCHAR(255),

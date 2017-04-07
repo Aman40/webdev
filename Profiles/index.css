@@ -631,8 +631,14 @@ span.psw {
 #prof-orders {
 	display: none;
 }
-#inventory-update {
+#inventory-display {
 	display: block;
+	min-height: 600px;
+	background-color: #ccc;
+	
+}
+#inventory-update {
+	display: none;
 	min-height: 600px;
 	background-color: #eeeeee;
 }
@@ -640,12 +646,12 @@ span.psw {
 	min-height: 600px;
 	background-color: #eeeeee;
 }
-#inventory-display {
+#display-search-results {
   border-left: solid 1px #bbb;
 	min-height: 600px;
 	background-color: #eeeeee;
 }
-#inventory-browse, #inventory-display {
+#inventory-browse, #display-search-results {
 	padding: 5px;
 }
 #inventory-search .search{

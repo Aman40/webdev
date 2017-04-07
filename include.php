@@ -1,7 +1,7 @@
 <?php
 session_start();
 $session_exists = false;
-if(isset($_SESSION['UserID'])) {
+if(isset($_SESSION['UserID'])) { //The session_exists variable is used in the index.php and other pages where this script is used. This is to hide/display content accordingly
 	$session_exists = true;
 }
 include "customErrorHandler.php";

@@ -186,12 +186,17 @@ include "../include.php";
 								?>
 							</div><!-- prof-container-->
 							<div class="col-12 prof-content-row" id="inventory-container">
-										<span id='edit-prof-data'>
-											<a href='javascript:void(0)'>
-											<i class='fa fa-plus-square-o'></i>
-											Add Items
-											</a>
-										</span>
+										
+								<div class="col-12" id="inventory-display">
+									<!--Send a request to the server for the data in the Repository table -->
+									<span id='edit-prof-data'>
+										<a href='javascript:void(0)'>
+										<i class='fa fa-plus-square-o'></i>
+										Add Items
+										</a>
+									</span>
+									
+								</div><!--display-search-results-->
 								<div class="col-12" id="inventory-update">
 									<div class="col-4" id="inventory-browse"><!--invisible until user clicks add-->
 										<div class="col-12" id="inventory-search">
@@ -215,6 +220,7 @@ function _searchdb(str) {
 		if(this.readyState==4 && this.status==200) { //Check the status and readystate
 			if(this.responseXML!=null) { //Do we have any meaningful response other than null?
 					var xmlDoc = this.responseXML;
+										console.log(xmlDoc);
 					var returnStatus = xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
 					if(returnStatus==0) {
 					//get an itemNodeList object
@@ -260,20 +266,62 @@ function _searchdb(str) {
 						console.log("0 results were found");
 					}
 				} else if(returnStatus==1) { //returnStatus (defined in the php). 1=No results found. 
-					document.getElementById("xhttpdemo").innerHTML="No matching results were found";
+					console.log("No matching results were found");
 				} else if(returnStatus==2) { //2=couldn't connect to the database
 					console.log("There was a problem connecting to the database");
+				} else if(returnStatus==11) {
+					window.alert("Please log in");
 				}
 			} else { //For some weird reason, no XML, null returned.
 				console.log("The is no response XML");
 			}
 		}
 	}
-	xhttp.open("GET", "xhttp.php?q="+str, true);
+	xhttp.open("GET", "xhttp.php?table=Items&q="+str, true);
 	xhttp.send();
 }
-function getValue(itemNodeList, index, tagName) { //This function is just to make things shorter ^
-	var value = itemNodeList[index].getElementsByTagName(tagName)[0].childNodes[0].nodeValue
+
+var itemNodeListr;
+function _getInventory() {
+console.log("The function is running");
+	var xmlhttpr = new XMLHttpRequest();
+	xmlhttpr.responseType = "document";
+	xmlhttpr.onreadystatechange = function() {
+		if(this.readyState==4 && this.status==200) {//The request was fulfilled
+			var xmlDoc = this.responseXML;
+			console.log(xmlDoc);
+			var returnStatus = xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
+			if(returnStatus==0) {//Results were found
+				//get an itemNodeList object
+				itemNodeListr = xmlDoc.getElementsByTagName("Items")[0].getElementsByTagName("Item");
+				//Purge the 'html' variable of previous search data
+				document.getElementById("inventory-display").innerHTML=""; //APPROPRIATE ID
+		
+				if(itemNodeListr.length>0) { 
+					var i = 0;
+					var html="";
+					for(i=0;i<itemNodeListr.length; i++) {
+						html=getValue(itemNodeListr, i, 'ItemName');
+						console.log(html);
+					}
+				}
+			
+			} else if(returnStatus==1) {//No Results found
+				console.log("No results were found");
+			} else if(returnStatus==2) {//Problem connecting to the database
+				console.log("There was a problem connecting to the database");
+			} else if(returnStatus==11) {//User is not logged in. Not even sure how that's possible
+				console.log("WTF? Is that even possible");
+			}
+		} else {//The request wasn't fulfilled for some reason
+			console.log("The request couldn't be fulfilled!");
+		}
+	}
+	xmlhttpr.open("GET", "xhttp.php?table=Repository", true);
+	xmlhttpr.send()
+}
+function getValue(nodeList, index, tagName) { //This function is just to make things shorter ^
+	var value = nodeList[index].getElementsByTagName(tagName)[0].childNodes[0].nodeValue
 	return value;
 }
 function displaymodal(i) { //This function sets the data in the modal
@@ -514,20 +562,15 @@ function hide_show(elmtId)
 										</div><!--search by category-->
 									</div><!--inventory-browse-->
 									
-									<div class="col-8" id="inventory-display">
+									<div class="col-8" id="display-search-results">
 										<p id="xhttpdemo">
 										</p>
 										<!--Display results here-->
 										
-									</div><!--inventory-display-->
+									</div><!--display-search-results-->
 								</div><!--Inventory update-->
+
 							</div><!--Inventory container-->
-							<script>//This will be for adding content to the inventory
-								function addItems() {
-									var inventoryContainer = document.getElementById('inventory-container');
-									
-								}
-							</script>
 							<div class="col-12 prof-content-row" id="prof-orders">
 								<p>
 									This is orders container. Still under development.
@@ -540,6 +583,9 @@ function hide_show(elmtId)
 								document.getElementById(div1).style.display="block";
 								document.getElementById(div2).style.display="none";
 								document.getElementById(div3).style.display="none";
+								if(div1=="inventory-container") {
+									_getInventory();
+								}
 							}
 							</script>
 						</div><!--prof-page-main-->
@@ -578,24 +624,24 @@ function _selected($var) {
     <div class="container">
     	<input type="hidden" name="formname" value="profedit"/>
     	
-    	<lable><b>First Name</b></lable><span class="error"> *<?php echo $fname_error ?></span>
+    	<label><b>First Name</b></label><span class="error"> *<?php echo $fname_error ?></span>
 		<input type="text" class="required" placeholder="First Name" name="fname" value="<?php fill_in_blanks('fname','FirstName'); ?>" required>
 		
-		<lable><b>Middle Name</b></lable><span>
+		<label><b>Middle Name</b></label><span>
 		<input type="text" placeholder="Middle Name" name="mname" value="<?php fill_in_blanks('mname','MiddleName'); ?>">
 		
-		<lable><b>Last Name</b></lable><span class="error"> *<?php echo " ".$lname_error ?></span>
+		<label><b>Last Name</b></label><span class="error"> *<?php echo " ".$lname_error ?></span>
 		<input type="text" class="required" placeholder="Last Name" name="lname" value="<?php fill_in_blanks('lname','LastName'); ?>" required>
 		
-		<lable><b>Company Name</b></lable><span class="error"> *<?php echo " ".$coname_error ?></span>
+		<label><b>Company Name</b></label><span class="error"> *<?php echo " ".$coname_error ?></span>
 		<input type="text" placeholder="First Name" name="coname" value="<?php fill_in_blanks('coname','CoName'); ?>">
 		
-		<lable><b>Sex</b></lable><span class="error"> *<?php echo " ".$sex_error; ?></span><br>
+		<label><b>Sex</b></label><span class="error"> *<?php echo " ".$sex_error; ?></span><br>
 		<input type="radio" class="required" name="sex" value="M" required <?php _selected('M'); ?> >M<br>
 		<input type="radio" class="required" name="sex" value="F" required <?php _selected('F'); ?> >F<br>
 		<input type="radio" class="required" name="sex" value="C" required <?php _selected('C'); ?> >Company<br><br>
 		
-		<lable><b>Date of Birth</b></lable><span class="error"> *<?php echo " ".$dob_error; ?></span><br>
+		<label><b>Date of Birth</b></label><span class="error"> *<?php echo " ".$dob_error; ?></span><br>
 		<input type="date" class="required" class="wide" name="dob" required value="<?php fill_in_blanks('dob','DoB'); ?>"><br><br>
 		
 		<label><b>District of Operation</b></label><span class="error"> *<?php echo " ".$district_error ?></span>
@@ -675,7 +721,7 @@ function _selected($var) {
 				<label>Do you deliver?</label><br>
 				<input type="radio" name="deliverable" value="yes" onclick='getradio("yes")'>Yes<br>
 				<input type="radio" name="deliverable" value="no" onclick='getradio("no")'>No<br>
-				<label>Deliverable Places</lable><br>
+				<label>Deliverable Places</label><br>
 				<input type="text" name="dplace" id="dplace"><br>
 				<button type="submit" onclick="submit_add_form()">Add to repository</button>
 			</form>

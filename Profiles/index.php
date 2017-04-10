@@ -301,8 +301,61 @@ console.log("The function is running");
 					var i = 0;
 					var html="";
 					for(i=0;i<itemNodeListr.length; i++) {
-						html=getValue(itemNodeListr, i, 'ItemName');
-						console.log(html);
+						html="<div class='item-slide'>";
+								html+="<div class='item-slide-image'>";
+								html+="<img src='"+getValue(itemNodeListr, i, 'ImageURI')+"'>";
+								html+="</div><!--item-slide-header-->"				
+								html+="<div class='item-slide-content' id='itemid"+i+"'>"
+									html+="<table>";
+									html+="<tr style=\"display:none\">";
+									html+="<th>ItemID</th>";
+									html+="<td id=\"slide_item_ID\">"+getValue(itemNodeListr, i, 'ItemID')+"</td>";
+									html+="</tr>";
+									html+="<tr>";
+									html+="<th>Name</th>";
+									html+="<td>"+getValue(itemNodeListr, i, 'ItemName')+"</td>";
+									html+="</tr>";
+									html+="<tr>";
+									html+="<th>Other Names</th>";
+									html+="<td>"+getValue(itemNodeListr, i, 'Aliases')+"</td>";
+									html+="</tr>";
+									html+="<tr>";
+									html+="<th>Description</th>";
+									html+="<td>"+getValue(itemNodeListr, i, 'Description')+"</td>";
+									html+="</tr>";
+									html+="<tr>";
+									html+="<th>Quantity</th>";
+									html+="<td>"+getValue(itemNodeListr, i, 'Quantity')+" "+getValue(itemNodeListr, i, 'Units')+"</td>";
+									html+="</tr>";
+									html+="<tr>";
+									html+="<th>Unit Price</th>";
+									html+="<td>"+getValue(itemNodeListr, i, 'UnitPrice')+"</td>";
+									html+="</tr>";
+									html+="<tr>";
+									html+="<th>State</th>";
+									html+="<td>"+getValue(itemNodeListr, i, 'State')+"</td>";
+									html+="</tr>";
+									html+="<tr>";
+									html+="<th>Description</th>";
+									html+="<td>"+getValue(itemNodeListr, i, 'Description')+"</td>";
+									html+="</tr>";
+									html+="<tr>";
+									html+="<th>Added On</th>";
+									html+="<td>"+getValue(itemNodeListr, i, 'DateAdded')+"</td>";
+									html+="</tr>";
+									html+="<th>Can Deliver? (Y/N) </th>";
+									html+="<td>"+getValue(itemNodeListr, i, 'Deliverable')+"</td>";
+									html+="</tr>";
+									html+="<th>Can Deliver To: </th>";
+									html+="<td>"+getValue(itemNodeListr, i, 'DeliverableAreas')+"</td>";
+									html+="</tr>";
+									html+="</table>";
+								html+="</div><!--item-slide-header-->"
+								html+="<div id='addToRep'>";//ID means 'Add to repository'
+								html+="<button onclick='displaymodal("+i+")'><i class='fa fa-plus-square-o'></i> Edit</button>";
+								html+="</div>";
+								html+="</div>";
+								document.getElementById("inventory-display").innerHTML+=html;
 					}
 				}
 			

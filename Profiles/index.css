@@ -719,9 +719,22 @@ span.psw {
 	width: 100%;
   padding: 10px;
 }
+#inventory-tabl {
 
-
-
+}
+.inventory-tabl-image {
+	width: 200px;
+}
+#inventory-display .item-slide-content {
+	height: 150px;
+	overflow-y: scroll;
+}
+.item-slide-content th, .item-slide-content td  {
+	text-align: left;
+}
+#inventory-display .item-slide {
+	width: 350px;
+}
 
 
 

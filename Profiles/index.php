@@ -188,13 +188,7 @@ include "../include.php";
 							<div class="col-12 prof-content-row" id="inventory-container">
 										
 								<div class="col-12" id="inventory-display">
-									<!--Send a request to the server for the data in the Repository table -->
-									<span id='edit-prof-data'>
-										<a href='javascript:void(0)'>
-										<i class='fa fa-plus-square-o'></i>
-										Add Items
-										</a>
-									</span>
+									<!--Send a request to the server for the data in the Repository table -->		
 									
 								</div><!--display-search-results-->
 								<div class="col-12" id="inventory-update">
@@ -238,10 +232,6 @@ function _searchdb(str) {
 								html+="</div><!--item-slide-header-->"				
 								html+="<div class='item-slide-content' id='itemNo"+i+"'>"
 									html+="<table>";
-									html+="<tr style=\"display:none\">";
-									html+="<th>ItemID</th>";
-									html+="<td id=\"slide_item_ID\">"+getValue(itemNodeList, i, 'ItemID')+"</td>";
-									html+="</tr>";
 									html+="<tr>";
 									html+="<th>Name</th>";
 									html+="<td>"+getValue(itemNodeList, i, 'ItemName')+"</td>";
@@ -295,7 +285,11 @@ console.log("The function is running");
 				//get an itemNodeList object
 				itemNodeListr = xmlDoc.getElementsByTagName("Items")[0].getElementsByTagName("Item");
 				//Purge the 'html' variable of previous search data
-				document.getElementById("inventory-display").innerHTML=""; //APPROPRIATE ID
+				var invDisplay = document.getElementById("inventory-display");
+				var html = "<div class='item-slide' onclick='javascript:add_to_inventory()' id='edit-inv-data'>";
+				html+="<img src='../icons/add.png'>"
+				html+="</div>"; //APPROPRIATE ID
+				invDisplay.innerHTML=html;
 		
 				if(itemNodeListr.length>0) { 
 					var i = 0;
@@ -307,10 +301,6 @@ console.log("The function is running");
 								html+="</div><!--item-slide-header-->"				
 								html+="<div class='item-slide-content' id='itemid"+i+"'>"
 									html+="<table>";
-									html+="<tr style=\"display:none\">";
-									html+="<th>ItemID</th>";
-									html+="<td id=\"slide_item_ID\">"+getValue(itemNodeListr, i, 'ItemID')+"</td>";
-									html+="</tr>";
 									html+="<tr>";
 									html+="<th>Name</th>";
 									html+="<td>"+getValue(itemNodeListr, i, 'ItemName')+"</td>";
@@ -352,8 +342,9 @@ console.log("The function is running");
 									html+="</table>";
 								html+="</div><!--item-slide-header-->"
 								html+="<div id='addToRep'>";//ID means 'Add to repository'
-								html+="<button onclick='displaymodal("+i+")'><i class='fa fa-plus-square-o'></i> Edit</button>";
+								html+="<button onclick='void(0)'><i class='fa fa-edit'></i> Edit</button>";
 								html+="</div>";
+								html+="<span onclick='rem_rep_item("+i+")' id='rem-rep-item"+i+"' class='close' title='Delete Item'>×</span>";
 								html+="</div>";
 								document.getElementById("inventory-display").innerHTML+=html;
 					}
@@ -377,8 +368,8 @@ function getValue(nodeList, index, tagName) { //This function is just to make th
 	var value = nodeList[index].getElementsByTagName(tagName)[0].childNodes[0].nodeValue
 	return value;
 }
-function displaymodal(i) { //This function sets the data in the modal
-	var html="";
+function displaymodal(i) { //This function sets the data in the modal. i identifies the item
+	var html=""; //in the itemNodeList
 	html="<div width=100%>";
 	html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";
 	html+="</div>";
@@ -388,6 +379,7 @@ function displaymodal(i) { //This function sets the data in the modal
 	html+="<br>Other names:\t"+getValue(itemNodeList, i, 'Aliases');
 	html+="<br>Description:\t"+getValue(itemNodeList, i, 'Description');
 	html+="</div>";
+	document.getElementById("item_submit_button").innerHTML="<button type='submit' onclick='submit_add_form("+i+")'><i class='fa fa-plus-square-o'></i>  Add to repository</button>";
 	document.getElementById("eAI-12").innerHTML=html;
 	document.getElementById("editAddItem").style.display="block";
 }
@@ -425,6 +417,52 @@ function hide_show(elmtId)
 		element.style.display="none";
 		arrow.className="fa fa-caret-right";
 	}
+}
+function add_to_inventory() { //Hide inventory data onclick
+	var x=document.getElementById('inventory-display');
+	var y=document.getElementById('inventory-update');
+	console.log(x.style.display);
+	console.log(y.style.display);
+	if(x.style.display=='block' && y.style.display=='none') {
+	console.log("Conditions fulfilled");
+		x.style.display='none';
+		y.style.display='block';
+	} else {
+		x.style.display='block';
+		y.style.display='none';
+	}
+}
+function rem_rep_item(i) {
+	//Extract the node's itemID
+	var RepID = getValue(itemNodeListr, i, 'RepID'); //Assuming the iremNodeListr object still exists
+	//Access the db and delete the node;
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.responseType = "document";
+	xmlhttp.onreadystatechange = function() {
+		//Check the return status for success/failure
+		if(this.readyState==4 && this.status==200) {
+			var xmlDoc = this.responseXML;
+			console.log(xmlDoc);
+			var return_status = xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
+			if(return_status==0) { //Success. Rerun the _srchdb() function
+				alert("Item Deleted");
+			} else if(return_status==1) {
+				alert("A problem occurred");
+			} else {
+				console.log(return_status);
+				reveal1hide23('inventory-container', 'prof-container', 'prof-orders');
+			}
+		} else { //There was a problem at the server end
+			console.log("There was a problem!");
+			console.log(this.readyState);
+			console.log(this.status);
+		}
+	}
+	xmlhttp.open("GET", "xhttp.php?table=delete_item&RepID="+RepID, true);
+	xmlhttp.send();
+}
+function update_rep_item(i) {
+	itemID = getValue(itemNodeListr, i, 'itemID');
 }
 </script>
 
@@ -637,7 +675,9 @@ function hide_show(elmtId)
 								document.getElementById(div2).style.display="none";
 								document.getElementById(div3).style.display="none";
 								if(div1=="inventory-container") {
-									_getInventory();
+									_getInventory(); //Accesses the database and displays the items into 
+									document.getElementById('inventory-display').style.display='block';
+									document.getElementById('inventory-update').style.display='none';
 								}
 							}
 							</script>
@@ -776,7 +816,7 @@ function _selected($var) {
 				<input type="radio" name="deliverable" value="no" onclick='getradio("no")'>No<br>
 				<label>Deliverable Places</label><br>
 				<input type="text" name="dplace" id="dplace"><br>
-				<button type="submit" onclick="submit_add_form()">Add to repository</button>
+				<span id="item_submit_button"></span>
 			</form>
 		</div>
 	</div>
@@ -791,14 +831,14 @@ console.log("getting radio");
 		deliverable="N";
 	}
 }
-function submit_add_form() {
+function submit_add_form(i) {
 	var quantity=readval("quantity");
 	var units=readval("units");
 	var state=readval("state");
 	var price=readval("price");
 	var description=readval("description");
 	var dplace=readval("dplace");
-	var itemID = document.getElementById("slide_item_ID").innerHTML;
+	var itemID = getValue(itemNodeList, i, "itemID");
 
 	xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function () { //When we get a reply from the webserver
@@ -823,7 +863,7 @@ function readval(id) {
 }
 </script>
 <!--*************************************************************************-->
-
+<!--Wakaru jouhou riron. Jouhou fugou angou riron. Kyoto uni. Nisa sensei. Online vids. Eng.-->
 <!--****************************THE SIGNUP FORM******************************-->
 
 <!--*************************************************************************-->

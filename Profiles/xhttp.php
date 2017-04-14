@@ -117,8 +117,17 @@ if(!$conn->connect_error) {  //Connection successful. Do stuff
 		} else {//A problem occured during execution of the query
 			echo "<status>2</status>";
 		}
-	} else {
-		echo "<error>The table name is ".$table."</error>";
+	} else if($table=='delete_item') {
+		//Get the itemID
+		$RepID = filter($_REQUEST['RepID']);
+		$sql = "DELETE FROM Repository WHERE RepID='".$RepID."'";
+		$result=$conn->query($sql);
+		if($result==true) {
+			echo "<status>0</status>";//Success
+		} else {
+			echo "<status>1</status>";//Failure
+		}
+		$conn->close();
 	}
 } else {
 	echo "<status>2</status>"; //There's a problem with the connection to the database

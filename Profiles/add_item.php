@@ -36,6 +36,7 @@ if(isset($_GET['price'])) {
 }
 if(isset($_GET['description'])){
 	$description = filter($_GET['description']);
+	$description = set_default($description, "None");
 } else {
 	$problem = true;
 }
@@ -46,6 +47,7 @@ if(isset($_GET['deliverable'])) {
 }
 if(isset($_GET['dplace'])) {
 	$dplace = filter($_GET['dplace']);
+	$dplace = set_default($dplace, "None");
 } else {
 	$problem = true;
 }
@@ -82,5 +84,12 @@ $entry = htmlspecialchars($entry); //Against any XSS and SQL injections
 $entry = trim($entry); //Against SQL injections
 $entry = stripslashes($entry);
 return $entry; //Sanitized input
+}
+function set_default($value, $default) {
+	if($value==null) {
+		return $default;
+	} else {
+		return $value;
+	}
 }
 ?>

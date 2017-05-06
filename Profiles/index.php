@@ -220,7 +220,7 @@ function _searchdb(str) {
 					//get an itemNodeList object
 					itemNodeList = xmlDoc.getElementsByTagName("Items")[0].getElementsByTagName("Item");
 					//Purge the 'html' variable of previous search data
-					document.getElementById("xhttpdemo").innerHTML="";
+					document.getElementById("display-search-results").innerHTML="";
 				
 					if(itemNodeList.length>0) {
 							var html="";
@@ -250,7 +250,7 @@ function _searchdb(str) {
 								html+="<button onclick='displaymodal("+i+")'><i class='fa fa-plus-square-o'></i> Add Item</button>";
 								html+="</div>";
 								html+="</div>";
-								document.getElementById("xhttpdemo").innerHTML+=html;
+								document.getElementById("display-search-results").innerHTML+=html;
 							}
 					} else {
 						console.log("0 results were found");
@@ -654,8 +654,6 @@ function update_rep_item(i) {
 									</div><!--inventory-browse-->
 									
 									<div class="col-8" id="display-search-results">
-										<p id="xhttpdemo">
-										</p>
 										<!--Display results here-->
 										
 									</div><!--display-search-results-->

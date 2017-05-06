@@ -230,43 +230,48 @@ body {
 	background: linear-gradient(green, black);
 }
 .item-slide {
-	width: 240px;
-  height: 356px;
-  float: left;
-  margin: 2px 5px;
-  background-color: #d0eacf;
-  padding: 0px;
-  box-shadow: 0px 0px 5px 1px grey;
+    width: 240px;
+    min-height: 356px;
+    float: left;
+    margin: 10px 5px;
+    background-color: #fff;
+    padding: 0px;
 }
-.item-slide-header {
-	background-color: lightseagreen;
-	margin: 0px;
-	height: 240px;
-  padding: 5px;
+.item-slide:hover {
+    box-shadow: grey 0px 0px 8px;
 }
-.item-slide-header h3  {
-	margin: auto;
-	text-align: -webkit-center;
+.item-slide-image {
+    margin: 0px;
+    height: 240px;
+    padding: 5px;
+}
+.item-slide-image img {
+    width: 100%;
+    max-height: 240px;
+}
+.item-slide-image h3  {
+    margin: auto;
+    text-align: -webkit-center;
 }
 .item-slide-content {
-  padding: 0px 5px;
-	margin: 2px;
-	height: 110px;
-	font-size: 0.9em;
+    padding: 0px 5px;
+    margin: 2px;
+    height: 60px;
+    font-size: 0.9em;
 }
 .item-slide-content td {
-	padding: 0px;
+    padding: 0px;
 }
 .item-slide-content td:nth-child(odd) {
-	text-align: left;
+    text-align: left;
 }
 .item-slide-content td:nth-child(even) {
-	text-align: center;
+    text-align: center;
 }
 .item-slide-content table {
-	margin: auto;
-	width: 100%;
-	border-spacing: 0px;
+    margin: auto;
+    width: 100%;
+    border-spacing: 0px;
 }
 .r2c2row-head h3 {
     margin: auto;
@@ -552,7 +557,21 @@ span.psw {
 .required {
 	background-color: rgb(255, 248, 192);
 }
-
+#inventory-display {
+    display: block;
+    min-height: 600px;
+    background-color: #fff;
+}
+#inventory-display .item-slide-content {
+    height: 150px;
+    overflow-y: scroll;
+}
+.item-slide-content th, .item-slide-content td  {
+    text-align: left;
+}
+#inventory-display .item-slide {
+    width: 350px;
+}
 
 
 

@@ -72,8 +72,8 @@ include "include.php";
 							}
 							?>
 							<form class="search">
-							  <input type="text" name="search" placeholder="Search..">
-							  <input type="submit" value="Search">
+							  <input type="text" id="inventory-search" onkeydown="_checkenterkey(event)" name="search" placeholder="Search..">
+                                <input type="button" onclick="javascript:_searchdb(document.getElementById('inventory-search').value)" value="Search">
 							</form>
 							
 						</div><!--hor-menu-->
@@ -111,42 +111,199 @@ include "include.php";
 				</div><!--r2c1-->
 				<div class="col-9" id="r2c2">
 					<div class="r2c2row col-12">
-						<div class="r2c2row-content col-12">
-						
-							<div class="item-slide">
-								<div class="item-slide-header">
-									<h3>
-										Item name
-									</h3>
-								</div><!--item-slide-header-->
-								
-								<div class="item-slide-content">
-									<table>
-									
-										<tr>
-											<td>Property
-											<td><i>Value</i>
-										</tr>
-										<tr>
-											<td>Property
-											<td><i>Value</i>
-										</tr>
-										<tr>
-											<td>Property
-											<td><i>Value</i>
-										</tr>
-										<tr>
-											<td>Property
-											<td><i>Value</i>
-										</tr>
-
-									</table>
-								</div><!--item-slide-header-->
-							</div><!--item-slide-->
-							<?php//php to populate produce many item slides
-								
-							?>
+						<div class="r2c2row-content col-12" id="inventory-display">
+<!--Replaced with code to extract available items from database-->
 						</div><!--r2c2row-content col-12-->
+<script>
+    function _checkenterkey(event) {
+        if(event.key=='Enter') { //If it's the enter key, call the _searchdb function
+            event.preventDefault();
+            _searchdb(document.getElementById('inventory-search').value);
+        }
+    }
+
+    var itemNodeList;
+    function _searchdb(str) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.responseType = "document";//Only this way, shall we be able to return an XML/HTML document
+        xhttp.onreadystatechange = function() { //If we get a reply from the server
+            if(this.readyState==4 && this.status==200) { //Check the status and readystate
+                if(this.responseXML!=null) { //Do we have any meaningful response other than null?
+                    var xmlDoc = this.responseXML;
+                    console.log(xmlDoc);
+                    var returnStatus = xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
+                    if(returnStatus==0) {
+                        //get an itemNodeList object
+                        itemNodeList = xmlDoc.getElementsByTagName("Items")[0].getElementsByTagName("Item");
+                        //Purge the 'html' variable of previous search data
+                        document.getElementById("inventory-display").innerHTML="";
+
+                        if(itemNodeList.length>0) {
+                            var html="";
+                            var i=0;
+                            for(i=0;i<itemNodeList.length;i++) {
+                                html="<div class='item-slide'>";
+                                html+="<div class='item-slide-image'>";
+                                html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";
+                                html+="</div><!--item-slide-header-->"
+                                html+="<div class='item-slide-content' id='itemNo"+i+"'>"
+                                html+="<table>";
+                                html+="<tr>";
+                                html+="<th>Name</th>";
+                                html+="<td>"+getValue(itemNodeList, i, 'ItemName')+"</td>";
+                                html+="</tr>";
+                                html+="<tr>";
+                                html+="<th>Other Names</th>";
+                                html+="<td>"+getValue(itemNodeList, i, 'Aliases')+"</td>";
+                                html+="</tr>";
+                                html+="<tr>";
+                                html+="<th>Description</th>";
+                                html+="<td>"+getValue(itemNodeList, i, 'Description')+"</td>";
+                                html+="</tr>";
+                                html+="</table>";
+                                html+="</div><!--item-slide-header-->"
+                                html+="<div id='addToRep'>";//ID means 'Add to repository'
+                                html+="<button onclick='displaymodal("+i+")'><i class='fa fa-plus-square-o'></i> Add Item</button>";
+                                html+="</div>";
+                                html+="</div>";
+                                document.getElementById("inventory-display").innerHTML+=html;
+                            }
+                        } else {
+                            console.log("0 results were found");
+                        }
+                    } else if(returnStatus==1) { //returnStatus (defined in the php). 1=No results found.
+                        console.log("No matching results were found");
+                    } else if(returnStatus==2) { //2=couldn't connect to the database
+                        console.log("There was a problem connecting to the database");
+                    } else if(returnStatus==11) {
+                        window.alert("Please log in");
+                    }
+                } else { //For some weird reason, no XML, null returned.
+                    console.log("The is no response XML");
+                }
+            }
+        }
+        xhttp.open("GET", "Profiles/xhttp.php?table=Items&q="+str, true);
+        xhttp.send();
+    }
+
+    var itemNodeListr;
+    function _getInventory() {
+        console.log("The function is running");
+        var xmlhttpr = new XMLHttpRequest();
+        xmlhttpr.responseType = "document";
+        xmlhttpr.onreadystatechange = function() {
+            if(this.readyState==4 && this.status==200) {//The request was fulfilled
+                var xmlDoc = this.responseXML;
+                console.log(xmlDoc);
+                var returnStatus = xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
+                if(returnStatus==0) {//Results were found
+                    //get an itemNodeList object
+                    itemNodeListr = xmlDoc.getElementsByTagName("Items")[0].getElementsByTagName("Item");
+                    //Purge the 'html' variable of previous search data
+                    var invDisplay = document.getElementById("inventory-display");
+                    var html = "<div class='item-slide' onclick='javascript:add_to_inventory()' id='edit-inv-data'>";
+                    html+="<img src='../icons/add.png'>"
+                    html+="</div>"; //APPROPRIATE ID
+                    invDisplay.innerHTML=html;
+
+                    if(itemNodeListr.length>0) {
+                        var i = 0;
+                        var html="";
+                        for(i=0;i<itemNodeListr.length; i++) {
+                            html="<div class='item-slide'>";
+                            html+="<div class='item-slide-image'>";
+                            html+="<img src='"+getValue(itemNodeListr, i, 'ImageURI')+"'>";
+                            html+="</div><!--item-slide-header-->"
+                            html+="<div class='item-slide-content' id='itemid"+i+"'>"
+                            html+="<table>";
+                            html+="<tr>";
+                            html+="<th>Name</th>";
+                            html+="<td>"+getValue(itemNodeListr, i, 'ItemName')+"</td>";
+                            html+="</tr>";
+                            html+="<tr>";
+                            html+="<th>Other Names</th>";
+                            html+="<td>"+getValue(itemNodeListr, i, 'Aliases')+"</td>";
+                            html+="</tr>";
+                            html+="<tr>";
+                            html+="<th>Description</th>";
+                            html+="<td>"+getValue(itemNodeListr, i, 'Description')+"</td>";
+                            html+="</tr>";
+                            html+="<tr>";
+                            html+="<th>Quantity</th>";
+                            html+="<td>"+getValue(itemNodeListr, i, 'Quantity')+" "+getValue(itemNodeListr, i, 'Units')+"</td>";
+                            html+="</tr>";
+                            html+="<tr>";
+                            html+="<th>Unit Price</th>";
+                            html+="<td>"+getValue(itemNodeListr, i, 'UnitPrice')+"</td>";
+                            html+="</tr>";
+                            html+="<tr>";
+                            html+="<th>State</th>";
+                            html+="<td>"+getValue(itemNodeListr, i, 'State')+"</td>";
+                            html+="</tr>";
+                            html+="<tr>";
+                            html+="<th>Description</th>";
+                            html+="<td>"+getValue(itemNodeListr, i, 'Description')+"</td>";
+                            html+="</tr>";
+                            html+="<tr>";
+                            html+="<th>Added On</th>";
+                            html+="<td>"+getValue(itemNodeListr, i, 'DateAdded')+"</td>";
+                            html+="</tr>";
+                            html+="<th>Can Deliver? (Y/N) </th>";
+                            html+="<td>"+getValue(itemNodeListr, i, 'Deliverable')+"</td>";
+                            html+="</tr>";
+                            html+="<th>Can Deliver To: </th>";
+                            html+="<td>"+getValue(itemNodeListr, i, 'DeliverableAreas')+"</td>";
+                            html+="</tr>";
+                            html+="</table>";
+                            html+="</div><!--item-slide-header-->"
+                            html+="<div id='addToRep'>";//ID means 'Add to repository'
+                            html+="<button onclick='void(0)'><i class='fa fa-edit'></i> Edit</button>";
+                            html+="</div>";
+                            html+="<span onclick='rem_rep_item("+i+")' id='rem-rep-item"+i+"' class='close' title='Delete Item'>×</span>";
+                            html+="</div>";
+                            document.getElementById("inventory-display").innerHTML+=html;
+                        }
+                    }
+
+                } else if(returnStatus==1) {//No Results found
+                    console.log("No results were found");
+                } else if(returnStatus==2) {//Problem connecting to the database
+                    console.log("There was a problem connecting to the database");
+                } else if(returnStatus==11) {//User is not logged in. Not even sure how that's possible
+                    console.log("WTF? Is that even possible");
+                }
+            } else {//The request wasn't fulfilled for some reason
+                console.log("The request couldn't be fulfilled!");
+            }
+        }
+        xmlhttpr.open("GET", "xhttp.php?table=Repository", true);
+        xmlhttpr.send()
+    }
+    function getValue(nodeList, index, tagName) { //This function is just to make things shorter ^
+        var value = nodeList[index].getElementsByTagName(tagName)[0].childNodes[0].nodeValue
+        return value;
+    }
+    function displaymodal(i) { //This function sets the data in the modal. i identifies the item
+        var html=""; //in the itemNodeList
+        html="<div width=100%>";
+        html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";
+        html+="</div>";
+        document.getElementById("eAI-11").innerHTML=html;
+        html="<div width=100%>";
+        html+="<font size=6em position='center'>"+getValue(itemNodeList, i, 'ItemName')+"</font>";
+        html+="<br>Other names:\t"+getValue(itemNodeList, i, 'Aliases');
+        html+="<br>Description:\t"+getValue(itemNodeList, i, 'Description');
+        html+="</div>";
+        document.getElementById("item_submit_button").innerHTML="<button type='submit' onclick='submit_add_form("+i+")'><i class='fa fa-plus-square-o'></i>  Add to repository</button>";
+        document.getElementById("eAI-12").innerHTML=html;
+        document.getElementById("editAddItem").style.display="block";
+    }
+    var ddata;
+    ddata = _searchdb("");
+    document.getElementById("inventory-display").innerHTML=ddata;
+</script>
+
 					</div>
 
 				</div><!--r2c2-->

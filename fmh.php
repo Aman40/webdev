@@ -112,17 +112,20 @@ include "include.php";
 				<div class="col-9" id="r2c2">
 					<div class="r2c2row col-12">
 						<div class="r2c2row-content col-12" id="inventory-display">
-<!--Replaced with code to extract available items from database-->
+<!--Replaced with code to extract available items from database. Populated using id-->
 						</div><!--r2c2row-content col-12-->
 <script>
     function _checkenterkey(event) {
         if(event.key=='Enter') { //If it's the enter key, call the _searchdb function
-            event.preventDefault();
+            //The _searchdb function will extract the info, call the appropriate
+            //div by id and display the data.
+            event.preventDefault(); //Prevents the defaul of submitting the form + refreshing
             _searchdb(document.getElementById('inventory-search').value);
         }
     }
 
     var itemNodeList;
+    //TODO: Edit _searchdb function to allow to send a different table with the query
     function _searchdb(str) {
         var xhttp = new XMLHttpRequest();
         xhttp.responseType = "document";//Only this way, shall we be able to return an XML/HTML document
@@ -173,7 +176,9 @@ include "include.php";
                         }
                     } else if(returnStatus==1) { //returnStatus (defined in the php). 1=No results found.
                         console.log("No matching results were found");
-                    } else if(returnStatus==2) { //2=couldn't connect to the database
+                    } else if(returnStatus==2) { //2=Problem with the mysql query
+                        console.log("There was a problem with the mysql query")
+                    } else if(returnStatus==3) { //3=couldn't connect to the database
                         console.log("There was a problem connecting to the database");
                     } else if(returnStatus==11) {
                         window.alert("Please log in");
@@ -183,10 +188,9 @@ include "include.php";
                 }
             }
         }
-        xhttp.open("GET", "Profiles/xhttp.php?table=Items&q="+str, true);
+        xhttp.open("GET", "Profiles/xhttp.php?table=dashboard&q="+str, true);
         xhttp.send();
     }
-
     var itemNodeListr;
     function _getInventory() {
         console.log("The function is running");
@@ -299,8 +303,10 @@ include "include.php";
         document.getElementById("eAI-12").innerHTML=html;
         document.getElementById("editAddItem").style.display="block";
     }
+    //What lays below is read as the page loads, hence displaying the inventory
     var ddata;
     ddata = _searchdb("");
+    console.log(ddata)
     document.getElementById("inventory-display").innerHTML=ddata;
 </script>
 

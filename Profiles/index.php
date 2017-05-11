@@ -352,7 +352,7 @@ console.log("The function is running");
 			
 			} else if(returnStatus==1) {//No Results found
 				console.log("No results were found");
-			} else if(returnStatus==2) {//Problem connecting to the database
+			} else if(returnStatus==3) {//Problem connecting to the database
 				console.log("There was a problem connecting to the database");
 			} else if(returnStatus==11) {//User is not logged in. Not even sure how that's possible
 				console.log("WTF? Is that even possible");

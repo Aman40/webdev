@@ -24,13 +24,13 @@ include "../include.php";
 						
 							<div id="prof-pic">
 								<div id="prof-pic-img">
-								<?php
-								if($session_exists) {
-									echo '<img src="Pictures/'.$_SESSION["UserID"].'">';
-								} else {
-									echo '<img src="../icons/profile-pic-male.jpg">';
-								}
-								?>
+                                    <?php
+                                        if($session_exists) {
+                                            echo '<img src="Pictures/'.$_SESSION["UserID"].'">';
+                                        } else {
+                                            echo '<img src="../icons/profile-pic-male.jpg">';
+                                        }
+                                    ?>
 								</div><!--prof-picimg-->
 								<div id="prof-pic-name">
 									<?php
@@ -273,6 +273,7 @@ function _searchdb(str) {
 
 var itemNodeListr;
 function _getInventory() {
+    //This function
 console.log("The function is running");
 	var xmlhttpr = new XMLHttpRequest();
 	xmlhttpr.responseType = "document";
@@ -404,8 +405,7 @@ function displaymodal(i) { //This function sets the data in the modal. i identif
 															<div class="col-12" id="starchy">
 															
 <script>
-function hide_show(elmtId)
-{
+function hide_show(elmtId) {
 	var element = document.getElementById(elmtId);
 	var arrow = element.getElementsByTagName("i")[0];
 	element = element.getElementsByClassName('inventory-hidden')[0];
@@ -667,18 +667,22 @@ function update_rep_item(i) {
 							</div>
 							<div>
 							</div>
-							<script>
-							function reveal1hide23(div1, div2, div3) {
-								document.getElementById(div1).style.display="block";
-								document.getElementById(div2).style.display="none";
-								document.getElementById(div3).style.display="none";
-								if(div1=="inventory-container") {
-									_getInventory(); //Accesses the database and displays the items into 
-									document.getElementById('inventory-display').style.display='block';
-									document.getElementById('inventory-update').style.display='none';
-								}
-							}
-							</script>
+<script>
+function reveal1hide23(div1, div2, div3) {
+    document.getElementById(div1).style.display="block";
+    document.getElementById(div2).style.display="none";
+    document.getElementById(div3).style.display="none";
+    if(div1=="inventory-container") {
+        <?php
+            if($session_exists) {
+                echo "_getInventory(); //Retrieves database items";
+            }
+        ?>
+        document.getElementById('inventory-display').style.display='block';
+        document.getElementById('inventory-update').style.display='none';
+    }
+}
+</script>
 						</div><!--prof-page-main-->
 						
 					</div><!--col-12 r2c2row-->

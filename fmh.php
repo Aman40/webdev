@@ -5,7 +5,8 @@ include "include.php";
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link type="text/css" rel="stylesheet" href="fmh.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link type="text/css" rel="stylesheet" href="fmh.css">
 	</head>
 	<body>
 		<div id="main-wrapper">
@@ -83,33 +84,288 @@ include "include.php";
 				
 			</div><!--row-1-->
 			<div id="row-2">
-				<div class="col-3" id="r2c1">
-					<div class="r2c1row col-12">
-					
-						<div class="r2c1row-head col-12">
-							<h2>
-								Food Items
-							</h2>
-						</div><!--r2c1row-head col-12-->
-						
-					</div>
-					<?php
-						$list=array("Food Crops", "Cash Crops", "Animals", 
-						"Poultry", "Fish");
-						for($count=0;$count<count($list); $count++) {
-							echo '<div class="r2c1row col-12">
-					
-						<div class="r2c1row-head col-12">
-							<h2>
-								'.$list[$count].'
-							</h2>
-						</div><!--r2c1row-head col-12-->
-						
-					</div>';
-						}
-					?>
-				</div><!--r2c1-->
-				<div class="col-9" id="r2c2">
+                <div class="col-3" id="categories"> <!--search by category-->
+                    <div class="col-12" id="inventory-crops">
+                        <div class="col-12 lvl-1" onclick="javascript:hide_show('inventory-crops')">
+                            <i class="fa fa-caret-right"></i>
+                            Crops
+                        </div>
+
+                        <div class="col-12 inventory-hidden">
+
+                            <div class="col-12" id="inventory-food">
+                                <div class="col-12 lvl-2" onclick="javascript:hide_show('inventory-food')">
+                                    <i class="fa fa-caret-right	"></i>
+                                    Food crops
+                                </div>
+                                <div class="col-12 inventory-hidden"><!--Group starts here-->
+                                    <div class="col-12" id="starchy">
+
+                                        <script>
+                                            function hide_show(elmtId)
+                                            {
+                                                var element = document.getElementById(elmtId);
+                                                var arrow = element.getElementsByTagName("i")[0];
+                                                element = element.getElementsByClassName('inventory-hidden')[0];
+                                                //if it's hidden show it. If it's visible, hide it.
+                                                if(element.style.display=="none" || element.style.display=="") {
+                                                    element.style.display="block";
+                                                    arrow.className="fa fa-caret-down";
+                                                } else {
+                                                    element.style.display="none";
+                                                    arrow.className="fa fa-caret-right";
+                                                }
+                                            }
+                                            function add_to_inventory() { //Hide inventory data onclick
+                                                var x=document.getElementById('inventory-display');
+                                                var y=document.getElementById('inventory-update');
+                                                console.log(x.style.display);
+                                                console.log(y.style.display);
+                                                if(x.style.display=='block' && y.style.display=='none') {
+                                                    console.log("Conditions fulfilled");
+                                                    x.style.display='none';
+                                                    y.style.display='block';
+                                                } else {
+                                                    x.style.display='block';
+                                                    y.style.display='none';
+                                                }
+                                            }
+                                            function rem_rep_item(i) {
+                                                //Extract the node's itemID
+                                                var RepID = getValue(itemNodeListr, i, 'RepID'); //Assuming the iremNodeListr object still exists
+                                                //Access the db and delete the node;
+                                                var xmlhttp = new XMLHttpRequest();
+                                                xmlhttp.responseType = "document";
+                                                xmlhttp.onreadystatechange = function() {
+                                                    //Check the return status for success/failure
+                                                    if(this.readyState==4 && this.status==200) {
+                                                        var xmlDoc = this.responseXML;
+                                                        console.log(xmlDoc);
+                                                        var return_status = xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
+                                                        if(return_status==0) { //Success. Rerun the _srchdb() function
+                                                            alert("Item Deleted");
+                                                        } else if(return_status==1) {
+                                                            alert("A problem occurred");
+                                                        } else {
+                                                            console.log(return_status);
+                                                            reveal1hide23('inventory-container', 'prof-container', 'prof-orders');
+                                                        }
+                                                    } else { //There was a problem at the server end
+                                                        console.log("There was a problem!");
+                                                        console.log(this.readyState);
+                                                        console.log(this.status);
+                                                    }
+                                                }
+                                                xmlhttp.open("GET", "xhttp.php?table=delete_item&RepID="+RepID, true);
+                                                xmlhttp.send();
+                                            }
+                                            function update_rep_item(i) {
+                                                itemID = getValue(itemNodeListr, i, 'itemID');
+                                            }
+                                        </script>
+
+                                        <div class="col-12 lvl-3" onclick="javascript:hide_show('starchy')">
+                                            <i class="fa fa-caret-right	"></i>
+                                            Starchy foods
+                                        </div>
+                                        <div class="col-12 inventory-hidden">
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Bananas')">
+                                                Bananas/Matooke
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Cassava')">
+                                                Cassava
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Rice')">
+                                                Rice
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Sweet Potatoes')">
+                                                Sweet Potatoes
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Irish Potatoes')">
+                                                Irish Potatoes
+                                            </div>
+                                        </div>
+                                    </div><!--starchy-->
+                                    <div class="col-12" id="fruits">
+                                        <div class="col-12 lvl-3" onclick="javascript:hide_show('fruits')">
+                                            <i class="fa fa-caret-right	"></i>
+                                            Fruits
+                                        </div>
+                                        <div class="col-12 inventory-hidden">
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Yellow Bananas')">
+                                                Yellow Bananas
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Passion Fruits')">
+                                                Passion Fruits
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Tomatoes')">
+                                                Tomatoes
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Avocadoes')">
+                                                Avocadoes
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Egg Plant')">
+                                                Egg Plant
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Plantain')">
+                                                Plantain/Gonja
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Paprika')">
+                                                Paprika
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Mangoes')">
+                                                Mangoes
+                                            </div>
+                                        </div>
+                                    </div><!--fruits-->
+                                    <div class="col-12" id="veggies">
+                                        <div class="col-12 lvl-3" onclick="javascript:hide_show('veggies')">
+                                            <i class="fa fa-caret-right	"></i>
+                                            Vegetables
+                                        </div>
+                                        <div class="col-12 inventory-hidden">
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Cabbage')">
+                                                Cabbage
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Amaranthus')">
+                                                Dodo/Amaranthus
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Nakati')">
+                                                Nakati
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Sukuma Wiki')">
+                                                Sukuma Wiki
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Lettuce')">
+                                                Lettuce
+                                            </div>
+                                        </div>
+                                    </div><!--veggies-->
+                                    <div class="col-12" id="legumes">
+                                        <div class="col-12 lvl-3" onclick="javascript:hide_show('legumes')">
+                                            <i class="fa fa-caret-right	"></i>
+                                            Legumes
+                                        </div>
+                                        <div class="col-12 inventory-hidden">
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Beans')">
+                                                Beans
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Ground Nuts')">
+                                                Ground Nuts/Pea Nuts
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Peas')">
+                                                Peas
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Lentils')">
+                                                Lentils
+                                            </div>
+                                            <div class="col-12 lvl-4" onclick="_searchdb('Soy Beans')">
+                                                Soy Beans
+                                            </div>
+                                        </div><!--hidden-->
+                                    </div><!--legumes-->
+
+                                </div><!--Group ends here-->
+
+                            </div><!--inventory-food-->
+
+                            <div class="col-12" id="inventory-cash">
+                                <div class="lvl-2" onclick="javascript:hide_show('inventory-cash')">
+                                    <i class="fa fa-caret-right	"></i>
+                                    Cash Crops
+                                </div>
+                                <div class="col-12 inventory-hidden">
+                                    <div class="lvl-3" onclick="_searchdb('Coffee')">
+                                        Coffee
+                                    </div>
+                                    <div class="lvl-3" onclick="_searchdb('Cotton')">
+                                        Cotton
+                                    </div>
+                                    <div class="lvl-3" onclick="_searchdb('Tea')">
+                                        Tea
+                                    </div>
+                                </div>
+                            </div><!--inventory-cash-->
+
+                        </div>
+
+                    </div><!--inventory-crops-->
+
+                    <div class="col-12" id="inventory-animals">
+                        <div class="col-12 lvl-1" onclick="javascript:hide_show('inventory-animals')">
+                            <i class="fa fa-caret-right	"></i>
+                            Animals
+                        </div>
+                        <div class="col-12 inventory-hidden">
+                            <div class="col-12 lvl-2" onclick="_searchdb('Cows')">
+                                Cows
+                            </div>
+                            <div class="col-12 lvl-2" onclick="_searchdb('Goats')">
+                                Goats
+                            </div>
+                            <div class="col-12 lvl-2" onclick="_searchdb('Sheep')">
+                                Sheep
+                            </div>
+                        </div>
+                    </div><!--inventory-animals-->
+
+                    <div class="col-12" id="inventory-poultry">
+                        <div class="col-12 lvl-1" onclick="javascript:hide_show('inventory-poultry')">
+                            <i class="fa fa-caret-right	"></i>
+                            Poultry
+                        </div>
+                        <div class="col-12 inventory-hidden">
+                            <div class="col-12 lvl-2" onclick="_searchdb('Chicken')">
+                                Chicken
+                            </div>
+                            <div class="col-12 lvl-2" onclick="_searchdb('Ducks')">
+                                Ducks
+                            </div>
+                            <div class="col-12 lvl-2" onclick="_searchdb('Turkeys')">
+                                Turkeys
+                            </div>
+                        </div>
+                    </div><!--inventory-animals-->
+
+                    <div class="col-12" id="inventory-fish">
+                        <div class="col-12 lvl-1" onclick="javascript:hide_show('inventory-fish')">
+                            <i class="fa fa-caret-right	"></i>
+                            Fish
+                        </div>
+                        <div class="col-12 inventory-hidden">
+                            <div class="col-12 lvl-2" onclick="_searchdb('Tilapia')">
+                                Tilapia
+                            </div>
+                            <div class="col-12 lvl-2" onclick="_searchdb('Cat Fish')">
+                                Cat Fish
+                            </div>
+                            <div class="col-12 lvl-2" onclick="_searchdb('Mud Fish')">
+                                Mud Fish
+                            </div>
+                            <div class="col-12 lvl-2" onclick="_searchdb('Nile Perch')">
+                                Nile Perch
+                            </div>
+                        </div>
+                    </div><!--inventory-animals-->
+
+                </div><!--search by category-->
+<script>
+    function hide_show(elmtId) {
+        var element = document.getElementById(elmtId);
+        var arrow = element.getElementsByTagName("i")[0];
+        element = element.getElementsByClassName('inventory-hidden')[0];
+        //if it's hidden show it. If it's visible, hide it.
+        if(element.style.display=="none" || element.style.display=="") {
+            element.style.display="block";
+            arrow.className="fa fa-caret-down";
+        } else {
+            element.style.display="none";
+            arrow.className="fa fa-caret-right";
+        }
+    }
+</script>
+
+                <div class="col-9" id="r2c2">
 					<div class="r2c2row col-12">
 						<div class="r2c2row-content col-12" id="inventory-display">
 <!--Replaced with code to extract available items from database. Populated using id-->
@@ -150,24 +406,8 @@ include "include.php";
                                 html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";
                                 html+="</div><!--item-slide-header-->"
                                 html+="<div class='item-slide-content' id='itemNo"+i+"'>"
-                                html+="<table>";
-                                html+="<tr>";
-                                html+="<th>Name</th>";
-                                html+="<td>"+getValue(itemNodeList, i, 'ItemName')+"</td>";
-                                html+="</tr>";
-                                html+="<tr>";
-                                html+="<th>Other Names</th>";
-                                html+="<td>"+getValue(itemNodeList, i, 'Aliases')+"</td>";
-                                html+="</tr>";
-                                html+="<tr>";
-                                html+="<th>Description</th>";
-                                html+="<td>"+getValue(itemNodeList, i, 'Description')+"</td>";
-                                html+="</tr>";
-                                html+="</table>";
+                                html+="<span class='dash_item_name'>"+getValue(itemNodeList, i, 'ItemName')+"</span>";
                                 html+="</div><!--item-slide-header-->"
-                                html+="<div id='addToRep'>";//ID means 'Add to repository'
-                                html+="<button onclick='displaymodal("+i+")'><i class='fa fa-plus-square-o'></i> Add Item</button>";
-                                html+="</div>";
                                 html+="</div>";
                                 document.getElementById("inventory-display").innerHTML+=html;
                             }
@@ -188,7 +428,7 @@ include "include.php";
                 }
             }
         }
-        xhttp.open("GET", "Profiles/xhttp.php?table=dashboard&q="+str, true);
+        xhttp.open("GET", "Profiles/xhttp.php?table=nonlogged&q="+str, true);
         xhttp.send();
     }
     var itemNodeListr;
@@ -281,7 +521,7 @@ include "include.php";
                 console.log("The request couldn't be fulfilled!");
             }
         }
-        xmlhttpr.open("GET", "xhttp.php?table=Repository", true);
+        xmlhttpr.open("GET", "xhttp.php?table=nonlogged", true);
         xmlhttpr.send()
     }
     function getValue(nodeList, index, tagName) { //This function is just to make things shorter ^

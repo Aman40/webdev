@@ -204,6 +204,13 @@ Functionality goals for fmh.php
 -Create a web page to manage the database
 -Come back here and create new tasks
 
+CURRENT PROBLEMS AS OF 2017/05/16
+When the user is not logged in, it doesn't matter which "table" it is, the xhttp.php
+function invokes the _search_all_db() function
+    Solution:   Check the table name
+                Make sure non logged in users can't run the function
+
+
 
 
 

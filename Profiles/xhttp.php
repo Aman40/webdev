@@ -3,7 +3,7 @@ session_start();
 include "customErrorHandler2.php";
 set_error_handler("customErrorHandler2");
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-if(isset($_SESSION['UserID'])) {
+if(isset($_SESSION['UserID'])) { //The User is logged in
 	$UserID = $_SESSION['UserID'];
 
     $table = filter($_REQUEST['table']);
@@ -127,8 +127,14 @@ if(isset($_SESSION['UserID'])) {
                 echo "<status>1</status>";//Failure
             }
             $conn->close();
-        } else if ($_table=='dashboard') {
-            _search_all_db("");
+        } else if ($table=='dashboard') { //logged in and accessing db
+            if(isset($_REQUEST['q'])) {
+                $str = $_REQUEST['q'];
+            } else {
+                $str = "";
+            }
+            echo "<sstr>".$str."</sstr>";
+            _search_all_db($str);
         }
     } else {
         echo "<status>3</status>"; //There's a problem with the connection to the database
@@ -137,9 +143,18 @@ if(isset($_SESSION['UserID'])) {
 } else { //User is not logged in. I.e the fmh main dashboard.
     //Search the database for given item or all where q=""
 	//Create a function to probe the database regardless of whether or not the user is logged in
-    $str = $_REQUEST['q'];
-    _search_all_db($str);
-
+    //Check the "table" value
+    if(isset($_REQUEST['table'])) {
+        $table=filter($_REQUEST['table']);
+    } else {
+        $table="";
+    }
+    if($table=="nonlogged") {
+        $str = filter($_REQUEST['q']);
+        _search_all_db($str);
+    } else {
+        echo "<status>11</status>";
+    }
 }
 
 function filter($entry) {

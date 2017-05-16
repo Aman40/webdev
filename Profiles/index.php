@@ -359,7 +359,8 @@ console.log("The function is running");
 				console.log("WTF? Is that even possible");
 			}
 		} else {//The request wasn't fulfilled for some reason
-			console.log("The request couldn't be fulfilled!");
+			console.log("ReadyState = "+this.readyState);
+			console.log("Status = "+this.status)
 		}
 	}
 	xmlhttpr.open("GET", "xhttp.php?table=Repository", true);
@@ -419,17 +420,21 @@ function hide_show(elmtId) {
 	}
 }
 function add_to_inventory() { //Hide inventory data onclick
-	var x=document.getElementById('inventory-display');
-	var y=document.getElementById('inventory-update');
-	console.log(x.style.display);
-	console.log(y.style.display);
-	if(x.style.display=='block' && y.style.display=='none') {
+	var idisplay=document.getElementById('inventory-display');
+	var iupdate=document.getElementById('inventory-update');
+	console.log(idisplay.style.display);
+	console.log(iupdate.style.display);
+	if(idisplay.style.display=='block' && iupdate.style.display=='none') {
 	console.log("Conditions fulfilled");
-		x.style.display='none';
-		y.style.display='block';
-	} else {
-		x.style.display='block';
-		y.style.display='none';
+		idisplay.style.display='none';
+		iupdate.style.display='block';
+	} else if(idisplay.style.display=='' && iupdate.style.display=='none') { //Same statements as above
+        idisplay.style.display='none';
+        iupdate.style.display='block';
+    } else {
+	    console.log("Conditions unfulfilled")
+		idisplay.style.display='block';
+		iupdate.style.display='none';
 	}
 }
 function rem_rep_item(i) {
@@ -722,7 +727,7 @@ function _selected($var) {
     	<label><b>First Name</b></label><span class="error"> *<?php echo $fname_error ?></span>
 		<input type="text" class="required" placeholder="First Name" name="fname" value="<?php fill_in_blanks('fname','FirstName'); ?>" required>
 		
-		<label><b>Middle Name</b></label><span>
+		<label><b>Middle Name</b></label>
 		<input type="text" placeholder="Middle Name" name="mname" value="<?php fill_in_blanks('mname','MiddleName'); ?>">
 		
 		<label><b>Last Name</b></label><span class="error"> *<?php echo " ".$lname_error ?></span>
@@ -737,7 +742,7 @@ function _selected($var) {
 		<input type="radio" class="required" name="sex" value="C" required <?php _selected('C'); ?> >Company<br><br>
 		
 		<label><b>Date of Birth</b></label><span class="error"> *<?php echo " ".$dob_error; ?></span><br>
-		<input type="date" class="required" class="wide" name="dob" required value="<?php fill_in_blanks('dob','DoB'); ?>"><br><br>
+		<input type="date" class="required wide" name="dob" required value="<?php fill_in_blanks('dob','DoB'); ?>"><br><br>
 		
 		<label><b>District of Operation</b></label><span class="error"> *<?php echo " ".$district_error ?></span>
 		<input type="text" class="required" placeholder="District" name="district" value="<?php fill_in_blanks('district','District'); ?>" required>
@@ -755,7 +760,7 @@ function _selected($var) {
 		<input type="text" placeholder="e.g www.domain.com" name="website" value="<?php fill_in_blanks('website','Website'); ?>">
 		
 		<label><b>About Yourself</b></label><br>
-		<textarea style="width: 100%" placeholder="About yourself..." name="about" value="<?php fill_in_blanks('about','About'); ?>"></textarea><br>
+		<textarea style="width: 100%" name="about" placeholder="<?php fill_in_blanks('about','About'); ?>"></textarea><br>
 
 		<input type="checkbox" checked="checked"> Remember me
 		<p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>

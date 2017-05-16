@@ -127,7 +127,7 @@ if(isset($_SESSION['UserID'])) { //The User is logged in
                 echo "<status>1</status>";//Failure
             }
             $conn->close();
-        } else if ($table=='dashboard') { //logged in and accessing db
+        } else if ($table=='nonlogged') { //logged in and accessing db
             if(isset($_REQUEST['q'])) {
                 $str = $_REQUEST['q'];
             } else {
@@ -156,7 +156,6 @@ if(isset($_SESSION['UserID'])) { //The User is logged in
         echo "<status>11</status>";
     }
 }
-
 function filter($entry) {
     $entry = htmlspecialchars($entry); //Against any XSS and SQL injections
     $entry = trim($entry); //Against SQL injections

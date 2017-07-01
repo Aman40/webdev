@@ -233,7 +233,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 						if($result!=null) { //If "username" matches, compare passwords and set session data.
 							$row = $result->fetch_assoc(); //$result will hold a row of the data or null
 							echo "<script>console.log('Setting new session variables');</script>";
-			
+
 									$_SESSION['UserID'] = $row['UserID'];
 									$_SESSION['Sex'] = $row['Sex'];
 									$_SESSION['DoB'] = $row['DoB'];

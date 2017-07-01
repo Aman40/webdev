@@ -50,7 +50,8 @@ if(isset($_SESSION['UserID'])) { //The User is logged in
                 echo "<status>2</status>"; //No results found
             }
             $conn->close(); //Close the connection
-        } else if($table=="Repository") { //For listing a particular users items
+        }
+        else if($table=="Repository") { //For listing a particular users items
             $sql = "SELECT Items.ItemID AS ItemID,
 					Items.ItemName AS ItemName,
 					Items.Aliases AS Aliases,
@@ -116,7 +117,8 @@ if(isset($_SESSION['UserID'])) { //The User is logged in
             } else {//A problem occured during execution of the query
                 echo "<status>2</status>";
             }
-        } else if($table=='delete_item') { //Particular logged in user deleting repository item
+        }
+        else if($table=='delete_item') { //Particular logged in user deleting repository item
             //Get the itemID
             $RepID = filter($_REQUEST['RepID']);
             $sql = "DELETE FROM Repository WHERE RepID='".$RepID."'";
@@ -127,7 +129,8 @@ if(isset($_SESSION['UserID'])) { //The User is logged in
                 echo "<status>1</status>";//Failure
             }
             $conn->close();
-        } else if ($table=='nonlogged') { //logged in and accessing db
+        }
+        else if ($table=='nonlogged') { //logged in and accessing db
             if(isset($_REQUEST['q'])) {
                 $str = $_REQUEST['q'];
             } else {
@@ -136,7 +139,11 @@ if(isset($_SESSION['UserID'])) { //The User is logged in
             echo "<sstr>".$str."</sstr>";
             _search_all_db($str);
         }
-    } else {
+        else if ($table=="sellerdata") {
+            //incomplete
+        }
+    }
+    else {
         echo "<status>3</status>"; //There's a problem with the connection to the database
     }
 
@@ -152,16 +159,28 @@ if(isset($_SESSION['UserID'])) { //The User is logged in
     if($table=="nonlogged") {
         $str = filter($_REQUEST['q']);
         _search_all_db($str);
-    } else {
+    }
+    else if($table=="sellerdata") {
+        //incomplete
+        if(isset($_REQUEST['UserID'])) {
+            $userid = $_REQUEST['UserID'];
+        } else {
+            //later
+        }
+        _getuserinfo($userid);
+    }
+    else {
         echo "<status>11</status>";
     }
 }
+//Filter user input data to prevent XSS or SQL Injections
 function filter($entry) {
     $entry = htmlspecialchars($entry); //Against any XSS and SQL injections
     $entry = trim($entry); //Against SQL injections
     $entry = stripslashes($entry);
     return $entry; //Sanitized input
 }
+//When optional fields are empty, fill in default values
 function setdefault($value, $default) {
     if($value==null) {
         return $default;
@@ -169,6 +188,7 @@ function setdefault($value, $default) {
         return $value;
     }
 }
+//_search_all_db() searches for all items available for sale, i.e items in the Repository
 function _search_all_db($str)
 {
     $servername = "localhost";
@@ -178,7 +198,8 @@ function _search_all_db($str)
     $reply="<Items>";
     $conn = new mysqli($servername, $username, $password, $database);
     if(!$conn->connect_error) { //connection succeeded
-        $sql = "SELECT TempTable.ItemID AS ItemID,
+        $sql = "SELECT Repository.UserID AS UserID, /*UserID will be used to retrieve userinfo*/
+                    TempTable.ItemID AS ItemID,
 					TempTable.ItemName AS ItemName,
 					TempTable.Aliases AS Aliases,
 					TempTable.Category AS Category,
@@ -200,10 +221,11 @@ function _search_all_db($str)
 					  ;
         $result = $conn->query($sql);
         if($result!=false) { //Query executed successfully
-            if($result->num_rows>0) {//At least one record was found
+            if($result->num_rows>0) { //At least one record was found
                 echo "<status>0</status>";
-
-                while($row=$result->fetch_assoc()) {//Fetch row by row
+                while($row=$result->fetch_assoc()) { //Fetch row by row
+                    global $UserID;
+                    $UserID = $row['UserID'];
                     $ItemID = $row['ItemID'];
                     $ItemName = $row['ItemName'];
                     $Aliases = setdefault($row['Aliases'], "None");
@@ -220,6 +242,7 @@ function _search_all_db($str)
                     $Deliverable = $row['Deliverable'];
                     $DeliverableAreas = $row['DeliverableAreas'];
                     $reply.="<Item>";
+                    $reply.="<UserID>".$UserID."</UserID>";
                     $reply.="<ItemID>".$ItemID."</ItemID>";
                     $reply.="<ItemName>".$ItemName."</ItemName>";
                     $reply.="<Aliases>".$Aliases."</Aliases>";
@@ -241,6 +264,8 @@ function _search_all_db($str)
                 $reply.="</Items>";
                 //Return the xml
                 echo $reply;
+
+
             } else { //No results were found
                 echo "<status>1</status>";
             }
@@ -251,4 +276,45 @@ function _search_all_db($str)
     } else { //connection failed
         echo "<status>3</status>";
     }
+}
+
+function _getuserinfo($userid) { //SHOULD IT ECHO TO OUTPUT OR RETURN TO CALLING FUNCTION?
+    $conn = new mysqli("localhost", "aman", "password", "test");
+    if(!$conn->connect_error) {
+        $query = "SELECT * FROM Users where UserID  = '".$userid."'";
+        $result = $conn->query($query);//Returns null (not an object) when there's nothing
+        if($result!=null) { //If "username" matches, compare passwords and set session data.
+            $row = $result->fetch_assoc(); //$result will hold a row of the data or null
+            $Sex = $row['Sex'];
+            $FirstName = $row['FirstName'];
+            $LastName = $row['LastName'];
+            $Website = $row['Website'];
+            $PhoneNo = $row['PhoneNo'];
+            $About = $row['About'];
+            $CoName = $row['CoName'];
+            $District = $row['District'];
+            $Email = $row['Email'];
+            //Echo the extracted values into a return string
+            $userData="<userdata>";
+            $userData.="<sex>".$Sex."</sex>";
+            $userData.="<firstname>".$FirstName."</firstname>";
+            $userData.="<lastname>".$LastName."</lastname>";
+            $userData.="<website>".$Website."</website>";
+            $userData.="<phoneno>".$PhoneNo."</phoneno>";
+            $userData.="<about>".$About."</about>";
+            $userData.="<coname>".$CoName."</coname>";
+            $userData.="<district>".$District."</district>";
+            $userData.="<email>".$Email."</email>";
+            $userData.="</userdata>";
+            //Send results
+            echo $userData;
+            echo "<status>0</status>";
+
+        } else { //Error in Username?
+            echo "<script>console.log('I dont even know what the problem is');</script>";
+        }
+    } else { //Connection wasn't established
+        echo "<status>3</status>";
+    }
+    //END HERE
 }

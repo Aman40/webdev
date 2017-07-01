@@ -35,7 +35,7 @@ include "include.php";
 								<div id="prof-pic-name">
 									<?php
 										if($session_exists) {
-											echo '<span>Hello, '.$_SESSION["FirstName"].'. <a 
+											echo '<span>'.$_SESSION["FirstName"].'<br><a 
 											href="logoff.php">Log Out</a></span>';
 										}
 									?>
@@ -101,68 +101,68 @@ include "include.php";
                                 <div class="col-12 inventory-hidden"><!--Group starts here-->
                                     <div class="col-12" id="starchy">
 
-                                        <script>
-                                            function hide_show(elmtId)
-                                            {
-                                                var element = document.getElementById(elmtId);
-                                                var arrow = element.getElementsByTagName("i")[0];
-                                                element = element.getElementsByClassName('inventory-hidden')[0];
-                                                //if it's hidden show it. If it's visible, hide it.
-                                                if(element.style.display=="none" || element.style.display=="") {
-                                                    element.style.display="block";
-                                                    arrow.className="fa fa-caret-down";
-                                                } else {
-                                                    element.style.display="none";
-                                                    arrow.className="fa fa-caret-right";
-                                                }
-                                            }
-                                            function add_to_inventory() { //Hide inventory data onclick
-                                                var x=document.getElementById('inventory-display');
-                                                var y=document.getElementById('inventory-update');
-                                                console.log(x.style.display);
-                                                console.log(y.style.display);
-                                                if(x.style.display=='block' && y.style.display=='none') {
-                                                    console.log("Conditions fulfilled");
-                                                    x.style.display='none';
-                                                    y.style.display='block';
-                                                } else {
-                                                    x.style.display='block';
-                                                    y.style.display='none';
-                                                }
-                                            }
-                                            function rem_rep_item(i) {
-                                                //Extract the node's itemID
-                                                var RepID = getValue(itemNodeListr, i, 'RepID'); //Assuming the iremNodeListr object still exists
-                                                //Access the db and delete the node;
-                                                var xmlhttp = new XMLHttpRequest();
-                                                xmlhttp.responseType = "document";
-                                                xmlhttp.onreadystatechange = function() {
-                                                    //Check the return status for success/failure
-                                                    if(this.readyState==4 && this.status==200) {
-                                                        var xmlDoc = this.responseXML;
-                                                        console.log(xmlDoc);
-                                                        var return_status = xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
-                                                        if(return_status==0) { //Success. Rerun the _srchdb() function
-                                                            alert("Item Deleted");
-                                                        } else if(return_status==1) {
-                                                            alert("A problem occurred");
-                                                        } else {
-                                                            console.log(return_status);
-                                                            reveal1hide23('inventory-container', 'prof-container', 'prof-orders');
-                                                        }
-                                                    } else { //There was a problem at the server end
-                                                        console.log("There was a problem!");
-                                                        console.log(this.readyState);
-                                                        console.log(this.status);
-                                                    }
-                                                }
-                                                xmlhttp.open("GET", "xhttp.php?table=delete_item&RepID="+RepID, true);
-                                                xmlhttp.send();
-                                            }
-                                            function update_rep_item(i) {
-                                                itemID = getValue(itemNodeListr, i, 'itemID');
-                                            }
-                                        </script>
+<script>
+    function hide_show(elmtId)
+    {
+        var element = document.getElementById(elmtId);
+        var arrow = element.getElementsByTagName("i")[0];
+        element = element.getElementsByClassName('inventory-hidden')[0];
+        //if it's hidden show it. If it's visible, hide it.
+        if(element.style.display=="none" || element.style.display=="") {
+            element.style.display="block";
+            arrow.className="fa fa-caret-down";
+        } else {
+            element.style.display="none";
+            arrow.className="fa fa-caret-right";
+        }
+    }
+    function add_to_inventory() { //Hide inventory data onclick
+        var x=document.getElementById('inventory-display');
+        var y=document.getElementById('inventory-update');
+        console.log(x.style.display);
+        console.log(y.style.display);
+        if(x.style.display=='block' && y.style.display=='none') {
+            console.log("Conditions fulfilled");
+            x.style.display='none';
+            y.style.display='block';
+        } else {
+            x.style.display='block';
+            y.style.display='none';
+        }
+    }
+    function rem_rep_item(i) {
+        //Extract the node's itemID
+        var RepID = getValue(repItemNodeList, i, 'RepID'); //Assuming the iremNodeListr object still exists
+        //Access the db and delete the node;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.responseType = "document";
+        xmlhttp.onreadystatechange = function() {
+            //Check the return status for success/failure
+            if(this.readyState==4 && this.status==200) {
+                var xmlDoc = this.responseXML;
+                console.log(xmlDoc);
+                var return_status = xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
+                if(return_status==0) { //Success. Rerun the _srchdb() function
+                    alert("Item Deleted");
+                } else if(return_status==1) {
+                    alert("A problem occurred");
+                } else {
+                    console.log(return_status);
+                    reveal1hide23('inventory-container', 'prof-container', 'prof-orders');
+                }
+            } else { //There was a problem at the server end
+                console.log("There was a problem!");
+                console.log(this.readyState);
+                console.log(this.status);
+            }
+        }
+        xmlhttp.open("GET", "xhttp.php?table=delete_item&RepID="+RepID, true);
+        xmlhttp.send();
+    }
+    function update_rep_item(i) {
+        itemID = getValue(repItemNodeList, i, 'itemID');
+    }
+</script>
 
                                         <div class="col-12 lvl-3" onclick="javascript:hide_show('starchy')">
                                             <i class="fa fa-caret-right	"></i>
@@ -349,21 +349,6 @@ include "include.php";
                     </div><!--inventory-animals-->
 
                 </div><!--search by category-->
-<script>
-    function hide_show(elmtId) {
-        var element = document.getElementById(elmtId);
-        var arrow = element.getElementsByTagName("i")[0];
-        element = element.getElementsByClassName('inventory-hidden')[0];
-        //if it's hidden show it. If it's visible, hide it.
-        if(element.style.display=="none" || element.style.display=="") {
-            element.style.display="block";
-            arrow.className="fa fa-caret-down";
-        } else {
-            element.style.display="none";
-            arrow.className="fa fa-caret-right";
-        }
-    }
-</script>
 
                 <div class="col-9" id="r2c2">
 					<div class="r2c2row col-12">
@@ -381,7 +366,7 @@ include "include.php";
     }
 
     var itemNodeList;
-    //TODO: Edit _searchdb function to allow to send a different table with the query
+    //TODO: Edit _searchdb function to allow to send a different table (dashboard?) with the query
     function _searchdb(str) {
         var xhttp = new XMLHttpRequest();
         xhttp.responseType = "document";//Only this way, shall we be able to return an XML/HTML document
@@ -401,7 +386,7 @@ include "include.php";
                             var html="";
                             var i=0;
                             for(i=0;i<itemNodeList.length;i++) {
-                                html="<div class='item-slide'>";
+                                html="<div class='item-slide' onclick='_getUserInfo("+i+")'>";
                                 html+="<div class='item-slide-image'>";
                                 html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";
                                 html+="</div><!--item-slide-header-->"
@@ -431,123 +416,136 @@ include "include.php";
         xhttp.open("GET", "Profiles/xhttp.php?table=nonlogged&q="+str, true);
         xhttp.send();
     }
-    var itemNodeListr;
-    function _getInventory() {
-        console.log("The function is running");
-        var xmlhttpr = new XMLHttpRequest();
-        xmlhttpr.responseType = "document";
-        xmlhttpr.onreadystatechange = function() {
-            if(this.readyState==4 && this.status==200) {//The request was fulfilled
-                var xmlDoc = this.responseXML;
-                console.log(xmlDoc);
-                var returnStatus = xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
-                if(returnStatus==0) {//Results were found
-                    //get an itemNodeList object
-                    itemNodeListr = xmlDoc.getElementsByTagName("Items")[0].getElementsByTagName("Item");
-                    //Purge the 'html' variable of previous search data
-                    var invDisplay = document.getElementById("inventory-display");
-                    var html = "<div class='item-slide' onclick='javascript:add_to_inventory()' id='edit-inv-data'>";
-                    html+="<img src='../icons/add.png'>"
-                    html+="</div>"; //APPROPRIATE ID
-                    invDisplay.innerHTML=html;
-
-                    if(itemNodeListr.length>0) {
-                        var i = 0;
-                        var html="";
-                        for(i=0;i<itemNodeListr.length; i++) {
-                            html="<div class='item-slide'>";
-                            html+="<div class='item-slide-image'>";
-                            html+="<img src='"+getValue(itemNodeListr, i, 'ImageURI')+"'>";
-                            html+="</div><!--item-slide-header-->"
-                            html+="<div class='item-slide-content' id='itemid"+i+"'>"
-                            html+="<table>";
-                            html+="<tr>";
-                            html+="<th>Name</th>";
-                            html+="<td>"+getValue(itemNodeListr, i, 'ItemName')+"</td>";
-                            html+="</tr>";
-                            html+="<tr>";
-                            html+="<th>Other Names</th>";
-                            html+="<td>"+getValue(itemNodeListr, i, 'Aliases')+"</td>";
-                            html+="</tr>";
-                            html+="<tr>";
-                            html+="<th>Description</th>";
-                            html+="<td>"+getValue(itemNodeListr, i, 'Description')+"</td>";
-                            html+="</tr>";
-                            html+="<tr>";
-                            html+="<th>Quantity</th>";
-                            html+="<td>"+getValue(itemNodeListr, i, 'Quantity')+" "+getValue(itemNodeListr, i, 'Units')+"</td>";
-                            html+="</tr>";
-                            html+="<tr>";
-                            html+="<th>Unit Price</th>";
-                            html+="<td>"+getValue(itemNodeListr, i, 'UnitPrice')+"</td>";
-                            html+="</tr>";
-                            html+="<tr>";
-                            html+="<th>State</th>";
-                            html+="<td>"+getValue(itemNodeListr, i, 'State')+"</td>";
-                            html+="</tr>";
-                            html+="<tr>";
-                            html+="<th>Description</th>";
-                            html+="<td>"+getValue(itemNodeListr, i, 'Description')+"</td>";
-                            html+="</tr>";
-                            html+="<tr>";
-                            html+="<th>Added On</th>";
-                            html+="<td>"+getValue(itemNodeListr, i, 'DateAdded')+"</td>";
-                            html+="</tr>";
-                            html+="<th>Can Deliver? (Y/N) </th>";
-                            html+="<td>"+getValue(itemNodeListr, i, 'Deliverable')+"</td>";
-                            html+="</tr>";
-                            html+="<th>Can Deliver To: </th>";
-                            html+="<td>"+getValue(itemNodeListr, i, 'DeliverableAreas')+"</td>";
-                            html+="</tr>";
-                            html+="</table>";
-                            html+="</div><!--item-slide-header-->"
-                            html+="<div id='addToRep'>";//ID means 'Add to repository'
-                            html+="<button onclick='void(0)'><i class='fa fa-edit'></i> Edit</button>";
-                            html+="</div>";
-                            html+="<span onclick='rem_rep_item("+i+")' id='rem-rep-item"+i+"' class='close' title='Delete Item'>×</span>";
-                            html+="</div>";
-                            document.getElementById("inventory-display").innerHTML+=html;
-                        }
-                    }
-
-                } else if(returnStatus==1) {//No Results found
-                    console.log("No results were found");
-                } else if(returnStatus==2) {//Problem connecting to the database
-                    console.log("There was a problem connecting to the database");
-                } else if(returnStatus==11) {//User is not logged in. Not even sure how that's possible
-                    console.log("WTF? Is that even possible");
-                }
-            } else {//The request wasn't fulfilled for some reason
-                console.log("The request couldn't be fulfilled!");
-            }
-        }
-        xmlhttpr.open("GET", "xhttp.php?table=nonlogged", true);
-        xmlhttpr.send()
-    }
+    var repItemNodeList;
+    var userInfoNode;
     function getValue(nodeList, index, tagName) { //This function is just to make things shorter ^
-        var value = nodeList[index].getElementsByTagName(tagName)[0].childNodes[0].nodeValue
-        return value;
-    }
+        return nodeList[index].getElementsByTagName(tagName)[0].childNodes[0].nodeValue
+    } //It's called in _searchdb() to shorten code
     function displaymodal(i) { //This function sets the data in the modal. i identifies the item
+
         var html=""; //in the itemNodeList
-        html="<div width=100%>";
-        html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";
-        html+="</div>";
-        document.getElementById("eAI-11").innerHTML=html;
-        html="<div width=100%>";
-        html+="<font size=6em position='center'>"+getValue(itemNodeList, i, 'ItemName')+"</font>";
-        html+="<br>Other names:\t"+getValue(itemNodeList, i, 'Aliases');
-        html+="<br>Description:\t"+getValue(itemNodeList, i, 'Description');
-        html+="</div>";
-        document.getElementById("item_submit_button").innerHTML="<button type='submit' onclick='submit_add_form("+i+")'><i class='fa fa-plus-square-o'></i>  Add to repository</button>";
-        document.getElementById("eAI-12").innerHTML=html;
-        document.getElementById("editAddItem").style.display="block";
+        html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";//Get image URI from node list
+        document.getElementById('oi-11').innerHTML = html; //Insert image
+        html="<h3>"+getValue(itemNodeList, i, 'ItemName')+"</h3>";//Get item name
+        document.getElementById('oi-12').innerHTML = html; //Insert item name
+
+        //Add the product and seller details to oi-13
+        html="<table class='oi-table'>";
+        html+="<tr>";
+        html+="<th>";
+        html+="Description: ";
+        html+="</th>";
+        html+="<td>";
+        html+=getValue(itemNodeList,i,'description')
+        html+="</td>";
+        html+="</tr>";
+        html+="<tr>";
+        html+="<th>";
+        html+="<span title='Minimum and Maximum order size'>Min - Max</span> order size:";
+        html+="</th>";
+        html+="<td>";
+        html+="</td>";
+        html+="</tr>";
+        html+="<tr>";
+        html+="<th>";
+        html+="Price: ";
+        html+="</th>";
+        html+="<td>";
+        html+=getValue(itemNodeList, i, 'unitprice');
+        html+="UGX/";
+        html+=getValue(itemNodeList,i,'units');
+        html+="</td>";
+        html+="</tr>";
+        html+="<tr>";
+        html+="<th>";
+        html+="Places Deliverable: ";
+        html+="</th>";
+        html+="<td>";
+        html+=getValue(itemNodeList,i,'deliverableareas')
+        html+="</td>";
+        html+="</tr>";
+        html+="<tr>";
+        html+="<th>";
+        html+="Seller:";
+        html+="</th>";
+        html+="<td>";
+        console.log("here comes the info node");
+        console.log(userInfoNode.getElementsByTagName('firstname')[0].childNodes[0].nodeValue);
+        html+=userInfoNode.getElementsByTagName('firstname')[0].childNodes[0].nodeValue;
+        html+="</td>";
+        html+="</tr>";
+        html+="<tr>";
+        html+="<th>";
+        html+="Location:";
+        html+="</th>";
+        html+="<td>";
+        html+="</td>";
+        html+="</tr>"
+        html+="<tr>"
+        html+="<th>";
+        html+="Contact Email:";
+        html+="</th>";
+        html+="<td>";
+        html+="</td>";
+        html+="</tr>";
+        html+="<tr>";
+        html+="<th>";
+        html+="Contact Phone No.:";
+        html+="</th>";
+        html+="<td>";
+        html+="</td>";
+        html+="</tr>";
+        html+="<tr>";
+        html+="<th>";
+        html+="Feedback:";
+        html+="</th>";
+        html+="<td>";
+        html+="</td>";
+        html+="</tr>";
+        html+="</table>";
+        html+="<button type='submit' onclick='submit_add_form("+i+")'><i class='fa fa-plus-square-o'></i> Contact Seller</button>";
+        //Insert into oi-13
+        document.getElementById('oi-13').innerHTML = html;
+        //Display the whole modal
+        document.getElementById("orderItem").style.display="block";
     }
     //What lays below is read as the page loads, hence displaying the inventory
-    var ddata;
-    ddata = _searchdb("");
-    console.log(ddata)
-    document.getElementById("inventory-display").innerHTML=ddata;
+    _searchdb(""); //Pre-load the "dashboard" with db items when the page loads
+    //Define a function to access the database and extract the user information
+    function _getUserInfo(i) {
+        //incomplete
+        var userid = getValue(itemNodeList, i, 'userid');
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.responseType = "document";
+        xmlhttp.onreadystatechange = function() {
+            if(this.readyState==4 && this.status==200) {
+                if(this.responseXML!=null) { //OK
+                    var doc = this.responseXML;
+                    console.log("Here's the XML doc")
+                    console.log(doc);
+                    var returnStatus = doc.getElementsByTagName('status')[0].childNodes[0].nodeValue;
+
+                    if(returnStatus==0) { //Success
+                        //get an item node list object
+                        userInfoNode = doc.getElementsByTagName("userdata")[0];
+                        displaymodal(i)
+                    }
+                    else {
+                        //later
+                        console.log(returnStatus);
+                    }
+                }
+                else { //No xml
+                    //later
+                }
+            }
+            else { //request not fulfilled. Print readyState & status to console
+                //later
+            }
+        }
+        xmlhttp.open("GET", "Profiles/xhttp.php?table=sellerdata&UserID="+userid, true);
+        xmlhttp.send();
+    }
 </script>
 
 					</div>
@@ -655,25 +653,46 @@ class="close" title="Close Modal">&times;</span>
     </div>
   </form>
 </div>
+
+<div class="modal" id="orderItem" style="display: block;"> <!--Modal that opens up when the user wants to order an item-->
+    <span onclick="document.getElementById('orderItem').style.display='none'" class="close" title="Close Modal">×</span>
+    <div id="oi-1" class="modal-content animate">
+        <div id="oi-11"> <!--The image goes here? Put a default image-->
+            <img src="headerimage.jpg">
+        </div>
+        <div id="oi-12">
+            <h3>This is a dummy</h3>
+        </div>
+        <div id="oi-13"><!--This is where the user fills in details of their order: A form-->
+            <!--User order details to be entered here.-->
+        </div>
+    </div>
+</div><!--Edit-->
 <!--*************************************************************************-->
 	<script>
 	// Get the modal
-	var modalin = document.getElementById('id01');
-	var modalup = document.getElementById('id02');
-	// When the user clicks anywhere outside of the modal, close it
-	window.onclick = function(event) {
-		if (event.target == modalin) {
-		    modalin.style.display = "none";
-		}
-	}
-	// Get the modal
+	var modalin = document.getElementById('id01'); //The signin modal
+	var modalup = document.getElementById('id02'); //The signup modal
+    var modalOrder = document.getElementById('orderItem');
 
 	// When the user clicks anywhere outside of the modal, close it
 	window.onclick = function(event) {
 		if (event.target == modalup) {
 		    modalup.style.display = "none";
-		}
+		} else if (event.target === modalin) {
+            modalin.style.display = "none";
+        } else if (event.target === modalOrder){
+	        modalOrder.style.display = "none";
+        }
 	}
 	</script>
 	</body>
 </html>
+
+<!--Average length < H + 1 report -->
+<!--Now create the onclick() function to instantiate the modal "classes"-->
+<!--Remember to clear itemNodeList when user leaves pages to avoid conflict with similarly
+    named variable on sister page(s)-->
+<!--Contact seller by sending them a notification-->
+<!--I know a guy.com-->
+<!--Textbook sharing site for uni's in Japan-->

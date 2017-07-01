@@ -7,6 +7,7 @@ include "../include.php";
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link type="text/css" rel="stylesheet" href="index.css">
+        <script src="index.js"></script>
 	</head>
 	<body>
 		<div id="main-wrapper">
@@ -35,7 +36,7 @@ include "../include.php";
 								<div id="prof-pic-name">
 									<?php
 										if($session_exists) {
-											echo '<span>Hello, '.$_SESSION["FirstName"].'. <a 
+											echo '<span>'.$_SESSION["FirstName"].'<br> <a 
 											href="../logoff.php">Log Out</a></span>';
 										}
 									?>
@@ -81,16 +82,22 @@ include "../include.php";
 							
 								<?php
 								if($session_exists) {
-									echo '<img class="col-12" src="Pictures/'.$_SESSION["UserID"].'">';
+									echo '<img class="col-12" src="Pictures/'.$_SESSION["UserID"].'" onclick="hide_show_form()">';
 								} else {
 									echo '<img class="col-12" src="../icons/profile-pic-male.jpg" alt="profile picture">';
 								}
 								?>
-								
-								<form action="upload-picture.php" enctype="multipart/form-data" method="post">
-									<input type="file" name="profpic">
-									<input type="submit" name="submit">
-								</form>
+								<div class="col-12" id="uploadprofpic">
+                                    <!--Upon clicking, the form is revealed
+                                    Upon clicking the submit button and effectively
+                                    confirming successful submission, hide again
+                                    Need a function hide_show_form()
+                                    -->
+                                    <form action="upload-picture.php" enctype="multipart/form-data" method="post">
+                                        <input type="file" name="profpic">
+                                        <input type="submit" name="submit">
+                                    </form>
+                                </div>
 							</div>
 							<div class="col-12" id="row2">
 								<h3>Brief description</h3>
@@ -188,209 +195,22 @@ include "../include.php";
 							<div class="col-12 prof-content-row" id="inventory-container">
 										
 								<div class="col-12" id="inventory-display">
-									<!--Send a request to the server for the data in the Repository table -->		
+									<!--Send a request to the server for the data in the Repository table -->
+                                    <!--Actual search and fill in of data happens in the javasript script-->
 									
 								</div><!--display-search-results-->
 								<div class="col-12" id="inventory-update">
 									<div class="col-4" id="inventory-browse"><!--invisible until user clicks add-->
 										<div class="col-12" id="inventory-search">
 											<form class="search">
-												<input type="text" name="search2" placeholder="Search.." id="srchdemo" onkeydown="javascript:_checkenterkey(event)">
-												<input type="button" onclick="javascript:_searchdb(document.getElementById('srchdemo').value)" value="Search">
+												<input type="text" name="search2" placeholder="Search.." id="srchdemo" onkeydown="_checkenterkey(event)">
+												<input type="button" onclick="_searchdb(document.getElementById('srchdemo').value)" value="Search">
 											</form>
-<script>
-function _checkenterkey(event) {
-	if(event.key=='Enter') { //If it's the enter key, call the _searchdb function
-		event.preventDefault();
-		_searchdb(document.getElementById('srchdemo').value);
-	}
-}
-
-var itemNodeList;
-function _searchdb(str) {
-	var xhttp = new XMLHttpRequest();
-	xhttp.responseType = "document";//Only this way, shall we be able to return an XML/HTML document
-	xhttp.onreadystatechange = function() { //If we get a reply from the server
-		if(this.readyState==4 && this.status==200) { //Check the status and readystate
-			if(this.responseXML!=null) { //Do we have any meaningful response other than null?
-					var xmlDoc = this.responseXML;
-										console.log(xmlDoc);
-					var returnStatus = xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
-					if(returnStatus==0) {
-					//get an itemNodeList object
-					itemNodeList = xmlDoc.getElementsByTagName("Items")[0].getElementsByTagName("Item");
-					//Purge the 'html' variable of previous search data
-					document.getElementById("display-search-results").innerHTML="";
-				
-					if(itemNodeList.length>0) {
-							var html="";
-							var i=0;
-							for(i=0;i<itemNodeList.length;i++) {
-								html="<div class='item-slide'>";
-								html+="<div class='item-slide-image'>";
-								html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";
-								html+="</div><!--item-slide-header-->"				
-								html+="<div class='item-slide-content' id='itemNo"+i+"'>"
-									html+="<table>";
-									html+="<tr>";
-									html+="<th>Name</th>";
-									html+="<td>"+getValue(itemNodeList, i, 'ItemName')+"</td>";
-									html+="</tr>";
-									html+="<tr>";
-									html+="<th>Other Names</th>";
-									html+="<td>"+getValue(itemNodeList, i, 'Aliases')+"</td>";
-									html+="</tr>";
-									html+="<tr>";
-									html+="<th>Description</th>";
-									html+="<td>"+getValue(itemNodeList, i, 'Description')+"</td>";
-									html+="</tr>";
-									html+="</table>";
-								html+="</div><!--item-slide-header-->"
-								html+="<div id='addToRep'>";//ID means 'Add to repository'
-								html+="<button onclick='displaymodal("+i+")'><i class='fa fa-plus-square-o'></i> Add Item</button>";
-								html+="</div>";
-								html+="</div>";
-								document.getElementById("display-search-results").innerHTML+=html;
-							}
-					} else {
-						console.log("0 results were found");
-					}
-				} else if(returnStatus==1) { //returnStatus (defined in the php). 1=No results found. 
-					console.log("No matching results were found");
-				} else if(returnStatus==2) { //2=couldn't connect to the database
-					console.log("There was a problem connecting to the database");
-				} else if(returnStatus==11) {
-					window.alert("Please log in");
-				}
-			} else { //For some weird reason, no XML, null returned.
-				console.log("The is no response XML");
-			}
-		}
-	}
-	xhttp.open("GET", "xhttp.php?table=Items&q="+str, true);
-	xhttp.send();
-}
-
-var itemNodeListr;
-function _getInventory() {
-    //This function
-console.log("The function is running");
-	var xmlhttpr = new XMLHttpRequest();
-	xmlhttpr.responseType = "document";
-	xmlhttpr.onreadystatechange = function() {
-		if(this.readyState==4 && this.status==200) {//The request was fulfilled
-			var xmlDoc = this.responseXML;
-			console.log(xmlDoc);
-			var returnStatus = xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
-			if(returnStatus==0) {//Results were found
-				//get an itemNodeList object
-				itemNodeListr = xmlDoc.getElementsByTagName("Items")[0].getElementsByTagName("Item");
-				//Purge the 'html' variable of previous search data
-				var invDisplay = document.getElementById("inventory-display");
-				var html = "<div class='item-slide' onclick='javascript:add_to_inventory()' id='edit-inv-data'>";
-				html+="<img src='../icons/add.png'>"
-				html+="</div>"; //APPROPRIATE ID
-				invDisplay.innerHTML=html;
-		
-				if(itemNodeListr.length>0) { 
-					var i = 0;
-					var html="";
-					for(i=0;i<itemNodeListr.length; i++) {
-						html="<div class='item-slide'>";
-								html+="<div class='item-slide-image'>";
-								html+="<img src='"+getValue(itemNodeListr, i, 'ImageURI')+"'>";
-								html+="</div><!--item-slide-header-->"				
-								html+="<div class='item-slide-content' id='itemid"+i+"'>"
-									html+="<table>";
-									html+="<tr>";
-									html+="<th>Name</th>";
-									html+="<td>"+getValue(itemNodeListr, i, 'ItemName')+"</td>";
-									html+="</tr>";
-									html+="<tr>";
-									html+="<th>Other Names</th>";
-									html+="<td>"+getValue(itemNodeListr, i, 'Aliases')+"</td>";
-									html+="</tr>";
-									html+="<tr>";
-									html+="<th>Description</th>";
-									html+="<td>"+getValue(itemNodeListr, i, 'Description')+"</td>";
-									html+="</tr>";
-									html+="<tr>";
-									html+="<th>Quantity</th>";
-									html+="<td>"+getValue(itemNodeListr, i, 'Quantity')+" "+getValue(itemNodeListr, i, 'Units')+"</td>";
-									html+="</tr>";
-									html+="<tr>";
-									html+="<th>Unit Price</th>";
-									html+="<td>"+getValue(itemNodeListr, i, 'UnitPrice')+"</td>";
-									html+="</tr>";
-									html+="<tr>";
-									html+="<th>State</th>";
-									html+="<td>"+getValue(itemNodeListr, i, 'State')+"</td>";
-									html+="</tr>";
-									html+="<tr>";
-									html+="<th>Description</th>";
-									html+="<td>"+getValue(itemNodeListr, i, 'Description')+"</td>";
-									html+="</tr>";
-									html+="<tr>";
-									html+="<th>Added On</th>";
-									html+="<td>"+getValue(itemNodeListr, i, 'DateAdded')+"</td>";
-									html+="</tr>";
-									html+="<th>Can Deliver? (Y/N) </th>";
-									html+="<td>"+getValue(itemNodeListr, i, 'Deliverable')+"</td>";
-									html+="</tr>";
-									html+="<th>Can Deliver To: </th>";
-									html+="<td>"+getValue(itemNodeListr, i, 'DeliverableAreas')+"</td>";
-									html+="</tr>";
-									html+="</table>";
-								html+="</div><!--item-slide-header-->"
-								html+="<div id='addToRep'>";//ID means 'Add to repository'
-								html+="<button onclick='void(0)'><i class='fa fa-edit'></i> Edit</button>";
-								html+="</div>";
-								html+="<span onclick='rem_rep_item("+i+")' id='rem-rep-item"+i+"' class='close' title='Delete Item'>×</span>";
-								html+="</div>";
-								document.getElementById("inventory-display").innerHTML+=html;
-					}
-				}
-			
-			} else if(returnStatus==1) {//No Results found
-				console.log("No results were found");
-			} else if(returnStatus==3) {//Problem connecting to the database
-				console.log("There was a problem connecting to the database");
-			} else if(returnStatus==11) {//User is not logged in. Not even sure how that's possible
-				console.log("WTF? Is that even possible");
-			}
-		} else {//The request wasn't fulfilled for some reason
-			console.log("ReadyState = "+this.readyState);
-			console.log("Status = "+this.status)
-		}
-	}
-	xmlhttpr.open("GET", "xhttp.php?table=Repository", true);
-	xmlhttpr.send()
-}
-function getValue(nodeList, index, tagName) { //This function is just to make things shorter ^
-	var value = nodeList[index].getElementsByTagName(tagName)[0].childNodes[0].nodeValue
-	return value;
-}
-function displaymodal(i) { //This function sets the data in the modal. i identifies the item
-	var html=""; //in the itemNodeList
-	html="<div width=100%>";
-	html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";
-	html+="</div>";
-	document.getElementById("eAI-11").innerHTML=html;
-	html="<div width=100%>";
-	html+="<font size=6em position='center'>"+getValue(itemNodeList, i, 'ItemName')+"</font>";
-	html+="<br>Other names:\t"+getValue(itemNodeList, i, 'Aliases');
-	html+="<br>Description:\t"+getValue(itemNodeList, i, 'Description');
-	html+="</div>";
-	document.getElementById("item_submit_button").innerHTML="<button type='submit' onclick='submit_add_form("+i+")'><i class='fa fa-plus-square-o'></i>  Add to repository</button>";
-	document.getElementById("eAI-12").innerHTML=html;
-	document.getElementById("editAddItem").style.display="block";
-}
-
-</script>
+<!--Script1-->
 										</div><!--Search by search-->
 										<div class="col-12" id="categories"> <!--search by category-->
 											<div class="col-12" id="inventory-crops">
-												<div class="col-12 lvl-1" onclick="javascript:hide_show('inventory-crops')">
+												<div class="col-12 lvl-1" onclick="hide_show('inventory-crops')">
 													<i class="fa fa-caret-right"></i>
 													Crops	
 												</div>
@@ -398,80 +218,15 @@ function displaymodal(i) { //This function sets the data in the modal. i identif
 												<div class="col-12 inventory-hidden">
 												
 													<div class="col-12" id="inventory-food">
-														<div class="col-12 lvl-2" onclick="javascript:hide_show('inventory-food')">
+														<div class="col-12 lvl-2" onclick="hide_show('inventory-food')">
 															<i class="fa fa-caret-right	"></i>
 															Food crops
 														</div>
 														<div class="col-12 inventory-hidden"><!--Group starts here-->
 															<div class="col-12" id="starchy">
-															
-<script>
-function hide_show(elmtId) {
-	var element = document.getElementById(elmtId);
-	var arrow = element.getElementsByTagName("i")[0];
-	element = element.getElementsByClassName('inventory-hidden')[0];
-	//if it's hidden show it. If it's visible, hide it.
-	if(element.style.display=="none" || element.style.display=="") {
-		element.style.display="block";
-		arrow.className="fa fa-caret-down";
-	} else {
-		element.style.display="none";
-		arrow.className="fa fa-caret-right";
-	}
-}
-function add_to_inventory() { //Hide inventory data onclick
-	var idisplay=document.getElementById('inventory-display');
-	var iupdate=document.getElementById('inventory-update');
-	console.log(idisplay.style.display);
-	console.log(iupdate.style.display);
-	if(idisplay.style.display=='block' && iupdate.style.display=='none') {
-	console.log("Conditions fulfilled");
-		idisplay.style.display='none';
-		iupdate.style.display='block';
-	} else if(idisplay.style.display=='' && iupdate.style.display=='none') { //Same statements as above
-        idisplay.style.display='none';
-        iupdate.style.display='block';
-    } else {
-	    console.log("Conditions unfulfilled")
-		idisplay.style.display='block';
-		iupdate.style.display='none';
-	}
-}
-function rem_rep_item(i) {
-	//Extract the node's itemID
-	var RepID = getValue(itemNodeListr, i, 'RepID'); //Assuming the iremNodeListr object still exists
-	//Access the db and delete the node;
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.responseType = "document";
-	xmlhttp.onreadystatechange = function() {
-		//Check the return status for success/failure
-		if(this.readyState==4 && this.status==200) {
-			var xmlDoc = this.responseXML;
-			console.log(xmlDoc);
-			var return_status = xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
-			if(return_status==0) { //Success. Rerun the _srchdb() function
-				alert("Item Deleted");
-			} else if(return_status==1) {
-				alert("A problem occurred");
-			} else {
-				console.log(return_status);
-				reveal1hide23('inventory-container', 'prof-container', 'prof-orders');
-			}
-		} else { //There was a problem at the server end
-			console.log("There was a problem!");
-			console.log(this.readyState);
-			console.log(this.status);
-		}
-	}
-	xmlhttp.open("GET", "xhttp.php?table=delete_item&RepID="+RepID, true);
-	xmlhttp.send();
-}
-function update_rep_item(i) {
-	itemID = getValue(itemNodeListr, i, 'itemID');
-}
-</script>
+<!--Script2-->
 
-																<div class="col-12 lvl-3" onclick="javascript:hide_show('starchy')">
+																<div class="col-12 lvl-3" onclick="hide_show('starchy')">
 																	<i class="fa fa-caret-right	"></i>
 																	Starchy foods
 																</div>
@@ -494,7 +249,7 @@ function update_rep_item(i) {
 																</div>
 															</div><!--starchy-->
 															<div class="col-12" id="fruits">
-																<div class="col-12 lvl-3" onclick="javascript:hide_show('fruits')">
+																<div class="col-12 lvl-3" onclick="hide_show('fruits')">
 																	<i class="fa fa-caret-right	"></i>
 																	Fruits
 																</div>
@@ -526,7 +281,7 @@ function update_rep_item(i) {
 																</div>
 															</div><!--fruits-->
 															<div class="col-12" id="veggies">
-																<div class="col-12 lvl-3" onclick="javascript:hide_show('veggies')">
+																<div class="col-12 lvl-3" onclick="hide_show('veggies')">
 																	<i class="fa fa-caret-right	"></i>
 																	Vegetables
 																</div>
@@ -670,21 +425,24 @@ function update_rep_item(i) {
 									This is orders container. Still under development.
 								</p>
 							</div>
-							<div>
-							</div>
-<script>
+<!--script3-->
+<script> //Script3
 function reveal1hide23(div1, div2, div3) {
     document.getElementById(div1).style.display="block";
     document.getElementById(div2).style.display="none";
     document.getElementById(div3).style.display="none";
-    if(div1=="inventory-container") {
+    if(div1=="inventory-container") { //
+        var idisplay=document.getElementById('inventory-display');
+        var iupdate=document.getElementById('inventory-update');
+        add_to_inventory();//Switches the visibilities of inventory-update and inventory-
+        //display back and forth.
         <?php
-            if($session_exists) {
-                echo "_getInventory(); //Retrieves database items";
-            }
+        if($session_exists) {
+            echo "_getInventory(); //Retrieves database items"; //_getInventory doesn't return!! WHY??
+            echo "console.log('The _getInventory() function returned')";
+        }
         ?>
-        document.getElementById('inventory-display').style.display='block';
-        document.getElementById('inventory-update').style.display='none';
+
     }
 }
 </script>
@@ -760,7 +518,7 @@ function _selected($var) {
 		<input type="text" placeholder="e.g www.domain.com" name="website" value="<?php fill_in_blanks('website','Website'); ?>">
 		
 		<label><b>About Yourself</b></label><br>
-		<textarea style="width: 100%" name="about" placeholder="<?php fill_in_blanks('about','About'); ?>"></textarea><br>
+		<textarea style="width: 100%" name="about" placeholder="About yourself..."><?php fill_in_blanks('about','About'); ?></textarea><br>
 
 		<input type="checkbox" checked="checked"> Remember me
 		<p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
@@ -772,16 +530,7 @@ function _selected($var) {
     </div>
   </form>
 </div>
-<script>
-	// Get the modal
-	var modalup = document.getElementById('id02');
-	// When the user clicks anywhere outside of the modal, close it
-	window.onclick = function(event) {
-		if (event.target == modalup) {
-		    modalup.style.display = "none";
-		}
-	}
-</script>
+<!--Script4-->
 <iframe name="hidden_iframe" style="display:none"></iframe>
 <div class="modal" id="editAddItem">
 	<span onclick="document.getElementById('editAddItem').style.display='none'" class="close" title="Close Modal">×</span>
@@ -828,47 +577,9 @@ function _selected($var) {
 		</div>
 	</div>
 </div><!--Edit-->
-<script>
-var deliverable="";
-function getradio(option) {
-console.log("getting radio");
-	if(option=="yes") {
-		deliverable="Y";
-	} else if(option=="no") {
-		deliverable="N";
-	}
-}
-function submit_add_form(i) {
-	var quantity=readval("quantity");
-	var units=readval("units");
-	var state=readval("state");
-	var price=readval("price");
-	var description=readval("description");
-	var dplace=readval("dplace");
-	var itemID = getValue(itemNodeList, i, "itemID");
 
-	xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function () { //When we get a reply from the webserver
-	//Display success/failure status
-		if(this.readyState==4 && this.status==200){
-			console.log(this.responseText);
-			if(this.responseText==true){ //Success. Close the modal
-				document.getElementById("editAddItem").style.display="none";
-				window.alert("Item successfully added");
-			} else { //Failure. alert an error
-				window.alert("There was a problem");
-			}
-		}
-	}
-	xhttp.open("GET", "add_item.php?itemID="+itemID+"&quantity="+quantity+"&units="+units+"&state="+
-	state+"&price="+price+"&description="+description+"&deliverable="+deliverable+
-	"&dplace="+dplace, true);
-	xhttp.send();
-}
-function readval(id) {
-	return	document.getElementById(id).value;
-}
-</script>
+
+<!--Script5-->
 <!--*************************************************************************-->
 <!--Wakaru jouhou riron. Jouhou fugou angou riron. Kyoto uni. Nisa sensei. Online vids. Eng.-->
 <!--****************************THE SIGNUP FORM******************************-->

@@ -94,7 +94,6 @@ body {
 }
 
 @media only screen and (max-width: 768px) {
-	text-align: left;
 	#r1c1 h1 {
     float: left;
     padding: 0px;
@@ -175,14 +174,15 @@ body {
 	width: 100%;
 }
 #prof-pic-img {
-	height: 75px;
-	width: 100%
+    margin: auto;
+    height: 75px;
+    width: 75px;
 }
 #prof-pic-img img {
-  border-radius: 50px;
-  height: 75px;
-  width: 100px;
-  margin: 0px 25px;
+    border-radius: 50px;
+    height: auto;
+    width: 100%;
+    margin: auto;
 }
 #prof-pic-name {
 	height: 45px;
@@ -334,6 +334,9 @@ body {
 input[type=submit] {
     width: 80px;
     height: 40px;
+}
+input[type=file] {
+
 }
 /***********************THE MODAL SIGN IN FORM*****************************************/
 /* Full-width input fields */
@@ -733,6 +736,7 @@ span.psw {
 }
 #inventory-display .item-slide {
 	width: 350px;
+    cursor: hand;
 }
 #edit-inv-data {
 	display: block;
@@ -753,9 +757,26 @@ span.psw {
     top: 10px;
     right: 10px;
 }
+#uploadprofpic {
+    display: none;
+}
+#orderItem {
 
-
-
+}
+#oi-1 img {
+    width: 100%
+}
+#oi-11 {
+    width: 100%;
+}
+#oi-12-12 {
+    width: 100%;
+    padding: 10px;
+}
+#oi-13 {
+    width: 100%;
+    padding: 10px;
+}
 
 
 

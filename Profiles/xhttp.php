@@ -141,6 +141,12 @@ if(isset($_SESSION['UserID'])) { //The User is logged in
         }
         else if ($table=="sellerdata") {
             //incomplete
+            if(isset($_REQUEST['UserID'])) {
+                $userid = $_REQUEST['UserID'];
+            } else {
+                //later. It'll almost always be set unless there's an active attempt to hack the system
+            }
+            _getuserinfo($userid);
         }
     }
     else {
@@ -165,7 +171,7 @@ if(isset($_SESSION['UserID'])) { //The User is logged in
         if(isset($_REQUEST['UserID'])) {
             $userid = $_REQUEST['UserID'];
         } else {
-            //later
+            //later. It'll almost always be set unless there's an active attempt to hack the system
         }
         _getuserinfo($userid);
     }

@@ -469,8 +469,6 @@ include "include.php";
         html+="Seller:";
         html+="</th>";
         html+="<td>";
-        console.log("here comes the info node");
-        console.log(userInfoNode.getElementsByTagName('firstname')[0].childNodes[0].nodeValue);
         html+=userInfoNode.getElementsByTagName('firstname')[0].childNodes[0].nodeValue;
         html+="</td>";
         html+="</tr>";
@@ -479,6 +477,7 @@ include "include.php";
         html+="Location:";
         html+="</th>";
         html+="<td>";
+        html+=userInfoNode.getElementsByTagName('district')[0].childNodes[0].nodeValue;
         html+="</td>";
         html+="</tr>"
         html+="<tr>"
@@ -486,6 +485,7 @@ include "include.php";
         html+="Contact Email:";
         html+="</th>";
         html+="<td>";
+        html+=userInfoNode.getElementsByTagName('email')[0].childNodes[0].nodeValue;
         html+="</td>";
         html+="</tr>";
         html+="<tr>";
@@ -493,6 +493,7 @@ include "include.php";
         html+="Contact Phone No.:";
         html+="</th>";
         html+="<td>";
+        html+=userInfoNode.getElementsByTagName('phoneno')[0].childNodes[0].nodeValue;
         html+="</td>";
         html+="</tr>";
         html+="<tr>";
@@ -521,8 +522,6 @@ include "include.php";
             if(this.readyState==4 && this.status==200) {
                 if(this.responseXML!=null) { //OK
                     var doc = this.responseXML;
-                    console.log("Here's the XML doc")
-                    console.log(doc);
                     var returnStatus = doc.getElementsByTagName('status')[0].childNodes[0].nodeValue;
 
                     if(returnStatus==0) { //Success

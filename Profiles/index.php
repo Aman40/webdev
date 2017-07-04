@@ -422,7 +422,7 @@ include "../include.php";
 							</div><!--Inventory container-->
 							<div class="col-12 prof-content-row" id="prof-orders">
 								<p>
-									This is orders container. Still under development.
+									This is the orders container. Still under development.
 								</p>
 							</div>
 <!--script3-->
@@ -438,8 +438,9 @@ function reveal1hide23(div1, div2, div3) {
         //display back and forth.
         <?php
         if($session_exists) {
-            echo "_getInventory(); //Retrieves database items"; //_getInventory doesn't return!! WHY??
-            echo "console.log('The _getInventory() function returned')";
+            echo "_getInventory(); //Retrieves database items"; //_getInventory doesn't return!! WHY?? Because it
+            //runs an asynchronous function
+            echo "console.log('The _getInventory() function returned');";
         }
         ?>
 

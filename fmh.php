@@ -26,9 +26,17 @@ include "include.php";
 								<div id="prof-pic-img">
 									<?php
 										if($session_exists) {
-											echo '<img src="Profiles/Pictures/'.$_SESSION["UserID"].'">';
+										    //If picture exists
+                                            if(file_exists("Profiles/Pictures/'".$_SESSION['UserID'])) {
+                                                echo '<img src="Profiles/Pictures/'.$_SESSION["UserID"].'">';
+                                            }
+                                            else {
+                                                echo '<img src="icons/profile-pic-male.jpg">';
+                                            }
+                                            //Else, use the default
+
 										} else {
-											echo '<img src="icons/profile-pic-male.jpg">';
+                                            echo '<img src="icons/profile-pic-male.jpg">';
 										}
 									?>
 								</div><!--prof-picimg-->
@@ -60,7 +68,11 @@ include "include.php";
 					<div id="r1c2r2"><!--Insert an unorered list here for the menu-->
 						<div id="hor-menu">
 							<a href="#">Feed</a>
-							<a href="Profiles/index.php">Home</a>
+                            <?php
+                                if($session_exists) {
+                                    echo "<a href='Profiles/index.php'>Home</a>";
+                                }
+                            ?>
 							<a href="#">About Us</a>
 							<?php //If the user logs in (session_exists=true) hide the following
 							if(!$session_exists) {
@@ -504,7 +516,7 @@ include "include.php";
         html+="</td>";
         html+="</tr>";
         html+="</table>";
-        html+="<button type='submit' onclick='submit_add_form("+i+")'><i class='fa fa-plus-square-o'></i> Contact Seller</button>";
+        html+="<button type='submit' ><i class='fa fa-plus-square-o'></i> Contact Seller</button>";
         //Insert into oi-13
         document.getElementById('oi-13').innerHTML = html;
         //Display the whole modal
@@ -653,14 +665,13 @@ class="close" title="Close Modal">&times;</span>
   </form>
 </div>
 
-<div class="modal" id="orderItem" style="display: block;"> <!--Modal that opens up when the user wants to order an item-->
+<div class="modal" id="orderItem"> <!--Modal that opens up when the user wants to order an item-->
     <span onclick="document.getElementById('orderItem').style.display='none'" class="close" title="Close Modal">×</span>
     <div id="oi-1" class="modal-content animate">
         <div id="oi-11"> <!--The image goes here? Put a default image-->
             <img src="headerimage.jpg">
         </div>
         <div id="oi-12">
-            <h3>This is a dummy</h3>
         </div>
         <div id="oi-13"><!--This is where the user fills in details of their order: A form-->
             <!--User order details to be entered here.-->

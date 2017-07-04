@@ -317,7 +317,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			}
 
 			//rant about incorrect password and close the connections
-			echo "<font color='red'>".$upassword_error."</font>";
+			echo "<span color='red'>".$upassword_error."</span>";
 			$conn->close();
 	} else {
 	}

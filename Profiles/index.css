@@ -649,15 +649,27 @@ span.psw {
 	background-color: #fff;
 }
 #display-search-results {
-  border-left: solid 1px #bbb;
+  border-left: solid 1px #5f9ea0;
 	min-height: 600px;
 	background-color: #fff;
+    border-top: solid cadetblue 11px;
+    background-color: whitesmoke;
 }
 #inventory-browse, #display-search-results {
 	padding: 5px;
+    margin: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
+
 #inventory-search .search{
 	position: initial;
+}
+#inventory-browse {
+    border-left: solid 3px #2f6d6f;
+    background-color: cadetblue;
+    width: 30%;
 }
 .lvl-1, .lvl-2, .lvl-3, .lvl-4 {
 	padding: 8px 0px;

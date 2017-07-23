@@ -99,7 +99,6 @@ body {
 }
 
 @media only screen and (max-width: 768px) {
-	text-align: left;
 	#r1c1 h1 {
     float: left;
     padding: 0px;
@@ -228,7 +227,6 @@ body {
 
 #r1c2r2 {
 	min-height: 50px;
-	background: linear-gradient(green, black);
 }
 .item-slide {
     width: 240px;
@@ -281,12 +279,13 @@ body {
 	display: inline-block;
 }
 #hor-menu a {
-  border-right: solid 1px white;
-	float: left;
-	margin: 0px;
-	padding: 13px 25px;
-	text-decoration: none;
-	color: white;
+    border-right: solid 1px white;
+    float: left;
+    margin: 0px;
+    padding: 13px 25px;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(green, #154a1b);
 }
 #hor-menu a:hover {
 	background: linear-gradient(#cccccc, black);
@@ -300,7 +299,7 @@ body {
 	background-color: black;
 	min-height: 50px;
 	width: 100%;
-	background: linear-gradient(green, black);
+    background: linear-gradient(green, #154a1b);
 }
 #search {
 	float: left;
@@ -309,15 +308,19 @@ body {
 	width: 22.22%;
 }
 @media only screen and (max-width: 768px) {
-    #hor-menu {
+    #hor-menu, #hor-menu a, #hor-menu .search, #r1c2r2 {
     	width: 100%;
+        position: relative;
+    }
+    #row-1 {
+        display:-webkit-box;
     }
 }
 .search {
 	display: inline-block;
 	position: absolute;
 	right: 10px;
-	margin-top: 3px;
+    margin: 5px 20px;
 	
 }
 .search input[type=text] {
@@ -631,7 +634,17 @@ span.psw {
 .oi-table td, .oi-table th {
     width: 50%;
 }
-
+#r3-overlay {
+    background-color: black;
+}
+.footnote-col {
+    width: 33.3%;
+    padding: 10px;
+    float: left;
+    background-color: gray;
+    height: 100%;
+    font-size: 1.2em;
+}
 
 
 

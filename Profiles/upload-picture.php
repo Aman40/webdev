@@ -3,8 +3,9 @@ session_start();
 if(!isset($_SESSION['UserID']) || !isset($_POST["submit"])) {
 	trigger_error("Nice try bro!");
 	echo "Nice try";
+	//later
 } else {
-	echo "Starting...";
+	echo "<script>console.log('Logged in. Proceeding...');</script>";
 }
 $uploadOK = true;
 $upload_error = "";
@@ -33,7 +34,7 @@ if($check !== false) {
     $uploadOk = false;
 }
 if(file_exists($directory."/".$_SESSION['UserID'])){
-//delete the file
+//delete the file. User is probably uploading new one. So far only one can be uploaded at a time.
 unlink($directory."/".$_SESSION['UserID']);
 } else {
 }
@@ -42,12 +43,12 @@ if($uploadOK){ //Everything went well
 	if(move_uploaded_file($_FILES['profpic']['tmp_name'], $directory."/".$basename)) {
 		header("location: index.php");
 	} else { //For some reason couldn't copy the file
+        echo "<script>console.log('The file couldn\'t be copied');</script>";
 		trigger_error("Can't move the uploaded file");
 
 	}
 } else {//an error occurred
+	echo "<script>console.log('".$upload_error."')</script>";
 	trigger_error($upload_error);
-
 }
-
 ?>

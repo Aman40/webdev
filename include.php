@@ -107,7 +107,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$mname_error = "Only letters and white space allowed"; 
 			$pushOK = false;
 			}
-		} else { //Set to null
+		} else { //Set to null. Still allow pushing
 			$mname = null;
 		}
 	
@@ -129,7 +129,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 				$pushOK = false;
 			}
 		} else { //It's Optional
-
+			//Later
+			$email = "none";
 		}
 	
 		//Get the district
@@ -145,6 +146,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$phoneno = filter($_POST['phoneno']);
 		} else { //report an error
 			$phoneno_error = "A phone number is required";
+			$PushOK = false;
 		}
 	
 		//Get the website url
@@ -152,13 +154,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$website = filter($_POST['website']);
 			if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=
 			~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$website)) {
-				$website_error = "Invalid URL"; 
+				$website_error = "Invalid URL";
+				$PushOK = false;
 			}
 		} else { //report an error
 			//Nothing to do. Default "" will do
 		}
 	
-		//Get the website url
+		//Get the address
 		if(isset($_POST['address']) && $_POST['address']!=NULL) {
 			$address = filter($_POST['address']);
 		} else { //report an error
@@ -265,8 +268,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 				die ("The connection to the database could not be established");
 			}
 		
-		} else {
-									echo "<script>console.log('Theres a problem with the data');</script>";
+		}
+		else //A simple whisper into the console is not enough. Display a modal with an error.
+		{
+			echo "<script>console.log('Theres a problem with the data. Wrong form?'); console.log('WTF?')</script>";
+			echo "<script>window.onload = function()
+					{document.getElementById('id02').style.display='block';}</script>"; //Re-display the form after detecting an error
 		}
 	}
 
@@ -418,6 +425,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 				$pushOK = false;
 			}
 		} else { //It's Optional
+			$email = "none";
 
 		}
 	
@@ -565,8 +573,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 				die ("The connection to the database could not be established");
 			}
 		
-		} else {
-									echo "<script>console.log('Theres a problem with the data');</script>";
+		}
+		else {
+            echo "<script>console.log('Theres a problem with the data. Wrong form?');</script>";
+            echo "<script>window.onload = function()
+                    {document.getElementById('id02').style.display='block';}</script>";
 		}
 	}
 }

@@ -191,7 +191,7 @@ SCENARIOS (EVENTS)
 			|--Check the item's details
 			+--Place an order
 					|--Specify the quantity
-					|--Specigy the phone number
+					|--Specify the phone number
 					|--Specify address
 					|--Leave a comment
 					+--Get order ID as a result
@@ -211,7 +211,27 @@ function invokes the _search_all_db() function
                 Make sure non logged in users can't run the function
 
 
-
+FUTURE FUNCTIONALITY
+--Forgotten password reset system
+--PHPmyAdmin-like page to manage catalogu  e
+--Image processing script for uploaded images
+--Make the "Category" drop downs dynamically generated in the html
+--Allow users to upload real pictures for their items.
+--
+CATALOGUE MANAGER FUNCTIONS//BASICALLY THE ITEMS TABLE ONLY
+-Add/remove items
+-Procedure
+--Display all items in "Items"
+--Each item with option for edit & remove
+--New option to add an item
+--During adding, ask for
+----Item name
+----Other names
+----Category. Use this to decide the code
+----Description
+----Upload an image. //Behind the scenes, generate an imageURI
+-Write JavaScript to check the image before uploading. Saves the user data and time.
+-Allow user to define size of item boxes to as far as tables. Dynamic display type
 
 
 

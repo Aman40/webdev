@@ -277,12 +277,13 @@ body {
 	display: inline-block;
 }
 #hor-menu a {
-  border-right: solid 1px #335142;
+    border-right: solid 1px #335142;
 	float: left;
 	margin: 0px;
 	padding: 13px 25px;
 	text-decoration: none;
 	color: white;
+    background: linear-gradient(#64a082, #20523d);
 }
 #hor-menu a:hover {
 	background: linear-gradient(#cccccc, black);
@@ -296,7 +297,7 @@ body {
 	background-color: black;
 	min-height: 50px;
 	width: 100%;
-	background: linear-gradient(#64a082, black);
+    background: linear-gradient(#64a082, #20523d);
 }
 #search {
 	float: left;
@@ -305,15 +306,19 @@ body {
 	width: 22.22%;
 }
 @media only screen and (max-width: 768px) {
-    #hor-menu {
-    	width: 100%;
+    #hor-menu, #hor-menu a, #hor-menu .search, #r1c2r2 {
+        width: 100%;
+        position: relative;
+    }
+    #row-1 {
+        display:-webkit-box;
     }
 }
 .search {
 	display: inline-block;
 	position: absolute;
 	right: 10px;
-	margin-top: 3px;
+	margin: 5px 20px;
 	
 }
 .search input[type=text] {
@@ -562,8 +567,9 @@ span.psw {
 	border-radius: 2px;
 }
 #prof-page-side #row1 {
- min-height: 200px;
- padding: 20px;
+    cursor: pointer;
+    min-height: 200px;
+    padding: 20px;
 }
 #prof-page-side #row2 {
 	min-height: 200px;
@@ -789,7 +795,25 @@ span.psw {
     width: 100%;
     padding: 10px;
 }
-
+#canvas-container {
+    margin: 25%;
+}
+#canvas {
+    background-color: bisque;
+}
+#uploadimage, #cancelupload {
+    width: 50%;
+    height: 20px;
+    color: white;
+    padding: 5px;
+    cursor: pointer;
+}
+#uploadimage {
+    background-color: #4caf50;
+}
+#cancelupload {
+    background-color: #f44336;
+}
 
 
 

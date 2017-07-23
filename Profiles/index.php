@@ -82,20 +82,19 @@ include "../include.php";
 							
 								<?php
 								if($session_exists) {
-									echo '<img class="col-12" src="Pictures/'.$_SESSION["UserID"].'" onclick="hide_show_form()">';
+									echo '<img class="col-12" src="Pictures/'.$_SESSION["UserID"].'" onclick="change_prof_pic(event)" title="Change profile picture">';
 								} else {
-									echo '<img class="col-12" src="../icons/profile-pic-male.jpg" alt="profile picture">';
+									echo '<img class="col-12" src="../icons/profile-pic-male.jpg" alt="profile picture" title="Change profile picture" onclick="change_prof_pic(event)">';
 								}
 								?>
-								<div class="col-12" id="uploadprofpic">
+								<div class="col-12">
                                     <!--Upon clicking, the form is revealed
                                     Upon clicking the submit button and effectively
                                     confirming successful submission, hide again
                                     Need a function hide_show_form()
                                     -->
                                     <form action="upload-picture.php" enctype="multipart/form-data" method="post">
-                                        <input type="file" name="profpic">
-                                        <input type="submit" name="submit">
+                                        <input type="file" name="profpic" id="uploadprofpic" onchange="edit_image(this)"><!--Add onchange event-->
                                     </form>
                                 </div>
 							</div>
@@ -578,6 +577,15 @@ function _selected($var) {
 		</div>
 	</div>
 </div><!--Edit-->
+<div class = "modal" id="edit-prof-pic">
+    <div id="canvas-container">
+        <canvas id = "canvas" width="600px" height="400px" style="background-color: bisque">
+        </canvas>
+        <span id="uploadimage" onclick="upload_prof_pic()">Upload</span>
+        <span id = "cancelupload">Cancel</span>
+    </div>
+
+</div>
 
 
 <!--Script5-->

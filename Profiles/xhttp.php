@@ -299,7 +299,7 @@ function _getuserinfo($userid) { //SHOULD IT ECHO TO OUTPUT OR RETURN TO CALLING
             $About = $row['About'];
             $CoName = $row['CoName'];
             $District = $row['District'];
-            $Email = $row['Email'];
+            $Email = setdefault($row['Email'], "None");
             //Echo the extracted values into a return string
             $userData="<userdata>";
             $userData.="<sex>".$Sex."</sex>";

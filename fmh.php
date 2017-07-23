@@ -25,7 +25,7 @@ include "include.php";
 							<div id="prof-pic">
 								<div id="prof-pic-img">
 									<?php
-										if($session_exists) {
+										if($session_exists) { //There's a better way but meh! This works too.
 										    //If picture exists
                                             if(file_exists("Profiles/Pictures/'".$_SESSION['UserID'])) {
                                                 echo '<img src="Profiles/Pictures/'.$_SESSION["UserID"].'">';
@@ -400,7 +400,12 @@ include "include.php";
                             for(i=0;i<itemNodeList.length;i++) {
                                 html="<div class='item-slide' onclick='_getUserInfo("+i+")'>";
                                 html+="<div class='item-slide-image'>";
-                                html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";
+                                if(getValue(itemNodeList, i, 'ImageURI') == 'None') {
+                                    html += "<img src='icons/placeholder.png'> title='No image yet'";
+                                }
+                                else {
+                                    html += "<img src='" + getValue(itemNodeList, i, 'ImageURI') + "'>";
+                                }
                                 html+="</div><!--item-slide-header-->"
                                 html+="<div class='item-slide-content' id='itemNo"+i+"'>"
                                 html+="<span class='dash_item_name'>"+getValue(itemNodeList, i, 'ItemName')+"</span>";
@@ -565,7 +570,10 @@ include "include.php";
 
 			</div><!--row-2-->
 			<div id="row-3"> <!--This will contain the footer-->
-				<div id="r3-overlay">
+				<div id="r3-overlay"><!--Totally empty!-->
+                    <div class="footnote-col">&copy; Farmer's Marketting Hub 2017</div>
+                    <div class="footnote-col">Contact</div>
+                    <div class="footnote-col">Privacy Policy</div>
 				</div>
 			</div><!--row-3-->
 		</div><!--Main wrapper-->
@@ -688,8 +696,10 @@ class="close" title="Close Modal">&times;</span>
 	// When the user clicks anywhere outside of the modal, close it
 	window.onclick = function(event) {
 		if (event.target == modalup) {
+		    console.log("It's the modalup");
 		    modalup.style.display = "none";
 		} else if (event.target === modalin) {
+		    console.log("It's the modalin");
             modalin.style.display = "none";
         } else if (event.target === modalOrder){
 	        modalOrder.style.display = "none";

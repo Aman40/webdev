@@ -814,7 +814,11 @@ span.psw {
 #cancelupload {
     background-color: #f44336;
 }
-
+/*CSS FOR MOBILE DEVICES WITH WIDTH LESS THAN 737 PIXELS*/
+@media only screen and (min-width: 1200px) {
+    .col-3 {width: 16.66%;}
+    .col-9 {width: 83.33%;}
+}
 
 
 

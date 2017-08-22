@@ -2,7 +2,15 @@
 function _checkenterkey(event) {
     if(event.key=='Enter') { //If it's the enter key, call the _searchdb function
         event.preventDefault();
-        _searchdb(document.getElementById('srchdemo').value);
+        try {
+            _searchdb(document.getElementById('srchdemo').value);
+            console.log("Desktop version accessing the function.");
+        } catch(err) {
+            console.log(err.message);
+            console.log("Mobile version accessing the function.")
+            console.log(document.getElementById('search-input'));
+            _searchdb(document.getElementById('search-input').value);
+        }
     }
 }
 
@@ -96,58 +104,51 @@ function _getInventory() {
                     var i = 0;
                     var html="";
                     for(i=0;i<itemNodeListr.length; i++) {
-                        html="<div class='item-slide'>";
-                        html+="<div class='item-slide-image'>";
-                        html+="<img src='"+getValue(itemNodeListr, i, 'ImageURI')+"'>";
-                        html+="</div><!--item-slide-header-->"
-                        html+="<div class='item-slide-content' id='itemid"+i+"'>"
-                        html+="<table>";
-                        html+="<tr>";
-                        html+="<th>Name</th>";
-                        html+="<td>"+getValue(itemNodeListr, i, 'ItemName')+"</td>";
-                        html+="</tr>";
-                        html+="<tr>";
-                        html+="<th>Other Names</th>";
-                        html+="<td>"+getValue(itemNodeListr, i, 'Aliases')+"</td>";
-                        html+="</tr>";
-                        html+="<tr>";
-                        html+="<th>Description</th>";
-                        html+="<td>"+getValue(itemNodeListr, i, 'Description')+"</td>";
-                        html+="</tr>";
-                        html+="<tr>";
-                        html+="<th>Quantity</th>";
-                        html+="<td>"+getValue(itemNodeListr, i, 'Quantity')+" "+getValue(itemNodeListr, i, 'Units')+"</td>";
-                        html+="</tr>";
-                        html+="<tr>";
-                        html+="<th>Unit Price</th>";
-                        html+="<td>"+getValue(itemNodeListr, i, 'UnitPrice')+"</td>";
-                        html+="</tr>";
-                        html+="<tr>";
-                        html+="<th>State</th>";
-                        html+="<td>"+getValue(itemNodeListr, i, 'State')+"</td>";
-                        html+="</tr>";
-                        html+="<tr>";
-                        html+="<th>Description</th>";
-                        html+="<td>"+getValue(itemNodeListr, i, 'Description')+"</td>";
-                        html+="</tr>";
-                        html+="<tr>";
-                        html+="<th>Added On</th>";
-                        html+="<td>"+getValue(itemNodeListr, i, 'DateAdded')+"</td>";
-                        html+="</tr>";
-                        html+="<th>Can Deliver? (Y/N) </th>";
-                        html+="<td>"+getValue(itemNodeListr, i, 'Deliverable')+"</td>";
-                        html+="</tr>";
-                        html+="<th>Can Deliver To: </th>";
-                        html+="<td>"+getValue(itemNodeListr, i, 'DeliverableAreas')+"</td>";
-                        html+="</tr>";
-                        html+="</table>";
-                        html+="</div><!--item-slide-header-->"
-                        html+="<div id='addToRep'>";//ID means 'Add to repository'
-                        html+="<button onclick='void(0)'><i class='fa fa-edit'></i> Edit</button>";
-                        html+="</div>";
-                        html+="<span onclick='rem_rep_item("+i+")' id='rem-rep-item"+i+"' class='close' title='Delete Item'>×</span>";
-                        html+="</div>";
-                        document.getElementById("inventory-display").innerHTML+=html;
+                        //html="<div class='item-slide'>";
+                        //html+="<div class='item-slide-image'>";
+                        //html+="<img src='"+getValue(itemNodeListr, i, 'ImageURI')+"'>";
+                        //html+="</div><!--item-slide-header-->"
+                        //html+="<div class='item-slide-content' id='itemid"+i+"'>"
+                        //html+="</div><!--item-slide-header-->"
+                        //html+="<div id='addToRep'>";//ID means 'Add to repository'
+                        //html+="<button onclick='void(0)'><i class='fa fa-edit'></i> Edit</button>";
+                        //html+="</div>";
+                        //html+="<span onclick='rem_rep_item("+i+")' id='rem-rep-item"+i+"' class='close' title='Delete Item'>×</span>";
+                        //html+="</div>";
+                        //document.getElementById("inventory-display").innerHTML+=html;
+                        //From here
+                        var elmt = "";
+                        elmt = document.createElement("div");
+                        elmt.classList.add("item-slide");
+                        elmt.indexno = i;
+                        elmt.addEventListener("click", function () {
+                            _getUserInfo(this)
+                        }, true)
+
+                        var img = "";
+                        img = document.createElement("img");
+                        var elmt2 = "";
+                        elmt2 = document.createElement("div");
+                        elmt2.classList.add("item-slide-image");
+                        if(getValue(itemNodeListr, i, 'ImageURI') == 'None') {
+                            img.src = '../icons/placeholder.png'
+                        }
+                        else {
+                            img.src=getValue(itemNodeListr, i, 'ImageURI');
+                        }
+                        elmt2.appendChild(img);
+                        elmt.appendChild(elmt2);
+                        var elmt3 = "";
+                        elmt3 = document.createElement("div");
+                        elmt3.classList.add('item-slide-content');
+                        elmt3.id="itemNo"+i;
+                        var spanElmt = "";
+                        spanElmt = document.createElement("span");
+                        spanElmt.classList.add("dash_item_name");
+                        spanElmt.innerHTML = getValue(itemNodeListr, i, 'ItemName');
+                        elmt3.appendChild(spanElmt);
+                        elmt.appendChild(elmt3);
+                        document.getElementById("inventory-display").appendChild(elmt);
                     }
                     console.log("Done 1");
                 }
@@ -394,5 +395,18 @@ function upload_prof_pic() {
             }
         }
         xhr.send(fd);
-    }, "image/jpeg", 0.4)
+    }, "image/jpeg", 0.4    )
+}
+
+function change_view() {
+    var slide_container = document.getElementById("r2c2");
+    if(slide_contaner.classList.contains("slide-container-view-list")) {
+        slide_container.classList.remove("slide-container-view-list");
+    } else {
+        slide_container.classList.add("slide-container-view-list");
+    }
+}
+
+function useless_function() {
+    console.log("I'm a fucking useless function");
 }

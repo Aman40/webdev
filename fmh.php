@@ -1,3 +1,10 @@
+<script type="text/javascript">
+    <!--
+    if (screen.width <= 1000) {
+        window.location = "http://localhost/HTML/mobile.php";
+    }
+    //-->
+</script>
 <!doctype html>
 <?php
 include "include.php";

@@ -213,7 +213,7 @@ function invokes the _search_all_db() function
 
 FUTURE FUNCTIONALITY
 --Forgotten password reset system
---PHPmyAdmin-like page to manage catalogu  e
+--PHPmyAdmin-like page to manage catalogue
 --Image processing script for uploaded images
 --Make the "Category" drop downs dynamically generated in the html
 --Allow users to upload real pictures for their items.

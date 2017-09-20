@@ -233,6 +233,9 @@ CATALOGUE MANAGER FUNCTIONS//BASICALLY THE ITEMS TABLE ONLY
 -Write JavaScript to check the image before uploading. Saves the user data and time.
 -Allow user to define size of item boxes to as far as tables. Dynamic display type
 
+PICKUP FROM
+--write a new "displaymodal()" function for the inventory items with its own modal.
+ Currently it looks like the add-to-repository modal.
 
 
 

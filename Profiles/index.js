@@ -39,7 +39,7 @@ function _searchdb(str) {
                             html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";
                             html+="</div><!--item-slide-header-->"
                             html+="<div class='item-slide-content' id='itemNo"+i+"'>"
-                            html+="<table>";
+                            /**html+="<table>";
                             html+="<tr>";
                             html+="<th>Name</th>";
                             html+="<td>"+getValue(itemNodeList, i, 'ItemName')+"</td>";
@@ -52,11 +52,11 @@ function _searchdb(str) {
                             html+="<th>Description</th>";
                             html+="<td>"+getValue(itemNodeList, i, 'Description')+"</td>";
                             html+="</tr>";
-                            html+="</table>";
-                            html+="</div><!--item-slide-header-->"
+                            html+="</table>";**/
                             html+="<div id='addToRep'>";//ID means 'Add to repository'
-                            html+="<button onclick='displaymodal("+i+")'><i class='fa fa-plus-square-o'></i> Add Item</button>";
+                            html+="<button indexno="+i+" onclick='displaymodal("+this+", \"itemNodeList\")'><i class='fa fa-plus-square-o'></i> Add Item</button>";
                             html+="</div>";
+                            html+="</div><!--item-slide-header-->"
                             html+="</div>";
                             document.getElementById("display-search-results").innerHTML+=html;
                         }
@@ -122,8 +122,8 @@ function _getInventory() {
                         elmt.classList.add("item-slide");
                         elmt.indexno = i;
                         elmt.addEventListener("click", function () {
-                            _getUserInfo(this)
-                        }, true)
+                            inventoryItemDetails(this, itemNodeListr)
+                        }, true) //Display Modal. Using only item's info. Seller is self
 
                         var img = "";
                         img = document.createElement("img");
@@ -174,20 +174,96 @@ function getValue(nodeList, index, tagName) { //This function is just to make th
     var value = nodeList[index].getElementsByTagName(tagName)[0].childNodes[0].nodeValue
     return value;
 }
-function displaymodal(i) { //This function sets the data in the modal. i identifies the item
+function displaymodal(elmt, nodelist) { //This function sets the data in the modal. i identifies the item
+    var i = elmt.indexno; //Carries the number of the item.
     var html=""; //in the itemNodeList
     html="<div width=100%>";
-    html+="<img src='"+getValue(itemNodeList, i, 'ImageURI')+"'>";
+    html+="<img src='"+getValue(nodelist, i, 'ImageURI')+"'>";
     html+="</div>";
     document.getElementById("eAI-11").innerHTML=html;
     html="<div width=100%>";
-    html+="<font size=6em position='center'>"+getValue(itemNodeList, i, 'ItemName')+"</font>";
-    html+="<br>Other names:\t"+getValue(itemNodeList, i, 'Aliases');
-    html+="<br>Description:\t"+getValue(itemNodeList, i, 'Description');
+    html+="<font size=6em position='center'>"+getValue(nodelist, i, 'ItemName')+"</font>";
+    html+="<br>Other names:\t"+getValue(nodelist, i, 'Aliases');
+    html+="<br>Description:\t"+getValue(nodelist, i, 'Description');
     html+="</div>";
     document.getElementById("item_submit_button").innerHTML="<button type='submit' onclick='submit_add_form("+i+")'><i class='fa fa-plus-square-o'></i>  Add to repository</button>";
     document.getElementById("eAI-12").innerHTML=html;
     document.getElementById("editAddItem").style.display="block";
+}
+function inventoryItemDetails(elmt, nodelist) {
+    var i = elmt.indexno;
+    var modal = document.createElement('div');
+    modal.width = "100%";
+    modal.classList.add("modal");
+    var modal_content = document.createElement('div'); //width: 100%
+    modal.appendChild(modal_content);
+    modal_content.classList.add("modal-content");
+    var imgDiv = document.createElement('div'); //width: inherit
+    modal_content.appendChild(imgDiv);
+    var contentDiv = document.createElement('div');
+    modal_content.appendChild(contentDiv);
+        var table = document.createElement('table');
+        contentDiv.appendChild(table);
+            var tbody = document.createElement('tbody');
+            table.appendChild(tbody);
+                var nameRow = document.createElement('tr');
+                tbody.appendChild(nameRow);
+                    var data = document.createElement('th');
+                        data.innerHTML = "Name:";
+                    nameRow.appendChild(data);
+                    data = document.createElement('td');
+                        data.innerHTML=getValue(nodelist, i, "itemname");
+                    nameRow.appendChild(data);
+                var otherNamesRow = document.createElement('tr');
+                tbody.appendChild(otherNamesRow);
+                    var data = document.createElement('th');
+                        data.innerHTML="Alias";
+                    otherNamesRow.appendChild(data);
+                    data = document.createElement('td');
+                        data.innerHTML="";
+                    otherNamesRow.appendChild(data);
+                var descriptionRow = document.createElement('tr');
+                tbody.appendChild(descriptionRow);
+                    var data = document.createElement('th');
+                        data.innerHTML="Description";
+                    descriptionRow.appendChild(data);
+                    data = document.createElement('td');
+                        data.innerHTML="";
+                    descriptionRow.appendChild(data);
+                var quantityRow = document.createElement('tr');
+                tbody.appendChild(quantityRow);
+                    var data = document.createElement('th');
+                        data.innerHTML="Quantity";
+                    quantityRow.appendChild(data);
+                    data = document.createElement('td');
+                        data.innerHTML="";
+                    quantityRow.appendChild(data);
+                var priceRow = document.createElement('tr');
+                tbody.appendChild(priceRow);
+                    var data = document.createElement('th');
+                        data.innerHTML="Price";
+                    priceRow.appendChild(data);
+                    data = document.createElement('td');
+                        data.innerHTML = "";
+                    priceRow.appendChild(data);
+                var dateRow = document.createElement('tr');
+                tbody.appendChild(dateRow);
+                    var data = document.createElement('th');
+                        data.innerHTML="Date Added";
+                    dateRow.appendChild(data);
+                    data = document.createElement('td');
+                        data.innerHTML="";
+                    dateRow.appendChild(data);
+                var deliverRow = document.createElement('tr');
+                tbody.appendChild(deliverRow);
+                    var data = document.createElement('th');
+                        data.innerHTML="Delivery";
+                    deliverRow.appendChild(data);
+                    data = document.createElement('td');
+                        data.innerHTML="";
+                    deliverRow.appendChild(data);
+    document.getElementsByTagName("body")[0].appendChild(modal);
+    modal.style.display="block";
 }
 
 //Script 2
